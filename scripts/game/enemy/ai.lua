@@ -44,9 +44,16 @@ local function add_action(f)
 	table.insert(actions,f)
 end
 
---判断单位是否在待机且可行动状态
-local function check(u)
-	return true
+--判断单位是否产生了位移，有的话则暂时不执行移动逻辑
+local function check_move(u)
+	local point = ai_groups[u].point
+	local now_point = u:getPoint()
+	ai_groups[u].point = now_point
+	if not point or point * now_point <= 1 then
+		return true
+	else
+		return false
+	end
 end
 
 --确定当前的移动点
