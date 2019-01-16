@@ -8,6 +8,15 @@ for i = 1, 6 do
                 unit:setOwner(player, true)
                 player:addHero(unit)
                 unit:blink(ac.point(7044, -8792))
+                --复活
+                unit:event('单位-死亡', function (trg, unit)
+                    ac.wait(10000, function()
+                        print('你复活了,精神层面上')
+                        unit:set('生命', unit:get('生命上限'))
+                        unit:set('魔法', unit:get('魔法上限'))
+                        unit:blink(ac.point(7044, -10529))
+                    end)
+                end)
             else
                 pick_mark[i] = unit
                 ac.wait(400, function()
