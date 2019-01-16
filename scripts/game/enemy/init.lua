@@ -1,0 +1,1 @@
+require 'game.enemy.enemy'

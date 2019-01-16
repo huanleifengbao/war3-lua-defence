@@ -3,3 +3,5 @@ ac.game:event('单位-创建', function (_, unit)
         local skill = unit:addSkill('测试技能', '技能', 1)
     end
 end)
+
+require 'game.enemy'
