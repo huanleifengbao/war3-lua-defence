@@ -69,7 +69,7 @@ local function attack_move(u)
 	local index = ai_groups[u].index
 	if index <= #line then
 		local target = line[index]
-		u:walk(target)
+		u:attack(target)
 	end
 	return true
 end

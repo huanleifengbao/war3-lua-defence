@@ -1,5 +1,5 @@
 local wave = 0	--当前波数
-local player_id = 12	--刷怪玩家
+local player = ac.player(11)	--刷怪玩家
 local start_point = {	--出怪点，有几个点就出几路怪
 	ac.point(6050,3900),
 	ac.point(6950,3900),
@@ -67,9 +67,7 @@ local ex_data = {
 }
 
 local function create_enemy(wave)
-	local i = player_id
 	for i = 1,#start_point do
-		local player = ac.player(player_id - i + 1)
 		local p = start_point[i]
 		ac.timer(data.interval * 1000,data.count,function()
 			local u = player:createUnit(data.id(wave),p,270)
