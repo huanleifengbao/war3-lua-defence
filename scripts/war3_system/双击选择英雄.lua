@@ -1,4 +1,3 @@
-print('gaga')
 ac.event('单位-创建', function (trg, unit)
     print(unit:getOwner(),unit:getname())
     if unit:getOwner() then
