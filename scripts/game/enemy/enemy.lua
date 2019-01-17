@@ -69,7 +69,7 @@ local ex_data = {
 local function create_enemy(wave)
 	for i = 1,#start_point do
 		local p = start_point[i]
-		ac.timer(data.interval * 1000,data.count,function()
+		ac.timer(data.interval,data.count,function()
 			local u = player:createUnit(data.id(wave),p,270)
 			for key,val in pairs(data.attribute) do
 				u:set(key,val(wave))
@@ -80,21 +80,26 @@ local function create_enemy(wave)
 		--boss
 		local boss_wave = data.boss
 		if boss_wave ~= 0 and wave%boss_wave == 0 then
-			ac.wait(data.boss_time * 1000,function()
+			ac.wait(data.boss_time,function()
 				print('boss出现！')
 			end)
 		end
 	end
 end
 
+local timer = jass.CreateTimer()
+
 local function create_wave()
 	wave = wave + 1
 	create_enemy(wave)
-	print('第' .. wave .. '波开始')
-	ac.wait(data.time_out * 1000,function()
+	local str = '第' .. wave .. '波'
+	jass.TimerDialogSetTitle(timer, str)
+	ac.wait(data.time_out,function()
 		local max_wave = data.max_wave
 		if max_wave == 0 or wave < max_wave then
 			create_wave()
+		else
+			jass.TimerDialogDisplay(timer, false)
 		end
 	end)
 end
@@ -110,7 +115,8 @@ ac.game:event('进入无尽模式', function (_, data)
 end)
 
 local function game_start()
-	ac.wait(data.start_time * 1000,function()
+	ac.wait(data.start_time,function()
+		jass.TimerDialogDisplay(timer, true)
 		create_wave()
 		print('开始刷怪')
 	end)
