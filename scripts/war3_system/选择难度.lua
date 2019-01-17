@@ -18,6 +18,3 @@ ac.wait(0, function()
         end
     end
 end)
-
-ac.game:event('选择难度', function (_, num)
-end)
