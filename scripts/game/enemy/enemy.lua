@@ -11,6 +11,15 @@ function sg.get_enemy_id(num)
 	return '波数' .. num
 end
 
+--难度系数
+sg.difficult = 0
+local dif_tbl = {
+	[1] = 0.5,
+	[2] = 1,
+	[3] = 2,
+	[4] = 4,
+}
+
 local data = {
 	id = function(n)
 		return sg.get_enemy_id(n)
@@ -24,10 +33,10 @@ local data = {
 	max_wave = 10,	--最大波数
 	attribute = {	--进攻怪物属性公式
 		['生命上限'] = function(n)
-			return 100 + n * 10
+			return (100 + n * 10) * dif_tbl[sg.difficult]
 		end,
 		['攻击'] = function(n)
-			return 20 + n * 2
+			return (20 + n * 2) * dif_tbl[sg.difficult]
 		end,
 		['护甲'] = function(n)
 			return 2 + n * 1
@@ -52,10 +61,10 @@ local ex_data = {
 	max_wave = 0,
 		attribute = {
 		['生命上限'] = function(n)
-			return 1000 + n * 100
+			return (1000 + n * 100) * dif_tbl[sg.difficult]
 		end,
 		['攻击'] = function(n)
-			return 200 + n * 20
+			return (200 + n * 20) * dif_tbl[sg.difficult]
 		end,
 		['护甲'] = function(n)
 			return 20 + n * 10
@@ -122,4 +131,7 @@ local function game_start()
 	end)
 end
 
-game_start()
+ac.game:event('选择难度', function (_, num)
+	sg.difficult = num
+	game_start()
+end)

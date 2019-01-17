@@ -12,7 +12,7 @@ ac.wait(0, function()
                 {'4', 'R', '|cffff00ffLunatic(R)|r'},
             }
             function dialog:onClick(name)
-                ac.game:eventNotify('选择难度', name)
+                ac.game:eventNotify('选择难度', tonumber(name))
             end
             break
         end
