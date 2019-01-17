@@ -19,7 +19,7 @@ for i = 1, 6 do
                 end)
             else
                 pick_mark[i] = unit
-                ac.wait(400, function()
+                ac.wait(0.4, function()
                     pick_mark[i] = false
                 end)
             end
