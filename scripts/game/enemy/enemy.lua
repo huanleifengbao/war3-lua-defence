@@ -25,10 +25,10 @@ local data = {
 		return sg.get_enemy_id(n)
 	end,
 	start_time = 5,	--前置等待时间
-	time_out = 40,	--每波间隔时间
-	count = 30,	--每条路怪物数量
-	boss = 10,	--每多少波出一次boss
-	boss_time = 1,	--开始几秒后BOSS出现
+	time_out = 5,	--每波间隔时间
+	count = 3,	--每条路怪物数量
+	boss = 2,	--每多少波出一次boss
+	boss_time = 3,	--开始几秒后BOSS出现
 	interval = 0.5,	--每只怪物出生间隔
 	max_wave = 10,	--最大波数
 	attribute = {	--进攻怪物属性公式
@@ -86,29 +86,31 @@ local function create_enemy(wave)
 			u:set('生命',u:get'生命上限')
 			sg.add_ai(u)
 		end)
-		--boss
-		local boss_wave = data.boss
-		if boss_wave ~= 0 and wave%boss_wave == 0 then
-			ac.wait(data.boss_time,function()
-				print('boss出现！')
-			end)
-		end
+	end
+	--boss
+	local boss_wave = data.boss
+	if boss_wave ~= 0 and wave%boss_wave == 0 then
+		local boss_time = data.boss_time
+		sg.create_timer('boss','boss',boss_time)
+		ac.wait(boss_time,function()
+			print('boss出现！')
+		end)
 	end
 end
-
-local timer = jass.CreateTimer()
 
 local function create_wave()
 	wave = wave + 1
 	create_enemy(wave)
-	local str = '第' .. wave .. '波'
-	jass.TimerDialogSetTitle(timer, str)
+	local time_out = data.time_out
+	local str = '第' .. wave + 1 .. '波'
+	sg.set_timer_title('波数',str)
+	sg.set_timer_time('波数',time_out)
 	ac.wait(data.time_out,function()
 		local max_wave = data.max_wave
 		if max_wave == 0 or wave < max_wave then
 			create_wave()
 		else
-			jass.TimerDialogDisplay(timer, false)
+			sg.remove_timer('波数')
 		end
 	end)
 end
@@ -124,8 +126,9 @@ ac.game:event('进入无尽模式', function (_, data)
 end)
 
 local function game_start()
-	ac.wait(data.start_time,function()
-		jass.TimerDialogDisplay(timer, true)
+	local time = data.start_time
+	sg.create_timer('波数','第1波',time)
+	ac.wait(time,function()
 		create_wave()
 		print('开始刷怪')
 	end)

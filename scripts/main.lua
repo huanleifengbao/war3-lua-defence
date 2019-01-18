@@ -1,4 +1,5 @@
 sg = {}
+sg.max_player = 6
 jass = require 'jass.common'
 require 'skill'
 require 'game'
