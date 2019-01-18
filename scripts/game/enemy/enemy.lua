@@ -8,7 +8,12 @@ local start_point = {	--出怪点，有几个点就出几路怪
 
 --获取当前波数的单位ID
 function sg.get_enemy_id(num)
+	num = math.ceil(num)
 	return '波数' .. num
+end
+function sg.get_boss_id(num)
+	num = math.ceil(num)
+	return 'BOSS' .. num
 end
 
 --难度系数
@@ -24,13 +29,13 @@ local data = {
 	id = function(n)
 		return sg.get_enemy_id(n)
 	end,
-	start_time = 5,	--前置等待时间
-	time_out = 5,	--每波间隔时间
-	count = 3,	--每条路怪物数量
-	boss = 2,	--每多少波出一次boss
-	boss_time = 3,	--开始几秒后BOSS出现
+	start_time = 10,	--前置等待时间
+	time_out = 80,	--每波间隔时间
+	count = 20,	--每条路怪物数量
+	boss = 10,	--每多少波出一次boss
+	boss_time = 10,	--开始几秒后BOSS出现
 	interval = 0.5,	--每只怪物出生间隔
-	max_wave = 10,	--最大波数
+	max_wave = 40,	--最大波数
 	attribute = {	--进攻怪物属性公式
 		['生命上限'] = function(n)
 			return (100 + n * 10) * dif_tbl[sg.difficult]
@@ -42,13 +47,29 @@ local data = {
 			return 2 + n * 1
 		end,
 		['移动速度'] = function(n)
-			return 300 + n * 10
+			return 300 + n * 50
 		end,
 	},
 }
 
 local boss_data = {
-
+	id = function(n)
+		return sg.get_boss_id(n)
+	end,
+	attribute = {	--进攻怪物属性公式
+		['生命上限'] = function(n)
+			return (10000 + n * 100) * dif_tbl[sg.difficult]
+		end,
+		['攻击'] = function(n)
+			return (2000 + n * 200) * dif_tbl[sg.difficult]
+		end,
+		['护甲'] = function(n)
+			return 20 + n * 10
+		end,
+		['移动速度'] = function(n)
+			return 300 + n * 10
+		end,
+	},
 }
 
 local ex_data = {
@@ -93,6 +114,13 @@ local function create_enemy(wave)
 		local boss_time = data.boss_time
 		sg.create_timer('boss','boss',boss_time)
 		ac.wait(boss_time,function()
+			local num = wave/boss_wave
+			local u = player:createUnit(boss_data.id(num),start_point[2],270)
+			for key,val in pairs(boss_data.attribute) do
+				u:set(key,val(num))
+			end
+			u:set('生命',u:get'生命上限')
+			sg.add_ai(u)
 			print('boss出现！')
 		end)
 	end
