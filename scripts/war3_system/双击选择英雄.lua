@@ -7,17 +7,19 @@ for i = 1, 6 do
                 trg:remove()
                 unit:setOwner(player, true)
                 player:addHero(unit)
-                unit:blink(ac.point(7044, -8792))
+                local start_p = ac.point(7044, -8792)
+                unit:blink(start_p)
+                player:moveCamera(start_p, 0.2)
                 --复活
-                unit:event('单位-死亡', function (trg, unit)
-                    print('nsl')
-                    ac.wait(1, function()
-                        unit:reborn(ac.point(7044, -10529), true)
-                        print('nhl')
-                        --[[unit:set('生命', unit:get('生命上限'))
+                unit:event('单位-死亡', function (trg, killer, dead)
+                    local timer = ac.wait(5, function()
+                        local reborn_p = ac.point(7044, -10529)
+                        unit:reborn(reborn_p, true)
                         unit:set('魔法', unit:get('魔法上限'))
-                        unit:blink(ac.point(7044, -10529))]]
+                        player:moveCamera(reborn_p, 0.2)
                     end)
+                    local msg = '玩家'..i..'复活时间'
+                    player:timerDialog(msg, timer)
                 end)
             else
                 pick_mark[i] = unit
