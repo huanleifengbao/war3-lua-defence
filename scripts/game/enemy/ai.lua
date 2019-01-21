@@ -1,6 +1,7 @@
 local ai_groups  = {}
 local actions = {}
 
+
 local timer = ac.loop(1,function()
 	for u,_ in pairs(ai_groups) do
 		if u._removed == true then
