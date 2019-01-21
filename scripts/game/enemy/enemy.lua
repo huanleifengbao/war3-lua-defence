@@ -143,7 +143,7 @@ local function create_wave()
 	end)
 end
 
-ac.game:event('进入无尽模式', function (_, data)
+ac.game:event('地图-进入无尽模式', function (_, data)
 	print('进入无尽模式')
 	--将刷怪表替换为无尽表后重新开始刷怪逻辑
 	for key,val in pairs(ex_data) do
@@ -162,7 +162,7 @@ local function game_start()
 	end)
 end
 
-ac.game:event('选择难度', function (_, num)
+ac.game:event('地图-选择难度', function (_, num)
 	sg.difficult = num
 	game_start()
 end)
