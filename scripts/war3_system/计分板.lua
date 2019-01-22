@@ -127,7 +127,7 @@ ac.wait(0, function()
             hero_kill[id] = hero_kill[id] + 1
             board[id+1][4]:text(hero_kill[id])
             --称号
-            if hero_kill[id] >= title_level[player_title[id] + 1] then
+            if player_title[id] < #title_level and hero_kill[id] >= title_level[player_title[id] + 1] then
                 player_title[id] = player_title[id] + 1
                 board[id+1][6]:icon(title_icon[player_title[id]])
                 board[id+1][6]:text(title[player_title[id]])
