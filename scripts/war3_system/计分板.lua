@@ -15,14 +15,15 @@ local player_colour = {
 }
 
 local title = {
-    [1] = '|cffffff00弟弟|r',
-    [2] = '|cff505050露米娅',
+    [1] = '|cffffffcc弟弟|r',
+    [2] = '|cff505050宵暗的妖怪',
     [3] = '|cff00ffff⑨',
-    [4] = '|cffff0000红美铃',
+    [4] = '|cff00aa00华人小姑娘',
     [5] = '|cffff00ff姆Q',
     [6] = '|cffccffffPAD',
-    [7] = '|cffaaccff蕾米',
-    [8] = '|cffffcc00芙兰',
+    [7] = '|cffff0000「永远的红月」',
+    [8] = '|cffffcc00「恶魔之妹」',
+    [100] = '|cffffffff最多七个汉字哦',
 }
 local title_icon = {
     [1] = [[ReplaceableTextures\CommandButtons\BTNPenguin.blp]],
@@ -59,14 +60,14 @@ ac.wait(0, function()
         board[1][3]:text('Lv')
         board[1][4]:text('杀敌')
         board[1][5]:text('翻车')
-        board[1][6]:text('称号')
+        board[1][6]:text('－－－－－称号－－－－－')
         for i = 1, 7 do
             board[i][1]:width(0.07)
             board[i][2]:width(0.05)
             board[i][3]:width(0.02)
             board[i][4]:width(0.02)
             board[i][5]:width(0.025)
-            board[i][6]:width(0.03)
+            board[i][6]:width(0.06)
             if i ~= 1 then
                 local player = ac.player(i-1)
                 if player and player:controller() == '用户' and player:gameState() == '在线' then
