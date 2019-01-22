@@ -54,7 +54,7 @@ ac.wait(0, function()
             board[id+1][5]:text(hero_dead[id])
         end
     end)
-    
+
     --击杀
     local hero_kill = {}
     for i = 1, 6 do
