@@ -1,4 +1,54 @@
 
+local player_colour = {
+    [1] = '|cFFF00000',
+    [2] = '|c000000FF',
+    [3] = '|c000EEEEE',
+    [4] = '|c77700077',
+    [5] = '|cFFFFFF00',
+    [6] = '|cFFF77700',
+    [7] = '|c000EEE00',
+    [8] = '|cFFF222FF',
+    [9] = '|c88888888',
+    [10] = '|c777DDDFF',
+    [11] = '|c00077766',
+    [12] = '|c44400000',
+}
+
+local title = {
+    [1] = '|cffffff00弟弟|r',
+    [2] = '|cff505050露米娅',
+    [3] = '|cff00ffff⑨',
+    [4] = '|cffff0000红美铃',
+    [5] = '|cffff00ff姆Q',
+    [6] = '|cffccffffPAD',
+    [7] = '|cffaaccff蕾米',
+    [8] = '|cffffcc00芙兰',
+}
+local title_icon = {
+    [1] = [[ReplaceableTextures\CommandButtons\BTNPenguin.blp]],
+    [2] = [[ReplaceableTextures\CommandButtons\BTNDispelMagic.blp]],
+    [3] = [[ReplaceableTextures\CommandButtons\BTNIceShard.blp]],
+    [4] = [[ReplaceableTextures\CommandButtons\BTNGauntletsOfOgrePower.blp]],
+    [5] = [[ReplaceableTextures\CommandButtons\BTNNecromancerAdept.blp]],
+    [6] = [[ReplaceableTextures\CommandButtons\BTNArcaniteArmor.blp]],
+    [7] = [[ReplaceableTextures\CommandButtons\BTNSearingArrows.blp]],
+    [8] = [[ReplaceableTextures\CommandButtons\BTNVampiricAura.blp]],
+}
+local title_level = {
+    [1] = 0,
+    [2] = 5,
+    [3] = 9,
+    [4] = 20,
+    [5] = 30,
+    [6] = 45,
+    [7] = 60,
+    [8] = 100,
+}
+local player_title = {}
+for i = 1, 6 do
+    player_title[i] = 1
+end
+
 ac.wait(0, function()
     local board = ac.game:board(7, 6, '初始化中')
     ac.wait(1, function()
@@ -20,7 +70,7 @@ ac.wait(0, function()
             if i ~= 1 then
                 local player = ac.player(i-1)
                 if player and player:controller() == '用户' and player:gameState() == '在线' then
-                    board[i][1]:text(player:name())
+                    board[i][1]:text(player_colour[i-1]..player:name()..'|r')
                 end
             end
         end
@@ -36,9 +86,21 @@ ac.wait(0, function()
             board[id+1][4]:text('0')
             board[id+1][5]:text('|cffff0000没死过|r')
             board[id+1][6]:style(true, true)
-            board[id+1][6]:icon([[ReplaceableTextures\CommandButtons\BTNPeasant.blp]])
-            board[id+1][6]:text('|cffffff00弟弟|r')
+            board[id+1][6]:icon(title_icon[player_title[id]])
+            board[id+1][6]:text(title[player_title[id]])
         end
+    end)
+
+    --等级
+    ac.game:event('地图-选择英雄', function (_, unit, player)
+        unit:event('单位-升级', function (trg, unit)
+            local id = player:id()
+            board[id+1][3]:text(unit:level())
+        end)
+        unit:event('单位-降级', function (trg, unit)
+            local id = player:id()
+            board[id+1][3]:text(unit:level())
+        end)
     end)
 
     --死亡
@@ -64,6 +126,13 @@ ac.wait(0, function()
         if unit then
             hero_kill[id] = hero_kill[id] + 1
             board[id+1][4]:text(hero_kill[id])
+            --称号
+            if hero_kill[id] >= title_level[player_title[id] + 1] then
+                player_title[id] = player_title[id] + 1
+                board[id+1][6]:icon(title_icon[player_title[id]])
+                board[id+1][6]:text(title[player_title[id]])
+                print(unit:getName()..'成为了'..title[player_title[id]])
+            end
         end
     end)
 
