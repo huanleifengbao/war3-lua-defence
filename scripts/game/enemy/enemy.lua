@@ -25,6 +25,21 @@ local dif_tbl = {
 	[4] = 4,
 }
 
+--生命值表
+local hp_tbl = {
+	10000,20000,30000,36000,45000,70000,110100,110100,160100,240100,
+	360100,540100,790100,1000100,1500100,2000100,2600100,3600100,4800100,6400100,
+	8400100,10000100,13000100,18000100,29000100,38000100,45000100,55000100,75000096,85000096,
+	95000096,105000096,135000096,165000096,205000096,255000096,255000096,275000096,305000096,355000096,
+}
+--护甲表
+local def_tbl = {
+	40,100,200,200,300,450,625,625,925,925,
+	1000,1800,2700,4000,5000,6000,8000,8000,9000,10000,
+	15000,20000,25000,30000,35000,40000,50000,55000,55000,55000,
+	60000,65000,70000,80000,90000,100000,110000,130000,1630000,2630000,
+}
+
 local data = {
 	id = function(n)
 		return sg.get_enemy_id(n)
@@ -38,16 +53,28 @@ local data = {
 	max_wave = 40,	--最大波数
 	attribute = {	--进攻怪物属性公式
 		['生命上限'] = function(n)
-			return (100 + n * 10) * dif_tbl[sg.difficult]
+			local hp = hp_tbl[n]
+			if not hp then
+				hp = hp_tbl[#hp_tbl]
+			end
+			return hp
 		end,
 		['攻击'] = function(n)
-			return (20 + n * 2) * dif_tbl[sg.difficult]
+			if n <= 3 then
+				return n * 50
+			else
+				return n * 100
+			end
 		end,
 		['护甲'] = function(n)
-			return 2 + n * 1
+			local def = def_tbl[n]
+			if not def then
+				def = def_tbl[#def_tbl]
+			end
+			return def
 		end,
 		['移动速度'] = function(n)
-			return 300 + n * 50
+			return 400
 		end,
 	},
 }
