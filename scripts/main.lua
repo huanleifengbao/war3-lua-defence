@@ -6,3 +6,4 @@ require 'game'
 require 'war3_system'
 jass.FogEnable(false)
 jass.FogMaskEnable(false)
+jass.EnableWorldFogBoundary(false)
