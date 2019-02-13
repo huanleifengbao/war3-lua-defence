@@ -1,1 +1,1 @@
-require 'skill.测试技能'
+require 'skill.战魂'
