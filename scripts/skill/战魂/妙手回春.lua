@@ -1,4 +1,4 @@
-local mt = ac.skill['横扫千军']
+local mt = ac.skill['妙手回春']
 
 function mt:onAdd()
     local hero = self:getOwner()

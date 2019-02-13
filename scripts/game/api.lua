@@ -47,3 +47,44 @@ function sg.create_timer(key,name,time)
 		timerdialog[key] = create_timer(name,time)
 	end
 end
+
+--增加三维并增加对应属性
+function sg.add_atr(hero,name,count)
+	if name == '力量' then
+		hero:add('生命上限',25 * count)
+		hero:add('生命恢复',0.05 * count)
+	elseif name == '敏捷' then
+		hero:add('攻击速度',0.02 * count)
+		hero:add('护甲',0.15 * count)
+	elseif name == '智力' then
+		hero:add('魔法上限',15 * count)
+		hero:add('魔法恢复',0.05 * count)
+		hero:add('攻击',1 * count)
+	else
+		error('不合法的属性名')
+		return
+	end
+	hero:add(name,count)
+end
+
+--增加全属性
+function sg.add_allatr(hero,count)
+	sg.add_atr(hero,'力量',count)
+	sg.add_atr(hero,'敏捷',count)
+	sg.add_atr(hero,'智力',count)
+end
+
+--获取全属性
+function sg.get_allatr(hero)
+	return hero:get('力量') + hero:get('敏捷') + hero:get('智力')
+end
+
+--恢复最大百分比生命
+function sg.recovery(hero,rate)
+	hero:add('生命',hero:get('生命上限') * rate/100)
+end
+
+--判断概率
+function sg.get_random(odds)
+	return odds >= math.random(100)
+end
