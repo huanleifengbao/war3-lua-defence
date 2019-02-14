@@ -1,1 +1,1 @@
-require 'skill.被动.通用被动'
+require 'skill.被动.被动'
