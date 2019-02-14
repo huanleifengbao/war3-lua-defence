@@ -107,6 +107,10 @@ ac.wait(0, function()
     ac.game:event('地图-选择英雄', function (_, unit, player)
         local id = player:id()
         if unit then
+            --初始化积分相关属性
+            unit:add('威望', 1)
+            unit:add('觉醒', 1)
+            --设置多面板
             board[id+1][1]:style(true, true)
             board[id+1][1]:icon(unit:slk('art'))
             board[id+1][2]:text(unit:get('战力'))
@@ -196,7 +200,7 @@ ac.wait(0, function()
         for i = 1, 6 do
             local player = ac.player(i)
             if player and player:controller() == '用户' then
-                local unit = player:gethero()
+                local unit = player:getHero()
                 if unit then
                     board[i+1][2]:text(unit:get('战力'))
                     board[i+1][3]:text(unit:get('抗性'))
