@@ -1,0 +1,1 @@
+require 'skill.被动.被动'

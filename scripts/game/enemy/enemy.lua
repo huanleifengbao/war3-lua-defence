@@ -57,14 +57,16 @@ local data = {
 			if not hp then
 				hp = hp_tbl[#hp_tbl]
 			end
-			return hp
+			return hp * dif_tbl[sg.difficult]
 		end,
 		['攻击'] = function(n)
+			local atk
 			if n <= 3 then
-				return n * 50
+				atk = n * 50
 			else
-				return n * 100
+				atk = n * 100
 			end
+			return atk * dif_tbl[sg.difficult]
 		end,
 		['护甲'] = function(n)
 			local def = def_tbl[n]
