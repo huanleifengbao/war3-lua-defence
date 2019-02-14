@@ -22,6 +22,7 @@ function mt:onAdd()
 				{
 				    target = u,
 				    damage = damage,
+				    damage_type = '魔法',
 				    skill = self,
 				}
 			end
@@ -38,6 +39,7 @@ function mt:onAdd()
 			hero:kill(target)
 		end
 	end)
+	ac.game:eventNotify('地图-获得战魂', player)
 end
 
 function mt:onRemove()
@@ -47,4 +49,5 @@ function mt:onRemove()
     self.trg:remove()
     self.trg2:remove()
     self.trg3:remove()
+    ac.game:eventNotify('地图-失去战魂', player)
 end
