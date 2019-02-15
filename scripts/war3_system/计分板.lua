@@ -47,16 +47,16 @@ local title_level = {
 --觉醒
 local title2 = {
     [1] = '|cffffffcc未觉醒|r',
-    [2] = '|cffffffcc一阶|r',
-    [3] = '|cff505050二阶',
-    [4] = '|cff00ffff三阶',
-    [5] = '|cff00aa00四阶',
-    [6] = '|cffff00ff五阶',
-    [7] = '|cffccffff六阶',
-    [8] = '|cffff0000七阶',
-    [9] = '|cffff0000八阶',
-    [10] = '|cffff0000九阶',
-    [11] = '|cffff0000十阶',
+    [2] = '|cffffffcc【一阶】|r',
+    [3] = '|cff505050【二阶】',
+    [4] = '|cff00ffff【三阶】',
+    [5] = '|cff00aa00【四阶】',
+    [6] = '|cffff00ff【五阶】',
+    [7] = '|cffccffff【六阶】',
+    [8] = '|cffff0000【七阶】',
+    [9] = '|cffff0000【八阶】',
+    [10] = '|cffff0000【九阶】',
+    [11] = '|cffff0000【十阶】',
     [100] = '|cffffffff最多七个汉字哦',
 }
 local title2_icon = {
@@ -82,17 +82,17 @@ ac.wait(0, function()
         board[1][3]:text('抗性')
         board[1][4]:text('闪避')
         board[1][5]:text('－－－－－威望－－－－－')
-        board[1][6]:text('觉醒')
+        board[1][6]:text('－－－－觉醒－－－－')
         board[1][7]:text('战魂')
         board[1][8]:text('坐骑')
         board[1][9]:text('杀敌')
-        for i = 1, 9 do
+        for i = 1, 6 do
             board[i][1]:width(0.07)
             board[i][2]:width(0.03)
             board[i][3]:width(0.02)
             board[i][4]:width(0.02)
             board[i][5]:width(0.06)
-            board[i][6]:width(0.04)
+            board[i][6]:width(0.05)
             board[i][7]:width(0.02)
             board[i][8]:width(0.02)
             board[i][9]:width(0.035)
@@ -119,17 +119,17 @@ ac.wait(0, function()
             --设置多面板
             board[id+1][1]:style(true, true)
             board[id+1][1]:icon(unit:slk('art'))
-            board[id+1][2]:text(math.floor(unit:get('战力')))
-            board[id+1][3]:text(math.floor(unit:get('抗性')))
-            board[id+1][4]:text(math.floor(unit:get('闪避')))
+            board[id+1][2]:text(math.floor(unit:get('战力'))..'%')
+            board[id+1][3]:text(math.floor(unit:get('抗性'))..'%')
+            board[id+1][4]:text(math.floor(unit:get('闪避'))..'%')
             board[id+1][5]:style(true, true)
             board[id+1][5]:icon(title_icon[unit:get('威望等级')])
             board[id+1][5]:text(title[unit:get('威望等级')])
             board[id+1][6]:style(true, true)
             board[id+1][6]:icon(title2_icon[unit:get('觉醒等级')])
             board[id+1][6]:text(title2[unit:get('觉醒等级')])
-            board[id+1][7]:text(title2[unit:get('战魂数量')])
-            board[id+1][8]:text(title2[unit:get('坐骑数量')])
+            board[id+1][7]:text(math.floor(unit:get('战魂数量')))
+            board[id+1][8]:text(math.floor(unit:get('坐骑数量')))
             board[id+1][9]:text('0')
         end
     end)
@@ -208,9 +208,9 @@ ac.wait(0, function()
             if player and player:controller() == '用户' then
                 local unit = player:getHero()
                 if unit then
-                    board[i+1][2]:text(math.floor(unit:get('战力')))
-                    board[i+1][3]:text(math.floor(unit:get('抗性')))
-                    board[i+1][4]:text(math.floor(unit:get('闪避')))
+                    board[i+1][2]:text(math.floor(unit:get('战力'))..'%')
+                    board[i+1][3]:text(math.floor(unit:get('抗性'))..'%')
+                    board[i+1][4]:text(math.floor(unit:get('闪避'))..'%')
                 end
             end
         end
@@ -240,7 +240,7 @@ ac.wait(0, function()
             game_time_str = game_time_str..'0'
         end
         game_time_str = game_time_str..game_time[1]..'秒'
-        board:title('|cffffff00〓传奇三国〓             玩家英雄属性     |r'..game_mod_str..'    '..'游戏时间:'..game_time_str)
+        board:title('|cffffff00〓传奇三国〓             玩家英雄属性             |r'..game_mod_str..'            '..'游戏时间:'..game_time_str)
 
         --显示基地血量
         local base_str = '基地[|cffffcc00'
