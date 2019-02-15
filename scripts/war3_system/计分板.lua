@@ -36,7 +36,7 @@ local title_icon = {
 }
 local title_level = {
     [1] = 0,
-    [2] = 10,
+    [2] = 1000,
     [3] = 2000,
     [4] = 3000,
     [5] = 4000,
@@ -46,16 +46,17 @@ local title_level = {
 
 --觉醒
 local title2 = {
-    [1] = '|cffffffcc横扫千军|r',
-    [2] = '|cff505050铜墙铁壁',
-    [3] = '|cff00ffff妙手回春',
-    [4] = '|cff00aa00势如破竹',
-    [5] = '|cffff00ff拨云见日',
-    [6] = '|cffccffff森罗万象',
-    [7] = '|cffff0000足智多谋',
-    [8] = '|cffff0000不动如山',
-    [9] = '|cffff0000天神下凡',
-    [10] = '|cffff0000策划案没写',
+    [1] = '|cffffffcc未觉醒|r',
+    [2] = '|cffffffcc一阶|r',
+    [3] = '|cff505050二阶',
+    [4] = '|cff00ffff三阶',
+    [5] = '|cff00aa00四阶',
+    [6] = '|cffff00ff五阶',
+    [7] = '|cffccffff六阶',
+    [8] = '|cffff0000七阶',
+    [9] = '|cffff0000八阶',
+    [10] = '|cffff0000九阶',
+    [11] = '|cffff0000十阶',
     [100] = '|cffffffff最多七个汉字哦',
 }
 local title2_icon = {
@@ -79,22 +80,22 @@ ac.wait(0, function()
         board[1][1]:text('基地')
         board[1][2]:text('战力')
         board[1][3]:text('抗性')
-        board[1][4]:text('－－－－－威望－－－－－')
-        board[1][5]:text('－－－－－觉醒－－－－－')
-        board[1][6]:text('战魂')
-        board[1][7]:text('－坐骑－')
-        board[1][8]:text('杀敌')
-        board[1][9]:text('木材')
+        board[1][4]:text('闪避')
+        board[1][5]:text('－－－－－威望－－－－－')
+        board[1][6]:text('觉醒')
+        board[1][7]:text('战魂')
+        board[1][8]:text('坐骑')
+        board[1][9]:text('杀敌')
         for i = 1, 9 do
             board[i][1]:width(0.07)
-            board[i][2]:width(0.02)
+            board[i][2]:width(0.03)
             board[i][3]:width(0.02)
-            board[i][4]:width(0.06)
+            board[i][4]:width(0.02)
             board[i][5]:width(0.06)
-            board[i][6]:width(0.02)
-            board[i][7]:width(0.035)
+            board[i][6]:width(0.04)
+            board[i][7]:width(0.02)
             board[i][8]:width(0.02)
-            board[i][9]:width(0.03)
+            board[i][9]:width(0.035)
             if i ~= 1 then
                 local player = ac.player(i-1)
                 if player and player:controller() == '用户' and player:gameState() == '在线' then
@@ -107,23 +108,28 @@ ac.wait(0, function()
     ac.game:event('地图-选择英雄', function (_, unit, player)
         local id = player:id()
         if unit then
+            --开挂
+            unit:addSkill('赤兔', '技能', 1)
+            unit:addSkill('三国无双', '技能', 2)
             --初始化积分相关属性
-            unit:add('威望', 1)
-            unit:add('觉醒', 1)
+            unit:set('威望等级', 1)
+            unit:set('觉醒等级', 1)
+            unit:set('战魂数量', 0)
+            unit:set('坐骑数量', 0)
             --设置多面板
             board[id+1][1]:style(true, true)
             board[id+1][1]:icon(unit:slk('art'))
-            board[id+1][2]:text(unit:get('战力'))
-            board[id+1][3]:text(unit:get('抗性'))
-            board[id+1][4]:style(true, true)
-            board[id+1][4]:icon(title_icon[unit:get('威望')])
-            board[id+1][4]:text(title[unit:get('威望')])
+            board[id+1][2]:text(math.floor(unit:get('战力')))
+            board[id+1][3]:text(math.floor(unit:get('抗性')))
+            board[id+1][4]:text(math.floor(unit:get('闪避')))
             board[id+1][5]:style(true, true)
-            board[id+1][5]:icon(title2_icon[unit:get('觉醒')])
-            board[id+1][5]:text(title2[unit:get('觉醒')])
-            board[id+1][6]:text('0')
-            board[id+1][7]:text('光脚QAQ')
-            board[id+1][8]:text('0')
+            board[id+1][5]:icon(title_icon[unit:get('威望等级')])
+            board[id+1][5]:text(title[unit:get('威望等级')])
+            board[id+1][6]:style(true, true)
+            board[id+1][6]:icon(title2_icon[unit:get('觉醒等级')])
+            board[id+1][6]:text(title2[unit:get('觉醒等级')])
+            board[id+1][7]:text(title2[unit:get('战魂数量')])
+            board[id+1][8]:text(title2[unit:get('坐骑数量')])
             board[id+1][9]:text('0')
         end
     end)
@@ -162,7 +168,7 @@ ac.wait(0, function()
         local id = player:id()
         if unit then
             hero_kill[id] = hero_kill[id] + 1
-            board[id+1][8]:text(hero_kill[id])
+            board[id+1][9]:text(hero_kill[id])
             --称号
             if unit:get('威望') < #title_level and hero_kill[id] >= title_level[unit:get('威望') + 1] then
                 unit:add('威望', 1)
@@ -202,8 +208,9 @@ ac.wait(0, function()
             if player and player:controller() == '用户' then
                 local unit = player:getHero()
                 if unit then
-                    board[i+1][2]:text(unit:get('战力'))
-                    board[i+1][3]:text(unit:get('抗性'))
+                    board[i+1][2]:text(math.floor(unit:get('战力')))
+                    board[i+1][3]:text(math.floor(unit:get('抗性')))
+                    board[i+1][4]:text(math.floor(unit:get('闪避')))
                 end
             end
         end
