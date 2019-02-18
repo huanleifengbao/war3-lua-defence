@@ -58,11 +58,7 @@ for _,skill_name in pairs(tbl) do
 			end
 		end)
 		if self.wod then
-			self.trg2 = ac.game:event('单位-死亡', function (_, dead, killer)
-				if killer == hero then
-					print('木头+' .. self.wod)
-				end
-			end)
+			hero:add('击杀木材', self.wod)
 		end
 	end
 
@@ -71,8 +67,8 @@ for _,skill_name in pairs(tbl) do
 			hero:add(name,-count)
 		end
 	    self.trg:remove()
-	    if self.trg2 then
-		    self.trg2:remove()
-	    end
+		if self.wod then
+			hero:add('击杀木材', - self.wod)
+		end
 	end
 end

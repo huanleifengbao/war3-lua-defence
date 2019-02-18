@@ -170,11 +170,11 @@ ac.wait(0, function()
             hero_kill[id] = hero_kill[id] + 1
             board[id+1][9]:text(hero_kill[id])
             --称号
-            if unit:get('威望') < #title_level and hero_kill[id] >= title_level[unit:get('威望') + 1] then
-                unit:add('威望', 1)
-                board[id+1][4]:icon(title_icon[unit:get('威望')])
-                board[id+1][4]:text(title[unit:get('威望')])
-                print(unit:getName()..'成为了'..title[unit:get('威望')])
+            if unit:get('威望等级') < #title_level and hero_kill[id] >= title_level[unit:get('威望等级') + 1] then
+                unit:add('威望等级', 1)
+                board[id+1][4]:icon(title_icon[unit:get('威望等级')])
+                board[id+1][4]:text(title[unit:get('威望等级')])
+                print(unit:getName()..'成为了'..title[unit:get('威望等级')])
             end
         end
     end)
@@ -214,7 +214,7 @@ ac.wait(0, function()
                 end
             end
         end
-        
+
         --修改标题
         game_time_str = ''
         if game_time[1] >= 59 then
