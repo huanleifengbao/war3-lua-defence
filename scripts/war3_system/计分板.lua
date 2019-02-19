@@ -109,8 +109,9 @@ ac.wait(0, function()
         local id = player:id()
         if unit then
             --开挂
-            unit:addSkill('赤兔', '技能', 1)
+            unit:addSkill('天楼闪薙斩', '技能', 1)
             unit:addSkill('三国无双', '技能', 2)
+            unit:addSkill('赤兔', '技能', 3)
             --初始化积分相关属性
             unit:set('威望等级', 1)
             unit:set('觉醒等级', 1)
