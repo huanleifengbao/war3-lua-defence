@@ -9,7 +9,7 @@ for _,skill_name in pairs(tbl) do
 		hero:add('抗性',self.mdf)
 		hero:add('闪避',self.avo)
 	    self.trg = ac.loop(1,function()
-	    	local count = hero:get('觉醒等级')
+	    	local count = hero:get('觉醒等级') + 1
 			sg.add_allatr(hero,self.atr * count)
 	    end)
 		ac.game:eventNotify('地图-获得坐骑', player)
