@@ -4,6 +4,7 @@ require 'war3_system.双击选择英雄'
 require 'war3_system.英雄复活'
 require 'war3_system.击杀敌人'
 require 'war3_system.计分板'
+require 'war3_system.设置商店'
 require 'war3_system.基地死亡'
 
 for i = 1, 6 do

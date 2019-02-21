@@ -9,6 +9,7 @@ for i = 1, 6 do
                 player:addHero(unit)
                 local start_p = ac.point(7044, -8792)
                 unit:blink(start_p)
+                unit:bagSize(6)
                 player:moveCamera(start_p, 0.2)
                 ac.game:eventNotify('地图-选择英雄', unit, player)
             else

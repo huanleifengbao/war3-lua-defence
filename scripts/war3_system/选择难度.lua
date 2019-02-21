@@ -17,9 +17,4 @@ ac.wait(0, function()
             break
         end
     end
-
-    --test
-    local shop = ac.player(16):createShop('圣骑士', ac.point(7044, -10529), 270)
-    shop:setItem('喵', 11)
-    shop:setBuyRange(1000000)
 end)
