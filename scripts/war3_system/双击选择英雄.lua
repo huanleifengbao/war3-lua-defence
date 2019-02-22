@@ -1,7 +1,7 @@
 local pick_mark = {}
 
 local Aghanim = {
-    ['圣骑士'] = '真黄龙剑',
+    ['刘备'] = '真黄龙剑',
     ['关羽'] = '黄龙偃月刀',
     ['张飞'] = '破军蛇矛',
     ['黄忠'] = '破邪旋风斩',
@@ -27,6 +27,7 @@ for i = 1, 6 do
                 local item_name = Aghanim[unit:getName()]
                 if item_name then
                     local item = unit:createItem(item_name..'-1')
+                    item:remove()
                     unit:userData('专属', item)
                 end
                 player:moveCamera(start_p, 0.2)
