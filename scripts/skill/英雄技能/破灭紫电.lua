@@ -1,17 +1,30 @@
 local mt = ac.skill['破灭紫电']
 
-function mt:shot(index,angle)
+function mt:shot(count,direct)
 	local skill = self
 	local hero = skill:getOwner()
-	local a = hero:getFacing() + angle
-	local point = hero:getPoint()
-	local count = math.floor(index/2)
-	for i = -count,count do
+	local angle = hero:getFacing()
+	local num = self.angle
+	local add
+	if count ~= 1 then
+		if direct ~= 0 then
+			num = num / 2
+			add = num/(count - 1) * direct
+			angle = angle - num * direct - add
+		else
+			add = num/(count - 1)
+			angle = angle - num/2 - add
+		end
+	else
+		add = 0
+	end
+	for i = 1,count do
+		local a = angle + i * add
 		local mover = hero:moverLine
 		{
 			model = [[effect\purple_laser.mdx]],
-			angle = a + 15 * i,
-			speed = 1200,
+			angle = a,
+			speed = self.speed,
 			distance = skill.distance,
 			startHeight = 80,
 			finishHeight = 40,
@@ -32,11 +45,15 @@ function mt:shot(index,angle)
 end
 
 function mt:onCastShot()
-	self:shot(3,15)
-	ac.wait(self.pulse,function()
-		self:shot(3,-15)
+	local direct = 1
+	local wait = self.pulse
+	local count = self.count - 1
+	local timer = ac.timer(wait,count,function()
+		direct = -1 * direct
+		self:shot(self.laser,direct)
 	end)
-	ac.wait(self.pulse + self.pulse2,function()
-		self:shot(5,0)
+	timer()
+	ac.wait(wait * count + self.pulse2,function()
+		self:shot(self.laser2,0)
 	end)
 end

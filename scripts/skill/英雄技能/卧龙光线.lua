@@ -1,22 +1,24 @@
 local mt = ac.skill['卧龙光线']
 
-function mt:shot(index)
+function mt:shot(count)
 	local skill = self
 	local hero = skill:getOwner()
 	local angle = hero:getFacing()
 	local point = hero:getPoint()
-	local count = math.floor(index/2)
-	local add = 20
-	if count ~= 0 then
-		add = add/count
+	local add
+	if count ~= 1 then
+		add = self.angle/(count - 1)
+		angle = angle - self.angle/2 - add
+	else
+		add = 0
 	end
-	for i = -count,count do
+	for i = 1,count do
 		local a = angle + i * add
 		local mover = hero:moverLine
 		{
 			model = [[effect\blue_laser.mdx]],
 			angle = a,
-			speed = 1200,
+			speed = self.speed,
 			distance = skill.distance,
 			startHeight = 80,
 			finishHeight = 40,
@@ -37,14 +39,16 @@ function mt:shot(index)
 end
 
 function mt:onCastShot()
-	self:shot(3)
-	ac.wait(self.pulse,function()
-		self:shot(3)
+	local count = self.count
+	local wait = self.pulse
+	local timer = ac.timer(wait,count - 1,function()
+		self:shot(self.laser)
 	end)
-	ac.wait(self.pulse * 2,function()
-		self:shot(1)
-		ac.timer(self.pulse2 * 2,2,function()
-			self:shot(1)
+	timer()
+	ac.wait(wait * count,function()
+		local timer = ac.timer(self.pulse2,self.count2 - 1,function()
+			self:shot(self.laser2)
 		end)
+		timer()
 	end)
 end
