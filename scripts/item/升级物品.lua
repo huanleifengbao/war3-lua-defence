@@ -1,5 +1,5 @@
 
-local tbl = {'武器升级','衣服升级','鞋子升级','饰品升级'}
+local tbl = {'武器升级','衣服升级','鞋子升级','饰品升级','专属升级'}
 
 for _, tbl_name in pairs(tbl) do
 	local mt = ac.item[tbl_name]
@@ -9,7 +9,7 @@ for _, tbl_name in pairs(tbl) do
             if item.lvup_type and item.lvup_type == self:getName() and item.lvup_next then
                 local item_name = item.lvup_next
                 item:remove()
-                unit:createItem(item_name)
+                local item2 = unit:createItem(item_name)
                 return true
             end
         end
