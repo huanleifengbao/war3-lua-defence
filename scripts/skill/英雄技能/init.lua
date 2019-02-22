@@ -1,3 +1,5 @@
 require 'skill.英雄技能.天楼闪薙斩'
 require 'skill.英雄技能.卧龙光线'
 require 'skill.英雄技能.破灭紫电'
+require 'skill.英雄技能.五月雨斩'
+require 'skill.英雄技能.杀剧荒芜剑'
