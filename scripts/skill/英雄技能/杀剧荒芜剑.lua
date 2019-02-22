@@ -20,7 +20,7 @@ end
 function mt:onCastShot()
     local skill = self
     local hero = skill:getOwner()
-    local target = skill:getTarget()
+    local target = hero:getPoint()
     local count = self.count
     local area = self.area
     local add = 360/count
