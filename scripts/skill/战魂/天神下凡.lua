@@ -39,15 +39,16 @@ function mt:onAdd()
 			hero:kill(target)
 		end
 	end)
-	ac.game:eventNotify('地图-获得战魂', player)
+	ac.game:eventNotify('地图-获得战魂', hero:getOwner())
 end
 
 function mt:onRemove()
+	local hero = self:getOwner()
 	hero:add('抗性',-self.mdf)
     hero:add('闪避',-self.avo)
 	hero:add('战力',-self.dam)
     self.trg:remove()
     self.trg2:remove()
     self.trg3:remove()
-    ac.game:eventNotify('地图-失去战魂', player)
+    ac.game:eventNotify('地图-失去战魂', hero:getOwner())
 end
