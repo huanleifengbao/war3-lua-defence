@@ -24,10 +24,10 @@ for i = 1, 6 do
                 local start_p = ac.point(7044, -8792)
                 unit:blink(start_p)
                 unit:bagSize(6)
+                unit:addSkill('通用被动', '技能', 2)
                 local item_name = Aghanim[unit:getName()]
                 if item_name then
                     local item = unit:createItem(item_name..'-1')
-                    item:remove()
                     unit:userData('专属', item)
                 end
                 player:moveCamera(start_p, 0.2)
