@@ -1,7 +1,7 @@
 local pick_mark = {}
 
 local Aghanim = {
-    ['圣骑士'] = '真黄龙剑',
+    ['刘备'] = '真黄龙剑',
     ['关羽'] = '黄龙偃月刀',
     ['张飞'] = '破军蛇矛',
     ['黄忠'] = '破邪旋风斩',
@@ -24,6 +24,7 @@ for i = 1, 6 do
                 local start_p = ac.point(7044, -8792)
                 unit:blink(start_p)
                 unit:bagSize(6)
+                unit:addSkill('通用被动', '技能', 2)
                 local item_name = Aghanim[unit:getName()]
                 if item_name then
                     local item = unit:createItem(item_name..'-1')
