@@ -88,3 +88,50 @@ end
 function sg.get_random(odds)
 	return odds >= math.random(100)
 end
+
+--播放单位动画
+function sg.animation(unit,name,loop)
+	local handle = unit._handle
+	jass.SetUnitAnimation(handle,name)
+	if not loop then
+		jass.QueueUnitAnimation(handle, "stand")
+	end
+end
+
+--播放单位动画(序号)
+function sg.animationI(unit,num,loop)
+	local handle = unit._handle
+	jass.SetUnitAnimationByIndex(handle,num)
+	if not loop then
+		jass.QueueUnitAnimation(handle, "stand")
+	end
+end
+
+--改编单位动画速度
+function sg.animationSpeed(unit,num)
+	jass.SetUnitTimeScale(unit._handle,num)
+end
+
+--指定点创建特效
+function sg.effect(point,flie,time)
+	local x,y = point:getXY()
+	local effect = jass.AddSpecialEffect(flie,x,y)
+	if time then
+		ac.wait(1,function()
+			jass.DestroyEffect(effect)
+		end)
+	else
+		jass.DestroyEffect(effect)
+	end
+end
+
+--创建特效绑定单位
+function sg.effectU(unit,socket,flie,time)
+	local handle = unit._handle
+	local effect = jass.AddSpecialEffectTarget(flie,handle,socket)
+	if time then
+		ac.wait(1,function()
+			jass.DestroyEffect(effect)
+		end)
+	end
+end
