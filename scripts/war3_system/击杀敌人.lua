@@ -3,6 +3,8 @@ ac.game:event('单位-死亡', function (_, dead, killer)
     local player_dead = dead:getOwner()
     local player_killer = killer:getOwner()
     if player_dead:id() == 11 and (player_killer:id() >= 1 and player_killer:id() <= 6) then
+        killer:userData('杀敌数', killer:userData('杀敌数') + 1)
+        print(killer:userData('杀敌数'))
         ac.game:eventNotify('地图-英雄杀敌', killer, player_killer, dead)
         local gold = (dead:get('死亡金钱') + killer:get('击杀金钱')) * (1 + killer:get('击杀金钱%'))
         local lumber = (dead:get('死亡木材') + killer:get('击杀木材')) * (1 + killer:get('击杀木材%'))

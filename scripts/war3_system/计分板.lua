@@ -112,7 +112,7 @@ ac.wait(0, function()
             player:add('金币', 100000)
             unit:addSkill('五月雨斩', '技能', 1)
             --unit:addSkill('三国无双', '技能', 2)
-            --unit:addSkill('赤兔', '技能', 3)
+            unit:addSkill('赤兔', '技能', 3)
             --初始化积分相关属性
             unit:set('威望等级', 1)
             unit:set('觉醒等级', 1)
@@ -162,22 +162,15 @@ ac.wait(0, function()
     end)]]
 
     --击杀
-    local hero_kill = {}
-    for i = 1, 6 do
-        hero_kill[i] = 0
-    end
     ac.game:event('地图-英雄杀敌', function (_, unit, player, dead)
         local id = player:id()
-        if unit then
-            hero_kill[id] = hero_kill[id] + 1
-            board[id+1][9]:text(hero_kill[id])
-            --称号
-            if unit:get('威望等级') < #title_level and hero_kill[id] >= title_level[unit:get('威望等级') + 1] then
-                unit:add('威望等级', 1)
-                board[id+1][4]:icon(title_icon[unit:get('威望等级')])
-                board[id+1][4]:text(title[unit:get('威望等级')])
-                print(unit:getName()..'成为了'..title[unit:get('威望等级')])
-            end
+        board[id+1][9]:text(unit:userData('杀敌数'))
+        --称号
+        if unit:get('威望等级') < #title_level and unit:userData('杀敌数') >= title_level[unit:get('威望等级') + 1] then
+            unit:add('威望等级', 1)
+            board[id+1][4]:icon(title_icon[unit:get('威望等级')])
+            board[id+1][4]:text(title[unit:get('威望等级')])
+            print(unit:getName()..'成为了'..title[unit:get('威望等级')])
         end
     end)
 

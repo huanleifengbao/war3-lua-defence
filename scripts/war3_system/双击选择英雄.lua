@@ -30,8 +30,11 @@ for i = 1, 6 do
                 if item_name then
                     local item = unit:createItem(item_name..'-1')
                     unit:userData('专属', item)
+                    unit:userData('专属名字', item:getName())
+                    unit:userData('专属等级', 1)
                 end
                 player:moveCamera(start_p, 0.2)
+                unit:userData('杀敌数', 0)
                 ac.game:eventNotify('地图-选择英雄', unit, player)
             else
                 pick_mark[i] = unit
