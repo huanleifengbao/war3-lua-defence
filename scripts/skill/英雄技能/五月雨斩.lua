@@ -19,7 +19,7 @@ function mt:onCastShot()
 		middleHeight = 100,
 	}
 	function mover:onFinish()
-		sg.effect(target,[[Abilities\Spells\Human\Thunderclap\ThunderClapCaster.mdl]])
+		sg.effect(target,[[Abilities\Spells\Human\Thunderclap\ThunderClapCaster.mdl]],0)
 		for _, u in ac.selector()
 		    : inRange(hero:getPoint(),skill.area)
 		    : isEnemy(hero)
