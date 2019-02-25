@@ -112,26 +112,39 @@ function sg.animationSpeed(unit,num)
 	jass.SetUnitTimeScale(unit._handle,num)
 end
 
+local function create_effect(handle)
+	local eff = {}
+	eff._handle = handle
+	function eff:remove()
+		jass.DestroyEffect(handle)
+	end
+	function eff:duration(time)
+		if time then
+			if eff.timer then
+				eff.timer:remove()
+			end
+			eff.timer = ac.wait(time,function()
+				eff:remove()
+			end)
+		end
+	end
+	return eff
+end
+
 --指定点创建特效
 function sg.effect(point,flie,time)
 	local x,y = point:getXY()
 	local effect = jass.AddSpecialEffect(flie,x,y)
-	if time then
-		ac.wait(1,function()
-			jass.DestroyEffect(effect)
-		end)
-	else
-		jass.DestroyEffect(effect)
-	end
+	local eff = create_effect(effect)
+	eff:duration(time)
+	return eff
 end
 
 --创建特效绑定单位
 function sg.effectU(unit,socket,flie,time)
 	local handle = unit._handle
 	local effect = jass.AddSpecialEffectTarget(flie,handle,socket)
-	if time then
-		ac.wait(1,function()
-			jass.DestroyEffect(effect)
-		end)
-	end
+	local eff = create_effect(effect)
+	eff:duration(time)
+	return eff
 end
