@@ -25,6 +25,7 @@ for i = 1, 6 do
                 unit:blink(start_p)
                 unit:bagSize(6)
                 unit:addSkill('通用被动', '技能', 2)
+                unit:addSkill('回城', '技能', 4)
                 local item_name = Aghanim[unit:getName()]
                 if item_name then
                     local item = unit:createItem(item_name..'-1')

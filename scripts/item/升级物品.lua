@@ -10,6 +10,7 @@ for _, tbl_name in pairs(tbl) do
                 local item_name = item.lvup_next
                 item:remove()
                 local item2 = unit:createItem(item_name)
+                unit:getOwner():message('|cffff7500'..self.lvup_type..'|cffffff00已升级|r', 10)
                 return true
             end
         end
