@@ -19,14 +19,23 @@ shop:setItem('挑战电', 9, 'Q')
 shop:setItem('挑战雷', 10, 'W')
 shop:setItem('挑战晓', 11, 'E')
 shop:setItem('挑战响', 12, 'R')
+shop:setItem('练功房', 5, 'A')
 
 local point = {
-    {6593, 10301},   {9834, 10301},
-    {6593, 7740},    {9834, 7740},
-    {6593, 5547},    {9834, 5547},
+    ac.point(6593, 10301),   ac.point(9834, 10301),
+    ac.point(6593, 7740),    ac.point(9834, 7740),
+    ac.point(6593, 5547),    ac.point(9834, 5547),
 }
 --练功
 for i = 1, 6 do
-    local shop = ac.player(16):createShop('刘备', ac.point(point[i][1], point[i][2]), 270)
-    shop:setBuyRange(1000)
+    local shop = ac.player(16):createShop('刘备', point[i], 270)
+    shop:setBuyRange(1500)
+    shop:setItem('刷钱1', 9, 'Q')
+    shop:setItem('刷钱2', 10, 'W')
+    shop:setItem('刷钱3', 11, 'E')
+    shop:setItem('刷钱4', 12, 'R')
+    shop:setItem('刷木1', 5, 'A')
+    shop:setItem('刷木2', 6, 'S')
+    shop:setItem('刷木3', 7, 'D')
+    shop:setItem('刷木4', 8, 'F')
 end

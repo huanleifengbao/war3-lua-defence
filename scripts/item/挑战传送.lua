@@ -22,3 +22,20 @@ for i = 1, #tbl do
         end
     end
 end
+
+--练功房
+local point = {
+    ac.point(6293, 10301),   ac.point(9534, 10301),
+    ac.point(6293, 7740),    ac.point(9534, 7740),
+    ac.point(6293, 5547),    ac.point(9534, 5547),
+}
+
+local mt = ac.item['练功房']
+
+function mt:onCanAdd(unit)
+    local player = unit:getOwner()
+    local id = player:id()
+    local target = point[id]
+    unit:blink(target)
+    player:moveCamera(target, 0.2)
+end
