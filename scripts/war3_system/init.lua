@@ -5,6 +5,7 @@ require 'war3_system.英雄复活'
 require 'war3_system.击杀敌人'
 require 'war3_system.计分板'
 require 'war3_system.基地死亡'
+require 'war3_system.可刷新野外boss'
 
 for i = 1, 6 do
     ac.player(10):alliance(ac.player(i), '结盟', true)
