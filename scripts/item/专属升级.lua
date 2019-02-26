@@ -10,6 +10,10 @@ local Aghanim_lv = {
 
 ac.game:event('地图-英雄杀敌', function (_, unit, player, dead)
     if unit:userData('专属等级') <= #Aghanim_lv and unit:userData('杀敌数') >= Aghanim_lv[unit:userData('专属等级')][1] and (Aghanim_lv[unit:userData('专属等级')][2] == nil or Aghanim_lv[unit:userData('专属等级')][2] == dead:getName()) then
-        unit:createItem('专属升级')
+        if sg.get_random(Aghanim_lv[unit:userData('专属等级')][3]) then
+            unit:createItem('专属升级')
+        else
+            unit:getOwner():message('|cffff0000哦豁,专属升级失败了|r', 10)
+        end
     end
 end)
