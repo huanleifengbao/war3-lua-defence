@@ -29,6 +29,7 @@ function mt:do_damage(boolean)
 		for i = #list,1,-1 do
 			local unit = list[i]
 			table.remove(list,i)
+			self.eff[unit]:remove()
 			if unit:isAlive() then
 				u = unit
 				break										
@@ -60,12 +61,14 @@ function mt:onCastShot()
     local target = self:getTarget()
     local area = self.area
     local list = {}
+    self.eff = {}
     for _,u in ac.selector()
 	    : inRange(target,self.area)
 	    : isEnemy(hero)
 	    : ipairs()
 	do
 		table.insert(list,u)
+		self.eff[u] = sg.effectU(u,'origin',[[Abilities\Spells\Other\HowlOfTerror\HowlTarget.mdl]])
 	end
 	ac.effect {
 	    target = target,

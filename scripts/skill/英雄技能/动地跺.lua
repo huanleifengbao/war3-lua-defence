@@ -30,12 +30,9 @@ function mt:onCastShot()
 			angle = point/p,
 			speed = 1/skill.time,
 			parameter = true,
-			middleHeight = 500,
+			middleHeight = self.height,
 		}
-		u:addRestriction '硬直'
-		function mover:onRemove()
-			u:removeRestriction '硬直'
-		end
+		sg.stun(u,self.stun)
 		local damage = skill.damage * sg.get_allatr(hero)
 		hero:damage
 		{
