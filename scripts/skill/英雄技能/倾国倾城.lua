@@ -34,7 +34,7 @@ function mt:love(target)
 		p[2] = p[2] + area * 0.3
 		ac.effect {
 		    target = p,
-		    model = [[Abilities\Spells\NightElf\Blink\BlinkTarget.mdl]],
+		    model = [[effect\AbstruseMetathesis.mdx]],
 		    time = 1,
 		}	
 	end
@@ -44,7 +44,7 @@ function mt:love(target)
 		local p = target - {360/count * i,area * 0.9}
 		ac.effect {
 		    target = p,
-		    model = [[Abilities\Spells\NightElf\Blink\BlinkTarget.mdl]],
+		    model = [[effect\AbstruseMetathesis.mdx]],
 		    time = 1,
 		}
 	end

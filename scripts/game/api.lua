@@ -190,3 +190,15 @@ function sg.leap_block(p1,p2)
 	end
 	return target
 end
+
+--击晕目标
+function sg.stun(unit,time)
+	local eff = sg.effectU(unit,'overhead',[[Abilities\Spells\Human\Thunderclap\ThunderclapTarget.mdl]])
+	unit:addRestriction '硬直'
+	if time then
+		ac.wait(time,function()
+			unit:removeRestriction '硬直'
+			eff:remove()
+		end)
+	end
+end
