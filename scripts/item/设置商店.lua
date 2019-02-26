@@ -14,7 +14,7 @@ shop:setItem('专属升级', 1, 'Z')
 
 --挑战专武boss
 local shop = ac.player(16):createShop('刘备', ac.point(7544, -10529), 270)
-shop:setBuyRange(1000)
+shop:setBuyRange(2000)
 shop:setItem('挑战电', 9, 'Q')
 shop:setItem('挑战雷', 10, 'W')
 shop:setItem('挑战晓', 11, 'E')

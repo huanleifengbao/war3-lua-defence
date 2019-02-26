@@ -51,6 +51,7 @@ for i = 1, 6 do
                     unit:userData('专属', item)
                     unit:userData('专属名字', item:getName())
                     unit:userData('专属等级', 1)
+                    unit:userData('专属挑战等级', 1)
                 end
                 player:moveCamera(start_p, 0.2)
                 unit:userData('杀敌数', 0)
