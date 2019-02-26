@@ -1,4 +1,4 @@
-local mt = ac.skill['杀剧荒芜剑']
+local mt = ac.skill['鬼神乱舞']
 
 function mt:do_damage(damage)
 	local hero = self:getOwner()
@@ -27,14 +27,16 @@ function mt:onCastShot()
     local wait = self.wait
     local pulse = self.pulse
     local pulse2 = self.pulse2
+    sg.effect(target,[[effect\BlackBlink.mdx]],0)
     for i = 1,count do
 	    local a = add * i
 	    local p1 = target - {a,area}
 	    local p2 = target - {a + add,area}
 	   	local line = hero:createUnit('通用马甲',p1,0)
-	    local dummy = hero:createUnit('赵云-分身',target,a)
+	    local dummy = hero:createUnit('吕布-分身',target,a)
 	    sg.effectU(dummy,'weapon',[[Abilities\Weapons\ZigguratMissile\ZigguratMissile.mdl]])
 	    sg.effectU(dummy,'weapon',[[Abilities\Weapons\IllidanMissile\IllidanMissile.mdl]])
+	    sg.set_color(dummy,{a = 125})
 	    local moverline = hero:moverLine
 	    {
 			mover = line,
@@ -52,12 +54,13 @@ function mt:onCastShot()
 			target = line,
 			speed = area/wait * 1.3,
 	    }
-	    sg.animationI(dummy,9,true)
+	    sg.animationI(dummy,6,true)
 	    function mover:onRemove()
 		    local p = dummy:getPoint()
 		    local angle = p / target
 		    local distance = area * 2
 		    dummy:setFacing(angle)
+		   	sg.animationSpeed(dummy,2)
 		    sg.animation(dummy,'attack')
 		    local mover = hero:moverLine
 		    {
@@ -69,9 +72,10 @@ function mt:onCastShot()
 		    }
 		    function mover:onRemove()
 			    ac.wait(pulse,function()
-			    	sg.animation(dummy,'spell slam')
+			    	sg.animation(dummy,'spell')
 				    dummy:setFacing(angle + 180)
 				    ac.wait(1,function()
+				    	sg.effect(dummy:getPoint(),[[effect\BlackBlink.mdx]],0)
 				    	dummy:remove()
 				    end)
 			    end)
@@ -83,13 +87,24 @@ function mt:onCastShot()
     ac.wait(wait,function()
     	local damage = skill.damage * sg.get_allatr(hero)
     	self:do_damage(damage)
+    	ac.effect {
+		    target = target,
+		    model = [[effect\Lightning Boom.mdx]],
+		    xScale = area/200,
+		    yScale = area/200,
+		    zScale = area/400,
+		    speed = 2,
+		    time = 1,
+		}
     end)
     ac.wait(wait + pulse + pulse2,function()
     	local damage = skill.damage2 * sg.get_allatr(hero)
     	self:do_damage(damage)
-    	local eff = hero:createUnit('赵云-爆炸',target,0)
-    	ac.wait(1,function()
-    		eff:remove()
-    	end)
+    	ac.effect {
+		    target = target,
+		    model = [[effect\Energy_Release.mdx]],
+		    size = area/200,
+		    time = 1,
+		}
     end)
 end
