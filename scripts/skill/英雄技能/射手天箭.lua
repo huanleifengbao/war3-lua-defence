@@ -1,15 +1,17 @@
 local mt = ac.skill['射手天箭']
 
-function mt:shot(point,angle)
+function mt:shot(point,angle,pulse)
 	local hero = self:getOwner()
 	local area = self.area
 	local time = self.time
 	local dis = area * 0.3
+	local wait = pulse/3
 	for i = -1,1 do
 		local target = point - {angle + 90,dis * i}
 		target = target - {math.random(360),math.random(area * 0.2)}
 		local dummy = hero:createUnit('黄忠-射手天箭',target,0)
-		ac.wait(math.random(10)/100,function()
+		--ac.wait(math.random(10)/100,function()
+		ac.wait(pulse * (i + 1),function()
 		    local mover = hero:moverLine
 		    {
 				mover = dummy,
@@ -71,6 +73,6 @@ function mt:onCastShot()
 	ac.timer(pulse,distance/dis - 1,function()
 		local p = point - {angle,speed * count * pulse}
 		count = count + 1
-		self:shot(p,angle)
+		self:shot(p,angle,pulse)
 	end)
 end
