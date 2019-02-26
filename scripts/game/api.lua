@@ -148,3 +148,45 @@ function sg.effectU(unit,socket,flie,time)
 	eff:duration(time)
 	return eff
 end
+
+--改变单位颜色
+function sg.set_color(unit,tbl)
+	local handle = unit._handle
+	local nt = {r = 255,g = 255,b = 255,a = 255}
+	for k,v in pairs(tbl) do
+		nt[k] = v
+	end
+	jass.SetUnitVertexColor(handle,nt.r,nt.g,nt.b,nt.a)
+end
+
+--取两点之间接触到碰撞的点
+function sg.on_block(p1,p2)
+	local angle = p1/p2
+	local distance = p1*p2
+	local j = distance/10
+	local target = p1
+	for i = 1,j do
+		if target:isBlock() then
+			break
+		else
+			target = target - {angle,10}
+		end
+	end
+	return target
+end
+
+--取两点之间越过碰撞能移动的最远的点
+function sg.leap_block(p1,p2)
+	local angle = p2/p1
+	local distance = p1*p2
+	local j = distance/10
+	local target = p2
+	for i = 1,j do
+		if target:isBlock() then
+			target = target - {angle,10}
+		else
+			break
+		end
+	end
+	return target
+end
