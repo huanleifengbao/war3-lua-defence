@@ -32,7 +32,11 @@ function mt:onCastShot()
 			parameter = true,
 			middleHeight = self.height,
 		}
-		sg.stun(u,self.stun)
+		--sg.stun(u,self.stun)
+		u:addBuff '眩晕'
+		{
+			time = self.stun,
+		}
 		local damage = skill.damage * sg.get_allatr(hero)
 		hero:damage
 		{
