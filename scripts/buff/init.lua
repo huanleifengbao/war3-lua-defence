@@ -1,0 +1,1 @@
+require 'buff.通用'
