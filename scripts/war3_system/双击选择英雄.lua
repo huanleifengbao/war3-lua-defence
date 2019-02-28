@@ -38,24 +38,29 @@ for i = 1, 6 do
         if unit:getOwner():id() == 16 and not player:getHero() then
             if pick_mark[i] == unit then
                 trg:remove()
-                unit:setOwner(player, true)
-                player:addHero(unit)
+                --unit:setOwner(player, true)
+                local name = unit:getName()
+                local hero = player:createUnit(name, ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])                             
+                player:addHero(hero)
                 local start_p = ac.point(7044, -8792)
-                unit:blink(start_p)
-                unit:bagSize(6)
-                unit:addSkill('通用被动', '技能', 2)
-                unit:addSkill('回城', '技能', 4)
-                local item_name = Aghanim[unit:getName()]
+                hero:blink(start_p)
+                hero:bagSize(6)
+                hero:addSkill('通用被动', '技能', 2)
+                hero:addSkill('回城', '技能', 4)
+                hero:createUnit('快捷回城', ac.point(11000,-11000), 0)
+                hero:createUnit('快捷练功', ac.point(11000,-11000), 0) 
+                ac.player(16):createUnit(hero_tbl[i][1], ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])
+                local item_name = Aghanim[name]
                 if item_name then
-                    local item = unit:createItem(item_name..'-1')
-                    unit:userData('专属', item)
-                    unit:userData('专属名字', item:getName())
-                    unit:userData('专属等级', 1)
-                    unit:userData('专属挑战等级', 1)
+                    local item = hero:createItem(item_name..'-1')
+                    hero:userData('专属', item)
+                    hero:userData('专属名字', item:getName())
+                    hero:userData('专属等级', 1)
+                    hero:userData('专属挑战等级', 1)
                 end
                 player:moveCamera(start_p, 0.2)
-                unit:userData('杀敌数', 0)
-                ac.game:eventNotify('地图-选择英雄', unit, player)
+                hero:userData('杀敌数', 0)
+                ac.game:eventNotify('地图-选择英雄', hero, player)
             else
                 pick_mark[i] = unit
                 ac.wait(0.3, function()
