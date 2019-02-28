@@ -49,10 +49,11 @@ for i = 1, 6 do
 end
 
 local exercise_monster = {
-    ['刷钱1'] = {name = '金币怪1', count = 20, gold = 500, lumber = 0, exp = 100},
-    ['刷钱2'] = {name = '金币怪2', count = 20, gold = 10000, lumber = 0, exp = 500},
-    ['刷木1'] = {name = '木材怪1', count = 20, gold = 0, lumber = 50, exp = 2500},
-    ['刷木2'] = {name = '木材怪2', count = 20, gold = 0, lumber = 500, exp = 10000},
+    ['刷钱1'] = {name = '金币怪1', count = 20, gold = 500, lumber = 0, exp = 3000},
+    ['刷钱2'] = {name = '金币怪2', count = 20, gold = 10000, lumber = 0, exp = 3000},
+    ['刷木1'] = {name = '木材怪1', count = 20, gold = 0, lumber = 50, exp = 3000},
+    ['刷木2'] = {name = '木材怪2', count = 20, gold = 0, lumber = 150, exp = 3000},
+    ['刷木3'] = {name = '木材怪3', count = 20, gold = 0, lumber = 500, exp = 3000},
     ['刷经验1'] = {name = '经验宝宝1', count = 20, gold = 0, lumber = 0, exp = 3000},
 }
 
