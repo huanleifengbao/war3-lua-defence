@@ -46,9 +46,7 @@ for i = 1, 6 do
                 hero:blink(start_p)
                 hero:bagSize(6)
                 hero:addSkill('通用被动', '技能', 2)
-                hero:addSkill('回城', '技能', 4)
-                hero:createUnit('快捷回城', ac.point(11000,-11000), 0)
-                hero:createUnit('快捷练功', ac.point(11000,-11000), 0) 
+                --hero:addSkill('回城', '技能', 4)
                 ac.player(16):createUnit(hero_tbl[i][1], ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])
                 local item_name = Aghanim[name]
                 if item_name then

@@ -35,7 +35,6 @@ function CreateBuildingsForPlayer9 takes nothing returns nothing
     local integer unitID
     local trigger t
     local real life
-    set u=CreateUnit(p, 'H000', 7040.0, - 9344.0, 270.000)
 endfunction
 //===========================================================================
 function CreatePlayerBuildings takes nothing returns nothing
