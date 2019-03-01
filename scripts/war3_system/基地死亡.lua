@@ -46,7 +46,6 @@ end
 local mt = ac.item['基地无敌']
 
 function mt:onAdd()
-	sg.inv(base,true)
 	local time = self.time
 	for i = 1,sg.max_player do
     	ac.player(i):message('|cffffff00本阵进入无敌状态，持续' .. time .. '秒|r', 10)
@@ -69,12 +68,24 @@ function mt:onAdd()
 	if sg.wave_timer then
 		sg.wave_timer:pause()
 	end
+	if sg.enemy_timer then
+		sg.enemy_timer:pause()
+	end
+	if sg.boss_timer then
+		sg.boss_timer:pause()
+	end
 	for i = 1,sg.max_player do
     	ac.player(i):message('|cffffff00暂时停止刷怪，持续' .. time .. '秒|r', 10)
 	end
     ac.wait(time,function()
 		if sg.wave_timer then
 			sg.wave_timer:resume()
+		end
+		if sg.enemy_timer then
+			sg.enemy_timer:resume()
+		end
+		if sg.boss_timer then
+			sg.boss_timer:resume()
 		end
     	for i = 1,sg.max_player do
 	    	ac.player(i):message('|cffffff00暂停刷怪时间结束|r', 5)
