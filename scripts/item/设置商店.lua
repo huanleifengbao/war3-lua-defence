@@ -14,13 +14,23 @@ shop:setItem('专属升级', 1, 'Z')
 
 --作弊:出售锻造石
 local shop = ac.player(16):createShop('刘备', ac.point(7444, -10529), 270)
-shop:setItem('锻造石-1', 9, 'Q')
+shop:setItem('一级锻造石', 9, 'Q')
+shop:setItem('二级锻造石', 10, 'W')
+shop:setItem('三级锻造石', 11, 'E')
+shop:setItem('四级锻造石', 12, 'R')
+shop:setItem('五级锻造石', 5, 'A')
+shop:setItem('六级锻造石', 6, 'S')
+shop:setItem('七级锻造石', 7, 'D')
+shop:setItem('八级锻造石', 8, 'F')
+shop:setItem('九级锻造石', 1, 'Z')
+shop:setItem('十级锻造石', 2, 'X')
 
 --挑战锻造石boss
 local shop = ac.player(16):createShop('刘备', ac.point(7844, -10529), 270)
 
 --锻造石装备
 local shop = ac.player(16):createShop('刘备', ac.point(8244, -10529), 270)
+shop:setItem('装备进阶-1', 9, 'Q')
 
 --挑战专武boss
 local shop = ac.player(16):createShop('刘备', ac.point(8644, -10529), 270)
