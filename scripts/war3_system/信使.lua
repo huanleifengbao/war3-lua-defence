@@ -5,6 +5,30 @@ end)
 
 local mt = ac.skill['物品传送']
 
+function mt:onCastShot()
+	local u = self:getOwner()
+	local item = self:getTarget()
+	local player = u:getOwner()
+	local hero = player:getHero()
+	if hero:isBagFull() then
+		player:message('|cffff0000背包已满!|r', 2)
+	else
+		local tbl = {1,2,3,4,5,6}
+		for item in hero:eachItem() do
+			local slot = item:getSlot()
+			for i = #tbl,1,-1 do
+				if tbl[i] == slot then
+					table.remove(tbl,i)
+					break
+				end
+			end
+		end
+		if #tbl > 0 then
+			item:give(hero,tbl[1])
+		end
+	end
+end
+
 local mt = ac.skill['全图闪烁']
 
 function mt:onCastShot()
@@ -64,4 +88,5 @@ function mt:onCastShot()
 		local slot = item:getSlot()
 		item:give(hero,slot)
 	end
+	hero:getOwner():message('当前背包：' .. now_page[hero] .. '/' .. max_page,3)
 end
