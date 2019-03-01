@@ -1,3 +1,10 @@
+--基地
+local shop = sg.base:createShop()
+shop:setBuyRange(1000000)
+shop:setItem('交换金币', 9, 'Q')
+shop:setItem('交换木材', 10, 'W')
+shop:setItem('基地无敌', 5, 'A')
+shop:setItem('暂停刷怪', 6, 'S')
 
 --新手装备
 local shop = ac.player(16):createShop('刘备', ac.point(7044, -10529), 270)

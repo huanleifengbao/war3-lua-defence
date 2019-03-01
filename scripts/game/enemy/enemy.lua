@@ -195,7 +195,7 @@ local function create_wave()
 	local str = '第' .. wave + 1 .. '波'
 	sg.set_timer_title('波数',str)
 	sg.set_timer_time('波数',time_out)
-	ac.wait(data.time_out,function()
+	sg.wave_timer = ac.wait(data.time_out,function()
 		local max_wave = data.max_wave
 		if max_wave == 0 or wave < max_wave then
 			create_wave()
