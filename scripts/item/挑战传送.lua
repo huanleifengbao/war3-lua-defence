@@ -1,4 +1,25 @@
 
+--没刁民需求的专用
+--道具名字,传送目标点
+local tbl = {
+    {'挑战锻造石boss-6', ac.point(430, 9800)}, {'挑战锻造石boss-1', ac.point(2250, 9800)},
+    {'挑战锻造石boss-7', ac.point(430, 7000)}, {'挑战锻造石boss-2', ac.point(2250, 7000)},
+    {'挑战锻造石boss-8', ac.point(430, 4100)}, {'挑战锻造石boss-3', ac.point(2250, 4100)},
+    {'挑战锻造石boss-9', ac.point(430, 1600)}, {'挑战锻造石boss-4', ac.point(2250, 1600)},
+    {'挑战锻造石boss-10', ac.point(430, -1100)}, {'挑战锻造石boss-5', ac.point(2250, -1100)},
+    {'挑战锻造石boss-11', ac.point(-10900, 10600)},
+}
+
+for i = 1, #tbl do
+	local mt = ac.item[tbl[i][1]]
+
+    function mt:onCanAdd(unit)
+        local player = unit:getOwner()
+        unit:blink(tbl[i][2])
+        player:moveCamera(tbl[i][2], 0.2)
+    end
+end
+
 --专属专用
 --道具名字,传送目标点,需求专武等级
 local tbl = {
@@ -113,7 +134,7 @@ local function exercise(unit, id, data)
     end)
 end
 
-local tbl = {'刷钱1','刷钱2','刷木1','刷木2','刷经验1'}
+local tbl = {'刷钱1','刷钱2','刷木1','刷木2','刷木3','刷经验1'}
 
 for _, tbl_name in pairs(tbl) do
 	local mt = ac.item[tbl_name]

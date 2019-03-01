@@ -29,7 +29,7 @@ for _, tbl_name in pairs(tbl) do
 end
 
 --带合成条件的
-local tbl = {'装备进阶-1'}
+local tbl = {'装备进阶-1','装备进阶-2','装备进阶-3','装备进阶-4','装备进阶-5','装备进阶-6','装备进阶-7','装备进阶-8','装备进阶-9','装备进阶-10','终极合成'}
 
 for _, tbl_name in pairs(tbl) do
 	local mt = ac.item[tbl_name]
@@ -41,7 +41,6 @@ for _, tbl_name in pairs(tbl) do
                 local item_ex = {}
                 if item.lvup_ex1 then
                     item_ex[1] = unit:findItem(item.lvup_ex1)
-                    print('正在找:',item.lvup_ex1,'单位:',unit,'结果:',item_ex[1])
                     if not item_ex[1] then
                         player:message('|cffffff00你未拥有需要的材料|cffff7500'..item.lvup_ex1..'|r', 10)
                         return false

@@ -12,8 +12,22 @@ shop:setItem('鞋子升级', 7, 'D')
 shop:setItem('饰品升级', 8, 'F')
 shop:setItem('专属升级', 1, 'Z')
 
---作弊:出售锻造石
+--挑战锻造石boss
 local shop = ac.player(16):createShop('刘备', ac.point(7444, -10529), 270)
+shop:setItem('挑战锻造石boss-1', 9, 'Q')
+shop:setItem('挑战锻造石boss-2', 10, 'W')
+shop:setItem('挑战锻造石boss-3', 11, 'E')
+shop:setItem('挑战锻造石boss-4', 12, 'R')
+shop:setItem('挑战锻造石boss-5', 5, 'A')
+shop:setItem('挑战锻造石boss-6', 6, 'S')
+shop:setItem('挑战锻造石boss-7', 7, 'D')
+shop:setItem('挑战锻造石boss-8', 8, 'F')
+shop:setItem('挑战锻造石boss-9', 1, 'Z')
+shop:setItem('挑战锻造石boss-10', 2, 'X')
+shop:setItem('挑战锻造石boss-11', 3, 'C')
+
+--作弊:出售锻造石
+local shop = ac.player(16):createShop('刘备', ac.point(7444, -10829), 270)
 shop:setItem('一级锻造石', 9, 'Q')
 shop:setItem('二级锻造石', 10, 'W')
 shop:setItem('三级锻造石', 11, 'E')
@@ -24,16 +38,24 @@ shop:setItem('七级锻造石', 7, 'D')
 shop:setItem('八级锻造石', 8, 'F')
 shop:setItem('九级锻造石', 1, 'Z')
 shop:setItem('十级锻造石', 2, 'X')
+shop:setItem('终极锻造石', 3, 'C')
 
---挑战锻造石boss
+--进阶装备
 local shop = ac.player(16):createShop('刘备', ac.point(7844, -10529), 270)
-
---锻造石装备
-local shop = ac.player(16):createShop('刘备', ac.point(8244, -10529), 270)
 shop:setItem('装备进阶-1', 9, 'Q')
+shop:setItem('装备进阶-2', 10, 'W')
+shop:setItem('装备进阶-3', 11, 'E')
+shop:setItem('装备进阶-4', 12, 'R')
+shop:setItem('装备进阶-5', 5, 'A')
+shop:setItem('装备进阶-6', 6, 'S')
+shop:setItem('装备进阶-7', 7, 'D')
+shop:setItem('装备进阶-8', 8, 'F')
+shop:setItem('装备进阶-9', 1, 'Z')
+shop:setItem('装备进阶-10', 2, 'X')
+shop:setItem('终极合成', 3, 'C')
 
 --挑战专武boss
-local shop = ac.player(16):createShop('刘备', ac.point(8644, -10529), 270)
+local shop = ac.player(16):createShop('刘备', ac.point(8244, -10529), 270)
 shop:setBuyRange(2000)
 shop:setItem('挑战电', 9, 'Q')
 shop:setItem('挑战雷', 10, 'W')
