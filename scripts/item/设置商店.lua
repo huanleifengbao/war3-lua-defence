@@ -12,8 +12,18 @@ shop:setItem('鞋子升级', 7, 'D')
 shop:setItem('饰品升级', 8, 'F')
 shop:setItem('专属升级', 1, 'Z')
 
+--作弊:出售锻造石
+local shop = ac.player(16):createShop('刘备', ac.point(7444, -10529), 270)
+shop:setItem('锻造石-1', 9, 'Q')
+
+--挑战锻造石boss
+local shop = ac.player(16):createShop('刘备', ac.point(7844, -10529), 270)
+
+--锻造石装备
+local shop = ac.player(16):createShop('刘备', ac.point(8244, -10529), 270)
+
 --挑战专武boss
-local shop = ac.player(16):createShop('刘备', ac.point(7544, -10529), 270)
+local shop = ac.player(16):createShop('刘备', ac.point(8644, -10529), 270)
 shop:setBuyRange(2000)
 shop:setItem('挑战电', 9, 'Q')
 shop:setItem('挑战雷', 10, 'W')
@@ -36,7 +46,7 @@ for i = 1, 6 do
     --shop:setItem('刷钱4', 12, 'R')
     shop:setItem('刷木1', 5, 'A')
     shop:setItem('刷木2', 6, 'S')
-    --shop:setItem('刷木3', 7, 'D')
+    shop:setItem('刷木3', 7, 'D')
     --shop:setItem('刷木4', 8, 'F')
     shop:setItem('刷经验1', 1, 'Z')
 end
