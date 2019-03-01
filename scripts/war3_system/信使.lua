@@ -3,6 +3,19 @@ ac.game:event('地图-选择英雄', function(_, hero, player)
     u:bagSize(6)
 end)
 
+local function get_free_slot(hero)
+	local tbl = {1,2,3,4,5,6}
+	for item in hero:eachItem() do
+		local slot = item:getSlot()
+		for i = #tbl,1,-1 do
+			if tbl[i] == slot then
+				table.remove(tbl,i)
+			end
+		end
+	end
+	return tbl
+end
+
 local mt = ac.skill['物品传送']
 
 function mt:onCastShot()
@@ -13,16 +26,7 @@ function mt:onCastShot()
 	if hero:isBagFull() then
 		player:message('|cffff0000背包已满!|r', 2)
 	else
-		local tbl = {1,2,3,4,5,6}
-		for item in hero:eachItem() do
-			local slot = item:getSlot()
-			for i = #tbl,1,-1 do
-				if tbl[i] == slot then
-					table.remove(tbl,i)
-					break
-				end
-			end
-		end
+		local tbl = get_free_slot(hero)
 		if #tbl > 0 then
 			item:give(hero,tbl[1])
 		end
@@ -49,6 +53,26 @@ function mt:onCastShot()
 end
 
 local mt = ac.skill['快速拾取']
+
+function mt:onCastShot()
+	local hero = self:getOwner()
+    local point = hero:getPoint()
+    local tbl = get_free_slot(hero)
+    if #tbl > 0 then
+		for _,item in ac.selector()
+		    : mode '物品'
+		    : inRange(point, self.area)
+		    : ipairs()
+		do
+			local len = #tbl
+			item:give(hero,tbl[len])
+			table.remove(tbl,len)
+			if #tbl == 0 then
+				break
+			end
+		end
+	end
+end
 
 local mt = ac.skill['切换背包']
 
