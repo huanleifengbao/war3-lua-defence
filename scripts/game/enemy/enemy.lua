@@ -156,9 +156,9 @@ local ex_data = {
 }
 
 local function create_enemy(wave)
-	for i = 1,#start_point do
-		local p = start_point[i]
-		ac.timer(data.interval,data.count,function()
+	sg.enemy_timer = ac.timer(data.interval,data.count,function()
+		for i = 1,#start_point do
+			local p = start_point[i]
 			local u = player:createUnit(data.id(wave),p,270)
 			for key,val in pairs(data.attribute) do
 				u:set(key,val(wave))
@@ -167,15 +167,14 @@ local function create_enemy(wave)
 			u:set('死亡金钱', data['死亡金钱'](wave))
 			u:set('死亡木材', data['死亡木材'](wave))
 			u:set('死亡经验', data['死亡经验'](wave))
-			sg.add_ai(u)
-		end)
-	end
+			sg.add_ai(u)	
+		end
+	end)
 	--boss
 	local boss_wave = data.boss
 	if boss_wave ~= 0 and wave%boss_wave == 0 then
-		local boss_time = data.boss_time
-		sg.create_timer('boss','boss',boss_time)
-		ac.wait(boss_time,function()
+		local boss_time = data.boss_time		
+		sg.boss_timer = ac.wait(boss_time,function()
 			local num = wave/boss_wave
 			local u = player:createUnit(boss_data.id(num),start_point[2],270)
 			for key,val in pairs(boss_data.attribute) do
@@ -183,8 +182,8 @@ local function create_enemy(wave)
 			end
 			u:set('生命',u:get'生命上限')
 			sg.add_ai(u)
-			print('boss出现！')
 		end)
+		sg.timerdialog('boss',sg.boss_timer)
 	end
 end
 
@@ -193,9 +192,7 @@ local function create_wave()
 	create_enemy(wave)
 	local time_out = data.time_out
 	local str = '第' .. wave + 1 .. '波'
-	sg.set_timer_title('波数',str)
-	sg.set_timer_time('波数',time_out)
-	ac.wait(data.time_out,function()
+	sg.wave_timer = ac.wait(data.time_out,function()
 		local max_wave = data.max_wave
 		if max_wave == 0 or wave < max_wave then
 			create_wave()
@@ -203,6 +200,7 @@ local function create_wave()
 			sg.remove_timer('波数')
 		end
 	end)
+	sg.timerdialog(str,sg.wave_timer)
 end
 
 ac.game:event('地图-进入无尽模式', function (_, data)
@@ -217,11 +215,11 @@ end)
 
 local function game_start()
 	local time = data.start_time
-	sg.create_timer('波数','第1波',time)
-	ac.wait(time,function()
+	sg.wave_timer = ac.wait(time,function()
 		create_wave()
 		print('开始刷怪')
 	end)
+	sg.timerdialog('第1波',sg.wave_timer)
 end
 
 ac.game:event('地图-选择难度', function (_, num)

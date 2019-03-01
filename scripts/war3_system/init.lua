@@ -7,8 +7,10 @@ require 'war3_system.计分板'
 require 'war3_system.基地死亡'
 require 'war3_system.可刷新野外boss'
 require 'war3_system.快捷按钮'
+require 'war3_system.信使'
 
-for i = 1, 6 do
+sg.max_player = 6
+for i = 1, sg.max_player do
     ac.player(10):alliance(ac.player(i), '结盟', true)
     ac.player(i):alliance(ac.player(10), '结盟', true)
 end

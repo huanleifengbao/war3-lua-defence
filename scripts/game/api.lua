@@ -1,50 +1,59 @@
 --全体玩家计时器窗口
-local timerdialog = {}
-function sg.set_timer_title(key,name)
-	local timer = timerdialog[key]
-	if timer then
-		for i = 1,#timer do
-			timer[i]:setTitle(name)
-		end
-	end
-end
-function sg.set_timer_time(key,time)
-	local timer = timerdialog[key]
-	if timer then
-		for i = 1,#timer do
-			timer[i]:setTimer(time)
-		end
-	end
-end
-function sg.remove_timer(key)
-	local timer = timerdialog[key]
-	if timer then
-		for i = #timer,1,-1 do
-			timer[i]:remove()
-		end
-	end
-	timerdialog[key] = nil
-end
-local function create_timer(name,time)
-	local tbl = {}
-	for i = 1,sg.max_player do
-	    local player = ac.player(i)
-	    local dialog = player:timerDialog(name,time)
-	    table.insert(tbl,dialog)
-	end
-	return tbl
-end
-function sg.create_timer(key,name,time)
-	if timerdialog[key] then
-		local timer = timerdialog[key][1]
-		if timer and timer._removed ~= true then		
-			sg.set_timer_title(key,name)
-			sg.set_timer_time(key,time)
-		else
-			timerdialog[key] = create_timer(name,time)
+--local timerdialog = {}
+--function sg.set_timer_title(key,name)
+--	local timer = timerdialog[key]
+--	if timer then
+--		for i = 1,#timer do
+--			timer[i]:setTitle(name)
+--		end
+--	end
+--end
+--function sg.set_timer_time(key,time)
+--	local timer = timerdialog[key]
+--	if timer then
+--		for i = 1,#timer do
+--			timer[i]:setTimer(time)
+--		end
+--	end
+--end
+--function sg.remove_timer(key)
+--	local timer = timerdialog[key]
+--	if timer then
+--		for i = #timer,1,-1 do
+--			timer[i]:remove()
+--		end
+--	end
+--	timerdialog[key] = nil
+--end
+--local function create_timer(name,time)
+--	local tbl = {}
+--	for i = 1,sg.max_player do
+--	    local player = ac.player(i)
+--	    local dialog = player:timerDialog(name,time)
+--	    table.insert(tbl,dialog)
+--	end
+--	return tbl
+--end
+--function sg.create_timer(key,name,time)
+--	if timerdialog[key] then
+--		local timer = timerdialog[key][1]
+--		if timer and timer._removed ~= true then		
+--			sg.set_timer_title(key,name)
+--			sg.set_timer_time(key,time)
+--		else
+--			timerdialog[key] = create_timer(name,time)
+--		end
+--	else
+--		timerdialog[key] = create_timer(name,time)
+--	end
+--end
+function sg.timerdialog(title,timer,player)
+	if not player then
+		for i = 1,sg.max_player do
+			ac.player(i):timerDialog(title,timer)
 		end
 	else
-		timerdialog[key] = create_timer(name,time)
+		player:timerDialog(title,timer)
 	end
 end
 
@@ -173,13 +182,45 @@ function sg.leap_block(p1,p2)
 end
 
 --击晕目标
-function sg.stun(unit,time)
-	local eff = sg.effectU(unit,'overhead',[[Abilities\Spells\Human\Thunderclap\ThunderclapTarget.mdl]])
-	unit:addRestriction '硬直'
-	if time then
-		ac.wait(time,function()
-			unit:removeRestriction '硬直'
-			eff:remove()
-		end)
+--function sg.stun(unit,time)
+--	local eff = sg.effectU(unit,'overhead',[[Abilities\Spells\Human\Thunderclap\ThunderclapTarget.mdl]])
+--	unit:addRestriction '硬直'
+--	if time then
+--		ac.wait(time,function()
+--			unit:removeRestriction '硬直'
+--			eff:remove()
+--		end)
+--	end
+--end
+
+--设置单位无敌
+--function sg.inv(unit,boolean)
+--	jass.SetUnitInvulnerable(unit._handle,boolean)
+--end
+
+--加钱跳字
+function sg.add_gold(unit,type,count)
+	if count <= 0 then
+		return
 	end
+	local player = unit:getOwner()
+	player:add(type, count)
+    local msg = math.floor(count)
+    if type == '金币' then
+    	msg = '|cffffdd00+'..msg..'|n'
+	elseif type == '木材' then
+		msg = '|cff25cc75+'..msg..'|n'
+	else
+		msg = '+' ..math.floor(count)
+	end
+    local msg_height = 140
+    ac.textTag()
+        : text(msg, 0.025)
+        : at(unit:getPoint(), msg_height)
+        : speed(0.025, 90)
+        : life(1.5, 0.8)
+        : show(function (p)
+            return player == p
+        end)
+    msg_height = msg_height - 40
 end

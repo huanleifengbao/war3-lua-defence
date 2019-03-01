@@ -13,13 +13,13 @@ end
 
 local home = ac.point(7044, -8792)
 
-for i = 1, 6 do
-    ac.player(i):event('玩家-选中单位', function (trg, player, unit)
+ac.game:event('地图-选择英雄', function(_, hero, player)
+	player:createUnit('快捷回城', ac.point(11000,-11000), 0)
+    player:createUnit('快捷练功', ac.point(11000,-11000), 0) 
+    player:event('玩家-选中单位', function (trg, player, unit)
         local name = unit:getName()
-        local hero = player:getHero()
         if name == '快捷回城' then
 	        chose_hero(player)
-	        print(hero:hasRestriction '硬直')
     		if hero:isAlive() and not hero:hasRestriction '硬直' then
 		        hero:blink(home)
     			player:moveCamera(home, 0.2)
@@ -31,4 +31,4 @@ for i = 1, 6 do
 	        end
         end
     end)
-end
+end)
