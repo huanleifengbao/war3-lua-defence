@@ -18,6 +18,8 @@ shop:setItem('衣服升级', 6, 'S')
 shop:setItem('鞋子升级', 7, 'D')
 shop:setItem('饰品升级', 8, 'F')
 shop:setItem('专属升级', 1, 'Z')
+shop:setItem('作弊武器', 2, 'X')
+shop:setItem('作弊防具', 3, 'C')
 
 --挑战锻造石boss
 local shop = ac.player(16):createShop('刘备', ac.point(7444, -10529), 270)
@@ -46,6 +48,17 @@ shop:setItem('八级锻造石', 8, 'F')
 shop:setItem('九级锻造石', 1, 'Z')
 shop:setItem('十级锻造石', 2, 'X')
 shop:setItem('终极锻造石', 3, 'C')
+
+--作弊:方便测试随便写
+local shop = ac.player(16):createShop('刘备', ac.point(7444, -11129), 270)
+shop:setItem('进阶武器-10', 9, 'Q')
+shop:setItem('进阶衣服-10', 10, 'W')
+shop:setItem('进阶鞋子-10', 11, 'E')
+shop:setItem('进阶饰品-10', 12, 'R')
+shop:setItem('玄铁', 7, 'D')
+shop:setItem('百年玄铁', 8, 'F')
+shop:setItem('千年玄铁', 1, 'Z')
+shop:setItem('九幽玄铁', 2, 'X')
 
 --进阶装备
 local shop = ac.player(16):createShop('刘备', ac.point(7844, -10529), 270)

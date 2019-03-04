@@ -39,12 +39,37 @@ for _, tbl_name in pairs(tbl) do
         for item in unit:eachItem() do
             if item.lvup_type and item.lvup_type == self:getName() and item.lvup_next then
                 local item_ex = {}
+                local mark = true
                 if item.lvup_ex1 then
                     item_ex[1] = unit:findItem(item.lvup_ex1)
                     if not item_ex[1] then
                         player:message('|cffffff00你未拥有需要的材料|cffff7500'..item.lvup_ex1..'|r', 10)
-                        return false
+                        mark = false
                     end
+                end
+                if item.lvup_ex2 then
+                    item_ex[2] = unit:findItem(item.lvup_ex2)
+                    if not item_ex[2] then
+                        player:message('|cffffff00你未拥有需要的材料|cffff7500'..item.lvup_ex2..'|r', 10)
+                        mark = false
+                    end
+                end
+                if item.lvup_ex3 then
+                    item_ex[3] = unit:findItem(item.lvup_ex3)
+                    if not item_ex[3] then
+                        player:message('|cffffff00你未拥有需要的材料|cffff7500'..item.lvup_ex3..'|r', 10)
+                        mark = false
+                    end
+                end
+                if item.lvup_ex4 then
+                    item_ex[4] = unit:findItem(item.lvup_ex4)
+                    if not item_ex[4] then
+                        player:message('|cffffff00你未拥有需要的材料|cffff7500'..item.lvup_ex4..'|r', 10)
+                        mark = false
+                    end
+                end
+                if mark == false then
+                    return false
                 end
                 local item_name = item.lvup_next
                 local item_slot = item:getSlot()
