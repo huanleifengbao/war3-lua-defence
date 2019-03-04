@@ -7,7 +7,7 @@ shop:setItem('基地无敌', 5, 'A')
 shop:setItem('暂停刷怪', 6, 'S')
 
 --新手装备
-local shop = ac.player(16):createShop('刘备', ac.point(7044, -10529), 270)
+local shop = ac.player(16):createShop('商店', ac.point(7044, -10529), 270)
 shop:setBuyRange(1000000)
 shop:setItem('新手武器-1', 9, 'Q')
 shop:setItem('新手衣服-1', 10, 'W')
@@ -20,7 +20,7 @@ shop:setItem('饰品升级', 8, 'F')
 shop:setItem('专属升级', 1, 'Z')
 
 --挑战锻造石boss
-local shop = ac.player(16):createShop('刘备', ac.point(7444, -10529), 270)
+local shop = ac.player(16):createShop('商店', ac.point(7444, -10529), 270)
 shop:setItem('挑战锻造石boss-1', 9, 'Q')
 shop:setItem('挑战锻造石boss-2', 10, 'W')
 shop:setItem('挑战锻造石boss-3', 11, 'E')
@@ -34,7 +34,7 @@ shop:setItem('挑战锻造石boss-10', 2, 'X')
 shop:setItem('挑战锻造石boss-11', 3, 'C')
 
 --作弊:出售锻造石
-local shop = ac.player(16):createShop('刘备', ac.point(7444, -10829), 270)
+local shop = ac.player(16):createShop('商店', ac.point(7444, -10829), 270)
 shop:setItem('一级锻造石', 9, 'Q')
 shop:setItem('二级锻造石', 10, 'W')
 shop:setItem('三级锻造石', 11, 'E')
@@ -48,7 +48,7 @@ shop:setItem('十级锻造石', 2, 'X')
 shop:setItem('终极锻造石', 3, 'C')
 
 --进阶装备
-local shop = ac.player(16):createShop('刘备', ac.point(7844, -10529), 270)
+local shop = ac.player(16):createShop('商店', ac.point(7844, -10529), 270)
 shop:setItem('装备进阶-1', 9, 'Q')
 shop:setItem('装备进阶-2', 10, 'W')
 shop:setItem('装备进阶-3', 11, 'E')
@@ -62,7 +62,7 @@ shop:setItem('装备进阶-10', 2, 'X')
 shop:setItem('终极合成', 3, 'C')
 
 --挑战专武boss
-local shop = ac.player(16):createShop('刘备', ac.point(8244, -10529), 270)
+local shop = ac.player(16):createShop('商店', ac.point(8244, -10529), 270)
 shop:setBuyRange(2000)
 shop:setItem('挑战电', 9, 'Q')
 shop:setItem('挑战雷', 10, 'W')
@@ -77,7 +77,7 @@ local point = {
 }
 --练功
 for i = 1, 6 do
-    local shop = ac.player(16):createShop('刘备', point[i], 270)
+    local shop = ac.player(16):createShop('商店', point[i], 270)
     shop:setBuyRange(1500)
     shop:setItem('刷钱1', 9, 'Q')
     shop:setItem('刷钱2', 10, 'W')
