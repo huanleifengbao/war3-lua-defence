@@ -6,9 +6,6 @@ local timer = ac.loop(pulse,function()
 	for u,_ in pairs(ai_groups) do
 		if not u:isAlive() then
 			ai_groups[u].trg:remove()
-			if ai_groups[u].timer then
-				ai_groups[u].timer:remove()
-			end
 			ai_groups[u] = nil
 		else
 			for _,action in ipairs(actions) do
@@ -73,7 +70,9 @@ function sg.add_ai(u)
 		end
 		ai_groups[u].is_attack = true
 		timer = ac.wait(3,function()
-			ai_groups[u].is_attack = false
+			if ai_groups[u] then
+				ai_groups[u].is_attack = false
+			end
 		end)
 	end)
 	ai_groups[u].trg = trg
