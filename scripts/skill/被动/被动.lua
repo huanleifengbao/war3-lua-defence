@@ -17,10 +17,22 @@ for _,skill_name in pairs(tbl) do
 	    local count = 0
 	    self.trg = hero:event('单位-攻击出手', function (_, _, target, damage, mover)
 	    	if sg.get_random(self.odds) then
+		    	local p = target:getPoint()
+		    	local area = self.area
+		    	ac.effect {
+				    target = p,
+				    model = [[effect\DevilSlam.mdx]],
+				    size = area/250,
+				    time = 1,
+				}
+				ac.effect {
+				    target = p,
+				    model = [[effect\OrbitalRay.mdx]],
+				    time = 1,
+				}
 	    		for _, u in ac.selector()
-				    : inRange(hero:getPoint(),self.area)
+				    : inRange(p,area)
 				    : isEnemy(hero)
-				    : isVisible(hero)
 				    : ipairs()
 				do
 					local damage = self.damage * sg.get_allatr(hero)
@@ -50,6 +62,11 @@ for _,skill_name in pairs(tbl) do
 				    damage = damage,
 				    damage_type = self.damage_type,
 				    skill = self,
+				}
+				ac.effect {
+				    target = target:getPoint(),
+				    model = [[effect\lightningwrath.mdx]],
+				    time = 1,
 				}
 				local atr = self.atr2
 				if atr then
