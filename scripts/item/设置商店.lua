@@ -50,7 +50,7 @@ shop:setItem('十级锻造石', 2, 'X')
 shop:setItem('终极锻造石', 3, 'C')
 
 --作弊:方便测试随便写
-local shop = ac.player(16):createShop('刘备', ac.point(7444, -11129), 270)
+local shop = ac.player(16):createShop('商店', ac.point(7444, -11129), 270)
 shop:setItem('进阶武器-10', 9, 'Q')
 shop:setItem('进阶衣服-10', 10, 'W')
 shop:setItem('进阶鞋子-10', 11, 'E')

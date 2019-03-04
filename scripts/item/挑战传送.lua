@@ -83,10 +83,12 @@ local exercise_point = {
     ac.point(5793, 7740),    ac.point(9034, 7740),
     ac.point(5793, 5547),    ac.point(9034, 5547),
 }
+local exercise_rect = {}
 
 --练功房刷怪
 local function exercise(unit, id, data)
     local p = exercise_point[id]
+    local rect = ac.rect(p, 2688, 2176)
     local timer = false
     for i = 1, data.count do
         local u = ac.player(11):createUnit(data.name, p, 270)
@@ -112,9 +114,11 @@ local function exercise(unit, id, data)
             end
         end)
     end
-    --重置方法1:英雄死了
-    unit:event('单位-死亡', function (trg, _)
+    --重置,结束刷怪
+    local trg
+    local function exercise_end()
         trg:remove()
+        rect:remove()
         exercise_target[id] = nil
         for _, u in ipairs(exercise_mark[id]) do
             if u:isAlive() then
@@ -131,7 +135,17 @@ local function exercise(unit, id, data)
         if timer and timer ~= false then
             timer:remove()
         end
+    end
+    --重置方法1:英雄死了
+    trg = unit:event('单位-死亡', function ()
+        exercise_end()
     end)
+    --重置方法2:英雄出区域了
+    function rect:onLeave(u)
+        if u == unit then
+            exercise_end()
+        end
+    end
 end
 
 local tbl = {'刷钱1','刷钱2','刷木1','刷木2','刷木3','刷经验1'}
