@@ -93,6 +93,18 @@ function mt:onAdd()
 	self.max_page = page
 	now_page[hero] = 1
 	self.bag = bag
+	local player = hero:getOwner()
+	function player:get_chick()
+		local tbl = {hero}
+		for i = 1,#bag do
+			table.insert(tbl,bag[i])
+		end
+		return tbl
+	end
+	local hero = player:getHero()
+	function hero:get_chick()
+		return player:getMesgerbag()
+	end
 end
 
 function mt:onCastShot()
