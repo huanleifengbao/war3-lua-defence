@@ -76,7 +76,11 @@ for _, tbl_name in pairs(tbl) do
                 local item_slot = item:getSlot()
                 for i = 1, 6 do
                     if item_ex[i] then
-                        item_ex[i]:remove()
+                        if item_ex[i]:stack() > 0 then
+                            item_ex[i]:stack(item_ex[i]:stack() - 1)
+                        else
+                            item_ex[i]:remove()
+                        end
                     end
                 end
                 item:remove()

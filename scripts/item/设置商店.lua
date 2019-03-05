@@ -27,6 +27,7 @@ shop:setItem('饰品升级', 8, 'F')
 shop:setItem('专属升级', 1, 'Z')
 shop:setItem('作弊武器', 2, 'X')
 shop:setItem('作弊防具', 3, 'C')
+shop:setItem('作弊金钱', 4, 'V')
 
 --挑战锻造石boss
 local shop = ac.player(16):createShop('商店', ac.point(7444, -10529), 270)
