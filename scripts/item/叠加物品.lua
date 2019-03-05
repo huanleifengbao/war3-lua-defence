@@ -17,9 +17,7 @@ for _, tbl_name in pairs(tbl) do
     function mt:onCanLoot(unit)
         local item = self
         local item2 = unit:findItem(item:getName())
-        item.can_add = false
         if item2 and item ~= item2 then
-            item.can_add = true
             return true
         end
     end
