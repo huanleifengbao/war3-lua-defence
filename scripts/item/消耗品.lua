@@ -74,6 +74,15 @@ function mt:onCastShot()
     local heal = skill.heal
     hero:add('生命', heal)
     hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin')
+    --暂时处理
+    for item in hero:eachItem() do
+        if skill:getName() == item:getName() then
+            item:stack(item:stack() - 1)
+            if item:stack() == 0 then
+                item:remove()
+            end
+        end
+    end
 end
 
 local mt = ac.skill['治疗药水-大']
@@ -85,4 +94,13 @@ function mt:onCastShot()
     local heal = skill.heal
     hero:add('生命', heal)
     hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin')
+    --暂时处理
+    for item in hero:eachItem() do
+        if skill:getName() == item:getName() then
+            item:stack(item:stack() - 1)
+            if item:stack() == 0 then
+                item:remove()
+            end
+        end
+    end
 end
