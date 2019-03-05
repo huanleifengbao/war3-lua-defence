@@ -10,7 +10,12 @@ local Aghanim_lv = {
 }
 
 ac.game:event('地图-英雄杀敌', function (_, unit, player, dead)
-    if unit:userData('专属等级') <= #Aghanim_lv and unit:userData('杀敌数') >= Aghanim_lv[unit:userData('专属等级')][1] and (Aghanim_lv[unit:userData('专属等级')][2] == nil or unit:userData('专属挑战等级') >= Aghanim_lv[unit:userData('专属等级')][2]) then
+    local item = unit:userData('专属')
+    if item then
+        local stack = math.min(item:stack() + 1, Aghanim_lv[unit:userData('专属等级')][1])
+        item:stack(stack)
+    end
+    if unit:userData('专属等级') <= #Aghanim_lv and item:stack() >= Aghanim_lv[unit:userData('专属等级')][1] and (Aghanim_lv[unit:userData('专属等级')][2] == nil or unit:userData('专属挑战等级') >= Aghanim_lv[unit:userData('专属等级')][2]) then
         unit:createItem('专属升级')
     end
 end)

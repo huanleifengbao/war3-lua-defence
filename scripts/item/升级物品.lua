@@ -19,6 +19,7 @@ for _, tbl_name in pairs(tbl) do
                 --专属特殊处理
                 if tbl_name == '专属升级' then
                     unit:userData('专属等级', unit:userData('专属等级') + 1)
+                    unit:userData('专属', item2)
                 end
                 return true
             end
