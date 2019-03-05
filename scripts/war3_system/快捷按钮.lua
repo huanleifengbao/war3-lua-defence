@@ -22,6 +22,7 @@ ac.game:event('地图-选择英雄', function(_, hero, player)
 	        chose_hero(player)
     		if hero:isAlive() and not hero:hasRestriction '硬直' then
 		        hero:blink(home)
+				hero:stop()
     			player:moveCamera(home, 0.2)
 	        end
         elseif name == '快捷练功' then

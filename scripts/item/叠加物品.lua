@@ -36,7 +36,6 @@ for _, tbl_name in pairs(tbl) do
     function mt:onAdd()
         local item = self
         local unit = item:getOwner()
-        print(item:stack())
         if item:stack() == 0 then
             if item.item_stack then
                 item:stack(item.item_stack)
