@@ -1,52 +1,4 @@
 --全体玩家计时器窗口
---local timerdialog = {}
---function sg.set_timer_title(key,name)
---	local timer = timerdialog[key]
---	if timer then
---		for i = 1,#timer do
---			timer[i]:setTitle(name)
---		end
---	end
---end
---function sg.set_timer_time(key,time)
---	local timer = timerdialog[key]
---	if timer then
---		for i = 1,#timer do
---			timer[i]:setTimer(time)
---		end
---	end
---end
---function sg.remove_timer(key)
---	local timer = timerdialog[key]
---	if timer then
---		for i = #timer,1,-1 do
---			timer[i]:remove()
---		end
---	end
---	timerdialog[key] = nil
---end
---local function create_timer(name,time)
---	local tbl = {}
---	for i = 1,sg.max_player do
---	    local player = ac.player(i)
---	    local dialog = player:timerDialog(name,time)
---	    table.insert(tbl,dialog)
---	end
---	return tbl
---end
---function sg.create_timer(key,name,time)
---	if timerdialog[key] then
---		local timer = timerdialog[key][1]
---		if timer and timer._removed ~= true then		
---			sg.set_timer_title(key,name)
---			sg.set_timer_time(key,time)
---		else
---			timerdialog[key] = create_timer(name,time)
---		end
---	else
---		timerdialog[key] = create_timer(name,time)
---	end
---end
 function sg.timerdialog(title,timer,player)
 	if not player then
 		for i = 1,sg.max_player do
@@ -121,15 +73,6 @@ local function create_effect(handle)
 	return eff
 end
 
---指定点创建特效
-function sg.effect(point,flie,time)
-	local x,y = point:getXY()
-	local effect = jass.AddSpecialEffect(flie,x,y)
-	local eff = create_effect(effect)
-	eff:duration(time)
-	return eff
-end
-
 --创建特效绑定单位
 function sg.effectU(unit,socket,flie,time)
 	local handle = unit._handle
@@ -181,22 +124,21 @@ function sg.leap_block(p1,p2)
 	return target
 end
 
---击晕目标
---function sg.stun(unit,time)
---	local eff = sg.effectU(unit,'overhead',[[Abilities\Spells\Human\Thunderclap\ThunderclapTarget.mdl]])
---	unit:addRestriction '硬直'
---	if time then
---		ac.wait(time,function()
---			unit:removeRestriction '硬直'
---			eff:remove()
---		end)
---	end
---end
-
---设置单位无敌
---function sg.inv(unit,boolean)
---	jass.SetUnitInvulnerable(unit._handle,boolean)
---end
+--跳字
+function sg.text_tag(msg,point,height,show)
+	ac.textTag()
+        : text(msg, 0.025)
+        : at(point, height)
+        : speed(0.025, 90)
+        : life(1.5, 0.8)
+        : show(function (p)
+        	if show then
+            	return p == show
+        	else
+	        	return true
+        	end
+        end)
+end
 
 --加钱跳字
 function sg.add_gold(unit,type,count)
@@ -213,14 +155,13 @@ function sg.add_gold(unit,type,count)
 	else
 		msg = '+' ..math.floor(count)
 	end
-    local msg_height = 140
-    ac.textTag()
-        : text(msg, 0.025)
-        : at(unit:getPoint(), msg_height)
-        : speed(0.025, 90)
-        : life(1.5, 0.8)
-        : show(function (p)
-            return player == p
-        end)
-    msg_height = msg_height - 40
+	sg.text_tag(msg,unit:getPoint(),140,player)
+    --ac.textTag()
+    --    : text(msg, 0.025)
+    --    : at(unit:getPoint(), 140)
+    --    : speed(0.025, 90)
+    --    : life(1.5, 0.8)
+    --    : show(function (p)
+    --        return player == p
+    --    end)
 end
