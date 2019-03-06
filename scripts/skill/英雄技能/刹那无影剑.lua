@@ -41,12 +41,13 @@ function mt:do_damage(boolean)
 			dummy:setFacing(angle)
 			sg.animation(dummy,'attack')
 			sg.effectU(u,'chest',[[Abilities\Spells\Orc\LightningBolt\LightningBoltMissile.mdl]],0)
-			local damage = self.damage * sg.get_allatr(hero)
+			local damage = self.damage * sg.get_allatr(hero) + hero:get '攻击'
 			hero:damage
 			{
 			    target = u,
 			    damage = damage,
 			    damage_type = self.damage_type,
+			    attack = true,
 			    skill = self,
 			}
 			self:do_damage()
