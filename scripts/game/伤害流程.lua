@@ -152,7 +152,11 @@ local function createDamage(damage)
 			error('哎鸭给我填数字鸭')
 		end
 	end
+	--若是非普攻伤害被定义为普攻，则触发一次'攻击出手'
 	if damage.attack == true then
+		if damage:isCommonAttack() ~= true then
+			damage.source:eventNotify('单位-攻击出手', damage.source, damage.target, damage)
+		end
 		damage._commonAttack = true
 	end
 	--若伤害是普攻，则为物理伤害，需计算暴击，吸血，并移除克敌机先属性
