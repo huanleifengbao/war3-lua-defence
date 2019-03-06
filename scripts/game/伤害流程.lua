@@ -14,18 +14,21 @@
 	物理 --> 计算护甲、增伤、减伤
 	魔法 --> 计算魔抗、增伤、减伤
 	纯粹 --> 计算增伤、减伤
-	真实 --> 不计算任何属性（可通过设置damage.crit = true来计算暴击），但是依然可以通过damage:div_damage修改伤害
+	真实 --> 不计算任何属性，但是依然可以通过damage:div_damage修改伤害
 		
-※普通攻击默认为物理伤害，但是可以在'单位-即将造成/受到伤害'事件里使用damage:change_type更改伤害类型
-※普通攻击除伤害类型外，需额外计算闪避、暴击、吸血
+※普通攻击默认为物理伤害，需额外计算闪避、暴击、吸血
 
 damage表内可定义的属性：
 	attack = true --> 本次伤害判定为普攻
 	crit = true --> 本次伤害计算暴击，默认为false，普攻则为true
 	leech = true --> 本次伤害可吸血，默认为false，普攻则为true
 	truestrike = true --> 本次伤害不计算闪避，默认为true，普攻则为false
-	
-※damage表内设置damage.attack = true可使本次伤害判定为普攻，设置damage.crit = true使伤害计算暴击
+
+'单位-即将造成/受到伤害'事件中damage可调用的api：
+	damage:get_damage() --> 返回原始伤害(number)
+	damage:get_currentdamage() --> 返回当前伤害(number)
+	damage:change_type([string]) --> 设置damage_type为[string]
+	damage:div_damage([number]) --> 设置当前伤害为[number]
 ]]--
 
 local function avoid(damage)
