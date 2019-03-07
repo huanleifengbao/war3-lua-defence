@@ -1,3 +1,13 @@
+--判断是否在表里
+function sg.isintable(tbl,val)
+	for k,v in pairs(tbl) do
+		if k == val or v == val then
+			return true
+		end
+	end
+	return false
+end
+
 --全体玩家计时器窗口
 function sg.timerdialog(title,timer,player)
 	if not player then
@@ -164,4 +174,18 @@ function sg.add_gold(unit,type,count)
     --    : show(function (p)
     --        return player == p
     --    end)
+end
+
+--获取空的背包格子
+function sg.get_free_slot(hero)
+	local tbl = {1,2,3,4,5,6}
+	for item in hero:eachItem() do
+		local slot = item:getSlot()
+		for i = #tbl,1,-1 do
+			if tbl[i] == slot then
+				table.remove(tbl,i)
+			end
+		end
+	end
+	return tbl
 end

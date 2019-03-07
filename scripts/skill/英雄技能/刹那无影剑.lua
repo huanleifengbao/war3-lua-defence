@@ -1,13 +1,16 @@
 local mt = ac.skill['刹那无影剑']
 
 function mt:finish()
-	ac.wait(self.pulse,function()
-		local dummy = self.dummy
-		ac.effect {
-		    target = dummy:getPoint(),
-		    model = [[Abilities\Spells\Items\AIil\AIilTarget.mdl]],
-		    time = 1,
-		}
+	local hero = self:getOwner()
+	local dummy = self.dummy
+	dummy:blink(hero:getPoint())
+	dummy:setFacing(hero:getFacing())
+	ac.effect {
+	    target = dummy:getPoint(),
+	    model = [[Abilities\Spells\Items\AIil\AIilTarget.mdl]],
+	    time = 1,
+	}
+	ac.wait(self.pulse,function()		
 		dummy:remove()
 	end)
 end
@@ -80,7 +83,7 @@ function mt:onCastShot()
 	    time = 1,
 	}	
 	if #list > 0 then
-		local dummy = hero:createUnit('刘备-分身',hero:getPoint(),0)
+		local dummy = hero:createUnit('刘备-分身',hero:getPoint(),hero:getFacing())
 		sg.set_color(dummy,{a = 200})
 		sg.animationSpeed(dummy,2)
 		sg.effectU(dummy,'weapon',[[Abilities\Weapons\PhoenixMissile\Phoenix_Missile_mini.mdl]])

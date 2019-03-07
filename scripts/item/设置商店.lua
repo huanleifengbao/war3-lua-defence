@@ -5,6 +5,8 @@ shop:setItem('交换金币', 9, 'Q')
 shop:setItem('交换木材', 10, 'W')
 shop:setItem('基地无敌', 5, 'A')
 shop:setItem('暂停刷怪', 6, 'S')
+shop:setItem('抽奖', 1, 'Z')
+shop:setItem('十连抽奖', 2, 'X')
 
 --药店
 local shop = ac.player(16):createShop('商店', ac.point(6644, -10529), 270)
