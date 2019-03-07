@@ -12,6 +12,7 @@ function mt:do_damage(damage)
 		    target = u,
 		    damage = damage,
 		    damage_type = self.damage_type,
+		    attack = true,
 		    skill = self,
 		}
 	end
@@ -27,7 +28,11 @@ function mt:onCastShot()
     local wait = self.wait
     local pulse = self.pulse
     local pulse2 = self.pulse2
-    sg.effect(target,[[effect\BlackBlink.mdx]],0)
+    ac.effect {
+	    target = target,
+	    model = [[effect\BlackBlink.mdx]],
+	    time = 1,
+	}
     for i = 1,count do
 	    local a = add * i
 	    local p1 = target - {a,area}
@@ -75,7 +80,11 @@ function mt:onCastShot()
 			    	sg.animation(dummy,'spell')
 				    dummy:setFacing(angle + 180)
 				    ac.wait(1,function()
-				    	sg.effect(dummy:getPoint(),[[effect\BlackBlink.mdx]],0)
+						ac.effect {
+						    target = dummy:getPoint(),
+						    model = [[effect\BlackBlink.mdx]],
+						    time = 1,
+						}
 				    	dummy:remove()
 				    end)
 			    end)

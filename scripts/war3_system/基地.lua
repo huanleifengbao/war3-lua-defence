@@ -1,4 +1,4 @@
-local base = ac.player(10):createUnit('基地',ac.point(7040,-9344),270)
+local base = ac.player(10):createUnit('基地',ac.point(7040,-9344),315)
 sg.base = base
 base:event('单位-死亡', function (trg, unit)
     trg:remove()
@@ -91,4 +91,25 @@ function mt:onAdd()
 	    	ac.player(i):message('|cffffff00暂停刷怪时间结束|r', 5)
 		end
     end)
+end
+
+local mt = ac.item['基地升级']
+local level = 0
+
+function mt:onCanBuy(hero)
+	if level >= self.max_level then
+		hero:getOwner():message('|cffffff00已升至最高等级，无法继续提升|r', 3)
+		return false
+	else
+		return true
+	end
+end
+
+function mt:onAdd()
+	level = level + 1
+	base:add('生命上限',self.hp)
+	base:add('护甲',self.amr)
+	for i = 1,sg.max_player do
+    	ac.player(i):message('|cffffff00本阵的耐久度提升了！|r', 3)
+	end
 end
