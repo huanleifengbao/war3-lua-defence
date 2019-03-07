@@ -22,7 +22,7 @@ function mt:onCastShot()
     local time = skill.time
     local area = skill.area
     hero:addRestriction '硬直'
-    sg.effectU(hero,'weapon',[[Abilities\Weapons\PhoenixMissile\Phoenix_Missile.mdl]],time)
+    local eff = hero:particle([[Abilities\Weapons\PhoenixMissile\Phoenix_Missile.mdl]],'weapon')
     self.point = point
     self.target = target
     local mover = self:jump(hero)
@@ -55,6 +55,7 @@ function mt:onCastShot()
 		end
 	end
 	function mover:onRemove()
+		eff()
 		hero:removeRestriction '硬直'
 		sg.animationSpeed(hero,1)
 	end

@@ -32,7 +32,7 @@ function mt:do_damage(boolean)
 		for i = #list,1,-1 do
 			local unit = list[i]
 			table.remove(list,i)
-			self.eff[unit]:remove()
+			self.eff[unit]()
 			if unit:isAlive() then
 				u = unit
 				break										
@@ -43,7 +43,7 @@ function mt:do_damage(boolean)
 			dummy:blink(u:getPoint() - {angle - 180,50})
 			dummy:setFacing(angle)
 			sg.animation(dummy,'attack')
-			sg.effectU(u,'chest',[[Abilities\Spells\Orc\LightningBolt\LightningBoltMissile.mdl]],0)
+			u:particle([[Abilities\Spells\Orc\LightningBolt\LightningBoltMissile.mdl]],'chest')()
 			local damage = self.damage * sg.get_allatr(hero) + hero:get '攻击'
 			hero:damage
 			{
@@ -72,7 +72,7 @@ function mt:onCastShot()
 	    : ipairs()
 	do
 		table.insert(list,u)
-		self.eff[u] = sg.effectU(u,'origin',[[Abilities\Spells\Other\HowlOfTerror\HowlTarget.mdl]])
+		self.eff[u] = u:particle([[Abilities\Spells\Other\HowlOfTerror\HowlTarget.mdl]],'origin')
 	end
 	ac.effect {
 	    target = target,
@@ -86,8 +86,8 @@ function mt:onCastShot()
 		local dummy = hero:createUnit('刘备-分身',hero:getPoint(),hero:getFacing())
 		sg.set_color(dummy,{a = 200})
 		sg.animationSpeed(dummy,2)
-		sg.effectU(dummy,'weapon',[[Abilities\Weapons\PhoenixMissile\Phoenix_Missile_mini.mdl]])
-		sg.effectU(dummy,'hand',[[Abilities\Weapons\FaerieDragonMissile\FaerieDragonMissile.mdl]])
+		dummy:particle([[Abilities\Weapons\PhoenixMissile\Phoenix_Missile_mini.mdl]],'weapon')
+		dummy:particle([[Abilities\Weapons\FaerieDragonMissile\FaerieDragonMissile.mdl]],'hand')
 		self.list = list
 		self.dummy = dummy	
 		self:do_damage(true)

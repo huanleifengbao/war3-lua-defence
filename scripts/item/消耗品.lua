@@ -73,7 +73,7 @@ function mt:onCastShot()
 
     local heal = skill.heal
     hero:add('生命', heal)
-    hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin')
+    hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin')()
     --暂时处理
     for item in hero:eachItem() do
         if skill:getName() == item:getName() then
@@ -93,7 +93,7 @@ function mt:onCastShot()
 
     local heal = skill.heal
     hero:add('生命', heal)
-    hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin')
+    hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin')()
     --暂时处理
     for item in hero:eachItem() do
         if skill:getName() == item:getName() then

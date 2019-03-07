@@ -1,1 +1,0 @@
-require 'skill.坐骑.坐骑'

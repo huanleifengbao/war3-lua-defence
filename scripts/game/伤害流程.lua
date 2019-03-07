@@ -129,7 +129,7 @@ local function leech(damage)
 			rate = source:get '吸血'
 		end
 		if rate > 0 then
-			sg.effectU(source,'origin',[[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]],0)
+			source:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]],'origin')()
 			source:add('生命',damage:get_currentdamage() * rate/100)
 		end
 	end

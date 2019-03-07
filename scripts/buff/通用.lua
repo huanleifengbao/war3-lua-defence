@@ -7,7 +7,7 @@ mt.description = '该单位被击晕了，所以不能移动，攻击和施放�
 
 function mt:onAdd()
 	local u = self:getOwner()
-	self.eff = sg.effectU(u,'overhead',[[Abilities\Spells\Human\Thunderclap\ThunderclapTarget.mdl]])
+	self.eff = u:particle([[Abilities\Spells\Human\Thunderclap\ThunderclapTarget.mdl]],'overhead')
 	u:addRestriction '硬直'
 end
 
@@ -17,7 +17,7 @@ end
 
 function mt:onRemove()
 	local u = self:getOwner()
-	self.eff:remove()
+	self.eff()
 	u:removeRestriction '硬直'
 end
 
@@ -31,7 +31,7 @@ mt.description = '该单位是无敌的，所以任何的攻击和魔法都对�
 function mt:onAdd()
 	local u = self:getOwner()
 	jass.SetUnitInvulnerable(u._handle,true)
-	self.eff = sg.effectU(u,'origin',[[Abilities\Spells\Human\DivineShield\DivineShieldTarget.mdl]])	
+	self.eff = u:particle([[Abilities\Spells\Human\DivineShield\DivineShieldTarget.mdl]],'overhead')
 end
 
 function mt:onCover(new)
@@ -41,5 +41,5 @@ end
 function mt:onRemove()
 	local u = self:getOwner()
 	jass.SetUnitInvulnerable(u._handle,false)
-	self.eff:remove()
+	self.eff()
 end
