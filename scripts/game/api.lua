@@ -135,17 +135,34 @@ function sg.leap_block(p1,p2)
 end
 
 --跳字
-function sg.text_tag(msg,point,height,show)
+function sg.text_tag(data)
+	if not data.text or not data.point then
+		error('没有输入必要信息')
+	end
+	local deafault = {
+		text = nil,
+		point = nil,
+		height = 100,
+		size = 25,
+		speed = 25,
+		angle = 90,
+		time = 1.5,
+		fade = 0.8,
+		player = nil,
+	}
+	for k,v in pairs(data) do
+		deafault[k] = v
+	end
 	ac.textTag()
-        : text(msg, 0.025)
-        : at(point, height)
-        : speed(0.025, 90)
-        : life(1.5, 0.8)
+        : text(deafault.text, deafault.size/1000)
+        : at(deafault.point, deafault.height)
+        : speed(deafault.speed/1000, deafault.angle)
+        : life(deafault.time, deafault.fade)
         : show(function (p)
-        	if show then
-            	return p == show
-        	else
+        	if not deafault.player then
 	        	return true
+        	else
+	        	return p == deafault.player
         	end
         end)
 end
@@ -165,7 +182,13 @@ function sg.add_gold(unit,type,count)
 	else
 		msg = '+' ..math.floor(count)
 	end
-	sg.text_tag(msg,unit:getPoint(),140,player)
+	sg.text_tag({
+		text = msg,
+		point = unit:getPoint(),
+		height = 140,
+		player = player,
+	})
+	--sg.text_tag(msg,unit:getPoint(),140,player)
     --ac.textTag()
     --    : text(msg, 0.025)
     --    : at(unit:getPoint(), 140)

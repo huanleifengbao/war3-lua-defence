@@ -8,6 +8,7 @@ for _,skill_name in pairs(tbl) do
 
 	function mt:onAdd()
 	    local hero = self:getOwner()
+	    sg.add_allatr(hero,self.add)
 	    self.trg = ac.loop(1,function()
 			sg.add_allatr(hero,self.atr)
 	    end)
