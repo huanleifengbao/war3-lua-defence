@@ -34,6 +34,7 @@ for i = 1, #hero_tbl do
 end
 
 for i = 1, 6 do
+    ac.player(i):add('金币', 50000)
     ac.player(i):event('玩家-选中单位', function (trg, player, unit)
         if unit:getOwner():id() == 16 and not player:getHero() then
             if pick_mark[i] == unit then
@@ -46,6 +47,10 @@ for i = 1, 6 do
                 hero:blink(start_p)
                 hero:bagSize(6)
                 hero:addSkill('通用被动', '技能', 2)
+                local skill = hero:addSkill('1级威望', '技能', 5)
+                hero:userData('威望技能', skill)
+                local skill = hero:addSkill('0阶觉醒', '技能', 6)
+                hero:userData('觉醒技能', skill)
                 --hero:addSkill('回城', '技能', 4)
                 ac.player(16):createUnit(hero_tbl[i][1], ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])
                 local item_name = Aghanim[name]

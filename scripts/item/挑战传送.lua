@@ -246,8 +246,10 @@ local function awake(unit, id, data)
         rect:remove()
         awake_boss[id] = nil
         if killer ~= awake_boss[id] then
-            unit:set('觉醒等级', math.max(data.awake + 1, unit:get('觉醒等级')))
-            ac.game:eventNotify('地图-觉醒等级变化', unit)
+            if data.awake + 1 > unit:get('觉醒等级') then
+                unit:set('觉醒等级', data.awake + 1)
+                ac.game:eventNotify('地图-觉醒等级变化', unit)
+            end
         end
     end)
 end
@@ -297,6 +299,7 @@ function mt:onAdd()
         if buff then
             buff:remove()
             boss:userData('暂停挑战', nil)
+            player:message('|cffffff00继续挑战!|r')
         else
             player:message('|cffffff00boss并不处于暂停状态|r')
             return false
@@ -324,6 +327,7 @@ function mt:onAdd()
         }
         boss:kill(boss)
         boss:remove()
+        player:message('|cffff0000已放弃|r')
     else
         player:message('|cffffff00当前没有挑战任何boss|r')
         return false
