@@ -241,10 +241,14 @@ local function awake(unit, id, data)
         end
     end
     --boss死了,结束
-    awake_boss[id]:event('单位-死亡', function ()
+    awake_boss[id]:event('单位-死亡', function(_, _, killer)
         trg:remove()
         rect:remove()
         awake_boss[id] = nil
+        if killer ~= awake_boss[id] then
+            unit:add('觉醒等级', 1)
+            ac.game:eventNotify('地图-觉醒等级提升', unit)
+        end
     end)
 end
 

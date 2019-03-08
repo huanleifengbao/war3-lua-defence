@@ -30,7 +30,7 @@ function mt:onAdd()
     local lv = item.lv
     local msg_height = 60
     unit:level(unit:level() + lv, true)
-    local msg = '|cff00ff75Level Up'..math.floor(lv)..'|n'
+    local msg = '|cff00ddeeLevel Up'..math.floor(lv)..'|n'
     ac.textTag()
         : text(msg, 0.022)
         : at(unit:getPoint(), msg_height)
