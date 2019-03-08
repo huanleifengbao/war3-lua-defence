@@ -12,6 +12,7 @@ function mt:do_damage(damage)
 		    target = u,
 		    damage = damage,
 		    damage_type = self.damage_type,
+		    attack = true,
 		    skill = self,
 		}
 	end
@@ -27,15 +28,19 @@ function mt:onCastShot()
     local wait = self.wait
     local pulse = self.pulse
     local pulse2 = self.pulse2
-    sg.effect(target,[[effect\BlackBlink.mdx]],0)
+    ac.effect {
+	    target = target,
+	    model = [[effect\BlackBlink.mdx]],
+	    time = 1,
+	}
     for i = 1,count do
 	    local a = add * i
 	    local p1 = target - {a,area}
 	    local p2 = target - {a + add,area}
 	   	local line = hero:createUnit('通用马甲',p1,0)
 	    local dummy = hero:createUnit('吕布-分身',target,a)
-	    sg.effectU(dummy,'weapon',[[Abilities\Weapons\ZigguratMissile\ZigguratMissile.mdl]])
-	    sg.effectU(dummy,'weapon',[[Abilities\Weapons\IllidanMissile\IllidanMissile.mdl]])
+	    dummy:particle([[Abilities\Weapons\ZigguratMissile\ZigguratMissile.mdl]],'weapon')
+	    dummy:particle([[Abilities\Weapons\IllidanMissile\IllidanMissile.mdl]],'weapon')
 	    sg.set_color(dummy,{a = 125})
 	    local moverline = hero:moverLine
 	    {
@@ -75,7 +80,11 @@ function mt:onCastShot()
 			    	sg.animation(dummy,'spell')
 				    dummy:setFacing(angle + 180)
 				    ac.wait(1,function()
-				    	sg.effect(dummy:getPoint(),[[effect\BlackBlink.mdx]],0)
+						ac.effect {
+						    target = dummy:getPoint(),
+						    model = [[effect\BlackBlink.mdx]],
+						    time = 1,
+						}
 				    	dummy:remove()
 				    end)
 			    end)

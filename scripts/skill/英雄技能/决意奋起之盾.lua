@@ -11,8 +11,8 @@ function mt:onCastShot()
 	hero:addRestriction '硬直'
 	sg.animationI(hero,5,true)
 	sg.animationSpeed(hero,speed/500)
-	sg.effectU(hero,'origin',[[Abilities\Spells\NightElf\BattleRoar\RoarCaster.mdl]],0)
-	sg.effectU(hero,'origin',[[effect\zhendangbo.mdx]],time)
+	hero:particle([[Abilities\Spells\NightElf\BattleRoar\RoarCaster.mdl]],'origin')()
+	local eff = hero:particle([[effect\zhendangbo.mdx]],'origin')
 	local mover = hero:moverLine
     {
 		mover = hero,
@@ -62,6 +62,7 @@ function mt:onCastShot()
 	end)
 	ac.wait(time,function()
 		hero:removeRestriction '硬直'
+		eff()
 		sg.animationSpeed(hero,1)
 		sg.animation(hero,'stand')
 	end)
