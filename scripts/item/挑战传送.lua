@@ -246,8 +246,8 @@ local function awake(unit, id, data)
         rect:remove()
         awake_boss[id] = nil
         if killer ~= awake_boss[id] then
-            unit:add('觉醒等级', 1)
-            ac.game:eventNotify('地图-觉醒等级提升', unit)
+            unit:set('觉醒等级', math.max(data.awake + 1, unit:get('觉醒等级')))
+            ac.game:eventNotify('地图-觉醒等级变化', unit)
         end
     end)
 end

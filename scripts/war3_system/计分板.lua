@@ -135,7 +135,7 @@ ac.wait(0, function()
             board[id+1][9]:text('0')
         end
     end)
-    ac.game:event('地图-觉醒等级提升', function (_, unit)
+    ac.game:event('地图-觉醒等级变化', function (_, unit)
         local player = unit:getOwner()
         local id = player:id()
         board[id+1][6]:icon(title2_icon[unit:get('觉醒等级') + 1])
