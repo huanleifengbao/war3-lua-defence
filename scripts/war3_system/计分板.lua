@@ -15,6 +15,15 @@ local player_colour = {
 }
 
 --威望
+local title_skill = {
+    '1级威望',
+    '2级威望',
+    '3级威望',
+    '4级威望',
+    '5级威望',
+    '6级威望',
+    '7级威望',
+}
 local title = {
     [1] = '|cffffffcc初入江湖|r',
     [2] = '|cff505050武林菜鸟',
@@ -45,6 +54,19 @@ local title_level = {
 }
 
 --觉醒
+local awake_skill = {
+    '0阶觉醒',
+    '1阶觉醒',
+    '2阶觉醒',
+    '3阶觉醒',
+    '4阶觉醒',
+    '5阶觉醒',
+    '6阶觉醒',
+    '7阶觉醒',
+    '8阶觉醒',
+    '9阶觉醒',
+    '10阶觉醒',
+}
 local title2 = {
     [1] = '|cffffffcc未觉醒|r',
     [2] = '|cffffffcc【一阶】|r',
@@ -108,11 +130,6 @@ ac.wait(0, function()
     ac.game:event('地图-选择英雄', function (_, unit, player)
         local id = player:id()
         if unit then
-            --开挂
-            player:add('金币', 100000)
-            --unit:addSkill('五月雨斩', '技能', 1)
-            --unit:addSkill('三国无双', '技能', 2)
-            --unit:addSkill('赤兔', '技能', 3)
             --初始化积分相关属性
             unit:set('威望等级', 1)
             unit:set('觉醒等级', 0)
@@ -140,6 +157,17 @@ ac.wait(0, function()
         local id = player:id()
         board[id+1][6]:icon(title2_icon[unit:get('觉醒等级') + 1])
         board[id+1][6]:text(title2[unit:get('觉醒等级') + 1])
+        for i = 1, 6 do
+            ac.player(i):message('|cffffff00'..unit:getName()..'觉醒了!已达到'..title2[unit:get('觉醒等级') + 1]..'|r', 10)
+        end
+
+        local skill1 = unit:userData('觉醒技能')
+        if skill1 then
+            skill1:remove()
+            local name = awake_skill[unit:get('觉醒等级') + 1]
+            local skill2 = unit:addSkill(name, '技能', 6)
+            unit:userData('觉醒技能', skill2)
+        end
     end)
 
     --等级
@@ -176,7 +204,17 @@ ac.wait(0, function()
             unit:add('威望等级', 1)
             board[id+1][4]:icon(title_icon[unit:get('威望等级')])
             board[id+1][4]:text(title[unit:get('威望等级')])
-            print(unit:getName()..'成为了'..title[unit:get('威望等级')])
+            for i = 1, 6 do
+                ac.player(i):message('|cffffff00'..unit:getName()..'威望提升,称号变成了'..title[unit:get('威望等级')]..'|r', 10)
+            end
+
+            local skill1 = unit:userData('威望技能')
+            if skill1 then
+                skill1:remove()
+                local name = title_skill[unit:get('威望等级')]
+                local skill2 = unit:addSkill(name, '技能', 5)
+                unit:userData('威望技能', skill2)
+            end
         end
     end)
 
