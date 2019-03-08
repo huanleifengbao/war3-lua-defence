@@ -1,5 +1,4 @@
 
---local Aghanim_lv = {500, 1000, 3000, 5000, 8000}
 --需要杀怪数量,需要的专属挑战等级
 local Aghanim_lv = {
     {500, nil},
@@ -11,7 +10,7 @@ local Aghanim_lv = {
 
 ac.game:event('地图-英雄杀敌', function (_, unit, player, dead)
     local item = unit:userData('专属')
-    if item then
+    if item and unit:userData('专属等级') <= #Aghanim_lv then
         local stack = math.min(item:stack() + 1, Aghanim_lv[unit:userData('专属等级')][1])
         item:stack(stack)
     end

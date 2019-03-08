@@ -86,7 +86,6 @@ local exercise_point = {
     ac.point(5793, 7740),    ac.point(9034, 7740),
     ac.point(5793, 5547),    ac.point(9034, 5547),
 }
-local exercise_rect = {}
 
 --练功房刷怪
 local function exercise(unit, id, data)
@@ -95,7 +94,6 @@ local function exercise(unit, id, data)
     local timer = false
     for i = 1, data.count do
         local u = ac.player(11):createUnit(data.name, p, 270)
-        u:set('生命',u:get'生命上限')
         u:set('死亡金钱', data.gold)
         u:set('死亡木材', data.lumber)
         u:set('死亡经验', data.exp)
@@ -171,4 +169,186 @@ for _, tbl_name in pairs(tbl) do
             return false
         end
     end
+end
+
+
+
+--挑战觉醒boss,跟练功房机制差不多
+local point = {
+    ac.point(-6800, -3900),
+    ac.point(-4500, -3900),
+    ac.point(-2300, -3900),
+    ac.point(-100, -3900),
+    ac.point(1950, -3900),
+    ac.point(4100, -3900),
+}
+
+local mt = ac.item['觉醒挑战房']
+
+function mt:onCanAdd(unit)
+    local player = unit:getOwner()
+    local id = player:id()
+    local target = point[id]
+    unit:blink(target)
+    unit:stop()
+    player:moveCamera(target, 0.2)
+end
+
+local awake_boss = {}
+local awake_data = {
+    ['挑战觉醒boss-1'] = {name = '觉醒boss-1', lv = 1000, awake = 0},
+    ['挑战觉醒boss-2'] = {name = '觉醒boss-2', lv = 2000, awake = 1},
+    ['挑战觉醒boss-3'] = {name = '觉醒boss-3', lv = 3000, awake = 2},
+    ['挑战觉醒boss-4'] = {name = '觉醒boss-4', lv = 4000, awake = 3},
+    ['挑战觉醒boss-5'] = {name = '觉醒boss-5', lv = 5000, awake = 4},
+    ['挑战觉醒boss-6'] = {name = '觉醒boss-6', lv = 6000, awake = 5},
+    ['挑战觉醒boss-7'] = {name = '觉醒boss-7', lv = 7000, awake = 6},
+    ['挑战觉醒boss-8'] = {name = '觉醒boss-8', lv = 8000, awake = 7},
+    ['挑战觉醒boss-9'] = {name = '觉醒boss-9', lv = 9000, awake = 8},
+    ['挑战觉醒boss-10'] = {name = '觉醒boss-10', lv = 10000, awake = 9},
+}
+local awake_point = {
+    ac.point(-6800, -3500),
+    ac.point(-4500, -3500),
+    ac.point(-2300, -3500),
+    ac.point(-100, -3500),
+    ac.point(1950, -3500),
+    ac.point(4100, -3500),
+}
+--boss位置偏移:角度,距离
+awake_point_ex = {90, 600}
+
+--召唤boss
+local function awake(unit, id, data)
+    local p = awake_point[id]
+    awake_boss[id] = ac.player(11):createUnit(data.name, p - awake_point_ex, 270)
+    --冻结boss,可以按继续再打
+    local function awake_zzz()
+        if not awake_boss[id]:userData('暂停挑战') then
+            local buff = awake_boss[id]:addBuff '暂停挑战'{}
+            awake_boss[id]:userData('暂停挑战', buff)
+        end
+    end
+    --冻结1:英雄死了
+    local trg = unit:event('单位-死亡', function ()
+        awake_zzz()
+    end)
+    --冻结2:英雄溜了
+    local rect = ac.rect(p, 1280, 2688)
+    function rect:onLeave(u)
+        if u == unit then
+            awake_zzz()
+        end
+    end
+    --boss死了,结束
+    awake_boss[id]:event('单位-死亡', function ()
+        trg:remove()
+        rect:remove()
+        awake_boss[id] = nil
+    end)
+end
+
+local tbl = {'挑战觉醒boss-1','挑战觉醒boss-2','挑战觉醒boss-3','挑战觉醒boss-4','挑战觉醒boss-5','挑战觉醒boss-6','挑战觉醒boss-7','挑战觉醒boss-8','挑战觉醒boss-9','挑战觉醒boss-10'}
+
+for _, tbl_name in pairs(tbl) do
+	local mt = ac.item[tbl_name]
+
+    function mt:onCanAdd(unit)
+        local player = unit:getOwner()
+        local id = player:id()
+        local name = self:getName()
+        local data = awake_data[name]
+        local mark = true
+        if data.lv > unit:level() then
+            player:message('|cffffff00等级不足|cffff7500 '..data.lv..' |cffffff00无法挑战|r', 10)
+            mark = false
+        end
+        if data.awake > unit:get('觉醒等级') then
+            player:message('|cffffff00觉醒程度不足|cffff7500 '..data.awake..'阶 |cffffff00无法挑战|r', 10)
+            mark = false
+        end
+        if mark == false then
+            return false
+        end
+        if not awake_boss[id] then
+            local hero = player:getHero()
+            awake(hero, id, awake_data[name])
+            player:message('|cffffff00挑战:|cffff7500'..awake_data[name].name..'|r', 10)
+        else
+            player:message('|cffffff00当前已有挑战目标,你必须|cff00ff00胜利|cffffff00或者|cffff0000放弃|r', 10)
+            return false
+        end
+    end
+end
+
+local mt = ac.item['继续-觉醒boss']
+
+function mt:onAdd()
+    local unit = self:getOwner()
+    local player = unit:getOwner()
+    local id = player:id()
+    local boss = awake_boss[id]
+    if boss then
+        local buff = boss:userData('暂停挑战')
+        if buff then
+            buff:remove()
+            boss:userData('暂停挑战', nil)
+        else
+            player:message('|cffffff00boss并不处于暂停状态|r')
+            return false
+        end
+    else
+        player:message('|cffffff00当前没有挑战任何boss|r')
+        return false
+    end
+end
+
+local mt = ac.item['放弃-觉醒boss']
+
+function mt:onAdd()
+    local unit = self:getOwner()
+    local player = unit:getOwner()
+    local id = player:id()
+    local boss = awake_boss[id]
+    if boss then
+        ac.effect {
+            target = boss:getPoint(),
+            model = [[Abilities\Spells\Orc\FeralSpirit\feralspirittarget.mdl]],
+            speed = 1,
+            size = 3,
+            time = 1,
+        }
+        boss:kill(boss)
+        boss:remove()
+    else
+        player:message('|cffffff00当前没有挑战任何boss|r')
+        return false
+    end
+end
+
+local mt = ac.buff['暂停挑战']
+mt.coverGlobal = 1
+mt.show = 1
+mt.icon = [[ReplaceableTextures\CommandButtons\BTNReplay-Pause.blp]]
+mt.title = '暂停挑战'
+mt.description = 'boss不会行动也不会受到攻击'
+
+function mt:onAdd()
+	local u = self:getOwner()
+	u:addRestriction '硬直'
+	u:addRestriction '无敌'
+	self.eff1 = u:particle([[Abilities\Spells\Orc\Ensnare\ensnareTarget.mdl]],'origin')
+    self.eff2 = u:particle([[Abilities\Spells\Human\DivineShield\DivineShieldTarget.mdl]],'origin')
+end
+
+function mt:onCover()
+    return false
+end
+
+function mt:onRemove()
+	local u = self:getOwner()
+	u:removeRestriction '硬直'
+    u:removeRestriction '无敌'
+    --self.eff1:remove()
+    --self.eff2:remove()
 end

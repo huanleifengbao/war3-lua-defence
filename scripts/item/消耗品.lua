@@ -20,6 +20,27 @@ function mt:onAdd()
         end)
 end
 
+local mt = ac.item['作弊等级']
+
+function mt:onAdd()
+    local item = self
+    local unit = item:getOwner()
+    local i_player = unit:getOwner()
+
+    local lv = item.lv
+    local msg_height = 60
+    unit:level(unit:level() + lv, true)
+    local msg = '|cff00ff75Level Up'..math.floor(lv)..'|n'
+    ac.textTag()
+        : text(msg, 0.022)
+        : at(unit:getPoint(), msg_height)
+        : speed(0.025, 90)
+        : life(1.5, 0.8)
+        : show(function (player)
+            return player == i_player
+        end)
+end
+
 local mt = ac.item['作弊金钱']
 
 function mt:onAdd()
@@ -73,7 +94,7 @@ function mt:onCastShot()
 
     local heal = skill.heal
     hero:add('生命', heal)
-    hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin')
+    hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin', 0)
 
     local item = skill:getItem()
     if item then
@@ -92,7 +113,7 @@ function mt:onCastShot()
 
     local heal = skill.heal
     hero:add('生命', heal)
-    hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin')
+    hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin', 0)
 
     local item = skill:getItem()
     if item then

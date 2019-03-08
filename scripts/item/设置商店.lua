@@ -12,6 +12,7 @@ shop:setBuyRange(1000000)
 shop:setItem('治疗药水-小', 9, 'Q')
 shop:setItem('治疗药水-大', 10, 'W')
 shop:setItem('经验之书', 5, 'A')
+shop:setItem('作弊等级', 6, 'S')
 
 --新手装备
 local shop = ac.player(16):createShop('商店', ac.point(7044, -10529), 270)
@@ -94,13 +95,14 @@ shop:setItem('挑战雷', 10, 'W')
 shop:setItem('挑战晓', 11, 'E')
 shop:setItem('挑战响', 12, 'R')
 shop:setItem('练功房', 5, 'A')
+shop:setItem('觉醒挑战房', 6, 'S')
 
+--练功
 local point = {
     ac.point(6593, 10301),   ac.point(9834, 10301),
     ac.point(6593, 7740),    ac.point(9834, 7740),
     ac.point(6593, 5547),    ac.point(9834, 5547),
 }
---练功
 for i = 1, 6 do
     local shop = ac.player(16):createShop('商店', point[i], 270)
     shop:setBuyRange(1500)
@@ -113,4 +115,30 @@ for i = 1, 6 do
     shop:setItem('刷木3', 7, 'D')
     --shop:setItem('刷木4', 8, 'F')
     shop:setItem('刷经验1', 1, 'Z')
+end
+
+--觉醒挑战房
+local point = {
+    ac.point(-6250, -3500),
+    ac.point(-3950, -3500),
+    ac.point(-1750, -3500),
+    ac.point(400, -3500),
+    ac.point(2450, -3500),
+    ac.point(4600, -3500),
+}
+for i = 1, 6 do
+    local shop = ac.player(16):createShop('商店', point[i], 270)
+    shop:setBuyRange(1500)
+    shop:setItem('挑战觉醒boss-1', 9, 'Q')
+    shop:setItem('挑战觉醒boss-2', 10, 'W')
+    shop:setItem('挑战觉醒boss-3', 11, 'E')
+    shop:setItem('挑战觉醒boss-4', 12, 'R')
+    shop:setItem('挑战觉醒boss-5', 5, 'A')
+    shop:setItem('挑战觉醒boss-6', 6, 'S')
+    shop:setItem('挑战觉醒boss-7', 7, 'D')
+    shop:setItem('挑战觉醒boss-8', 8, 'F')
+    shop:setItem('挑战觉醒boss-9', 1, 'Z')
+    shop:setItem('挑战觉醒boss-10', 2, 'X')
+    shop:setItem('继续-觉醒boss', 3, 'C')
+    shop:setItem('放弃-觉醒boss', 4, 'V')
 end
