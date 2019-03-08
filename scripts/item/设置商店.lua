@@ -103,6 +103,10 @@ local shop = ac.player(16):createShop('黑市商人', ac.point(8644, -10529), 27
 shop:setBuyRange(2000)
 shop:setItem('抽奖', 9, 'Q')
 shop:setItem('十连抽奖', 10, 'W')
+shop:setItem('兑换玄铁-1', 5, 'A')
+shop:setItem('兑换玄铁-2', 6, 'S')
+shop:setItem('兑换玄铁-3', 7, 'D')
+shop:setItem('兑换玄铁-4', 8, 'F')
 
 --练功
 local point = {

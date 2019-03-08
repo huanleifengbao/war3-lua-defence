@@ -93,3 +93,55 @@ for _, tbl_name in pairs(tbl) do
         return false
     end
 end
+
+--不需要主体装备,将材料直接合成的
+local tbl = {'兑换玄铁-1'}
+
+for _, tbl_name in pairs(tbl) do
+	local mt = ac.item[tbl_name]
+
+    function mt:onCanAdd(unit)
+        local item = self
+        local player = unit:getOwner()
+        local data = self.stuff
+        local cost_item = {}
+        local cost_count = {}
+        local mark = true
+        for i = 1, #data do
+            if data[i] then
+                local stuff_name = data[i][1]
+                local stuff_count = 1
+                if data[i][2] then
+                    stuff_count = data[i][2]
+                end
+                cost_item[i] = unit:findItem(stuff_name)
+                cost_count[i] = stuff_count
+                if cost_item[i] then
+                    if cost_item[i]:stack() < stuff_count then
+                        player:message('|cffff7500'..stuff_name..'|cffffff00数量不足'..'|cffff7500'..stuff_count..'|cffffff00个|r', 10)
+                        mark = false
+                    end
+                else
+                    player:message('|cffffff00你未拥有需要的|cffff7500'..stuff_name..'|r', 10)
+                    mark = false
+                end
+            end
+        end
+        if mark == false then
+            return false
+        end
+        local item_name = item.new_item
+        for i = 1, #cost_item do
+            if cost_item[i] then
+                if cost_item[i]:stack() > cost_count[i] then
+                    cost_item[i]:stack(cost_item[i]:stack() - cost_count[i])
+                else
+                    cost_item[i]:remove()
+                end
+            end
+        end
+        unit:createItem(item_name)
+        player:message('|cffffff00已获得|cffff7500'..item_name..'|r', 10)
+        return true
+    end
+end

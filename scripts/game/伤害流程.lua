@@ -34,7 +34,7 @@ damage表内可定义的属性：
 local function avoid(damage)
 	local target = damage.target
 	if damage.truestrike == false and sg.get_random(target:get '闪避') then
-		sg.text_tag('|cffff0000闪呀|r',target:getPoint(),140)
+		sg.text_tag('|cffff0000miss|r',target:getPoint(),140)
 		return false
 	else
 		return true
