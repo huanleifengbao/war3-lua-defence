@@ -30,7 +30,7 @@ end
 --没那么多刁民机制的普通人
 --boss名字,位置,复活时间,物品掉落表{'物品名字', 概率(概率可超过100来代表数量)}
 local tbl = {
-    {'锻造石boss-6', ac.point(430, 10800), 10, {{'六级锻造石', 100}}}, {'锻造石boss-1', ac.point(2250, 10800), 10, {{'一级锻造石', 1000}}},
+    {'锻造石boss-6', ac.point(430, 10800), 10, {{'六级锻造石', 100}}}, {'锻造石boss-1', ac.point(2250, 10800), 10, {{'一级锻造石', 100}}},
     {'锻造石boss-7', ac.point(430, 8000), 10, {{'七级锻造石', 100},{'玄铁', 10}}}, {'锻造石boss-2', ac.point(2250, 8000), 10, {{'二级锻造石', 100}}},
     {'锻造石boss-8', ac.point(430, 5100), 10, {{'八级锻造石', 100},{'百年玄铁', 10}}}, {'锻造石boss-3', ac.point(2250, 5100), 10, {{'三级锻造石', 100}}},
     {'锻造石boss-9', ac.point(430, 2600), 10, {{'九级锻造石', 100},{'千年玄铁', 10}}}, {'锻造石boss-4', ac.point(2250, 2600), 10, {{'四级锻造石', 100}}},
@@ -50,7 +50,6 @@ for i = 1, #tbl do
                 for _ = 1, 100 do
                     if count_rd >= 100 then
                         local item = p:createItem(item_name)
-                        print(item:getPoint())
                         ac.effect {
                             target = item:getPoint(),
                             model = [[Abilities\Spells\Other\Transmute\PileofGold.mdl]],
