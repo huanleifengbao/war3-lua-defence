@@ -5,7 +5,8 @@ shop:setItem('交换金币', 9, 'Q')
 shop:setItem('交换木材', 10, 'W')
 shop:setItem('基地无敌', 5, 'A')
 shop:setItem('暂停刷怪', 6, 'S')
-shop:setItem('基地升级', 1, 'Z')
+shop:setItem('基地升级', 7, 'D')
+shop:setItem('副本-大战黄巾贼', 1, 'X')
 
 local shop_list = {
 	['药水商店'] = {p = ac.point(6644, -10529),n = [[shop\yaoshuishangdian.mdx]]},
@@ -35,6 +36,7 @@ shop:setItem('治疗药水-小', 9, 'Q')
 shop:setItem('治疗药水-大', 10, 'W')
 shop:setItem('经验之书', 5, 'A')
 shop:setItem('作弊等级', 6, 'S')
+shop:setItem('作弊属性', 7, 'D')
 
 --新手装备
 local shop = shop_list['新手装备']
@@ -153,6 +155,7 @@ for i = 1, 6 do
     shop:setItem('刷木3', 7, 'D')
     --shop:setItem('刷木4', 8, 'F')
     shop:setItem('刷经验1', 1, 'Z')
+    shop:setItem('作弊刷怪', 2, 'X')
 end
 
 --觉醒挑战房

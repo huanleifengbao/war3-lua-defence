@@ -73,12 +73,13 @@ for i = 1, 6 do
 end
 
 local exercise_monster = {
-    ['刷钱1'] = {name = '金币怪1', count = 20, gold = 500, lumber = 0, exp = 3000},
-    ['刷钱2'] = {name = '金币怪2', count = 20, gold = 10000, lumber = 0, exp = 3000},
-    ['刷木1'] = {name = '木材怪1', count = 20, gold = 0, lumber = 50, exp = 3000},
-    ['刷木2'] = {name = '木材怪2', count = 20, gold = 0, lumber = 150, exp = 3000},
-    ['刷木3'] = {name = '木材怪3', count = 20, gold = 0, lumber = 500, exp = 3000},
-    ['刷经验1'] = {name = '经验宝宝1', count = 20, gold = 0, lumber = 0, exp = 3000},
+    ['刷钱1'] = {name = '金币怪1', count = 20, cd = 1, gold = 500, lumber = 0, exp = 3000},
+    ['刷钱2'] = {name = '金币怪2', count = 20, cd = 1, gold = 10000, lumber = 0, exp = 3000},
+    ['刷木1'] = {name = '木材怪1', count = 20, cd = 1, gold = 0, lumber = 50, exp = 3000},
+    ['刷木2'] = {name = '木材怪2', count = 20, cd = 1, gold = 0, lumber = 150, exp = 3000},
+    ['刷木3'] = {name = '木材怪3', count = 20, cd = 1, gold = 0, lumber = 500, exp = 3000},
+    ['刷经验1'] = {name = '经验宝宝1', count = 20, cd = 1, gold = 0, lumber = 0, exp = 3000},
+    ['作弊刷怪'] = {name = '经验宝宝1', count = 100, cd = 0.1, gold = 0, lumber = 0, exp = 3000},
 }
 
 local exercise_point = {
@@ -92,7 +93,7 @@ local function exercise(unit, id, data)
     local p = exercise_point[id]
     local rect = ac.rect(p, 2688, 2176)
     local timer = false
-    for i = 1, data.count do
+    for _ = 1, data.count do
         local u = ac.player(11):createUnit(data.name, p, 270)
         u:set('死亡金钱', data.gold)
         u:set('死亡木材', data.lumber)
@@ -108,7 +109,7 @@ local function exercise(unit, id, data)
                 break
             end]]
             if exercise_count[id] == 0 then
-                timer = ac.wait(1, function()
+                timer = ac.wait(data.cd, function()
                     timer = false
                     exercise(unit, id, exercise_monster[exercise_target[id]])
                 end)
@@ -149,7 +150,7 @@ local function exercise(unit, id, data)
     end
 end
 
-local tbl = {'刷钱1','刷钱2','刷木1','刷木2','刷木3','刷经验1'}
+local tbl = {'刷钱1','刷钱2','刷木1','刷木2','刷木3','刷经验1','作弊刷怪'}
 
 for _, tbl_name in pairs(tbl) do
 	local mt = ac.item[tbl_name]
@@ -244,13 +245,13 @@ local function awake(unit, id, data)
     awake_boss[id]:event('单位-死亡', function(_, _, killer)
         trg:remove()
         rect:remove()
-        awake_boss[id] = nil
         if killer ~= awake_boss[id] then
             if data.awake + 1 > unit:get('觉醒等级') then
                 unit:set('觉醒等级', data.awake + 1)
                 ac.game:eventNotify('地图-觉醒等级变化', unit)
             end
         end
+        awake_boss[id] = nil
     end)
 end
 

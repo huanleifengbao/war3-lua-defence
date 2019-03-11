@@ -8,6 +8,7 @@ require 'war3_system.基地'
 require 'war3_system.可刷新野外boss'
 require 'war3_system.快捷按钮'
 require 'war3_system.信使'
+require 'war3_system.副本'
 
 sg.max_player = 6
 for i = 1, sg.max_player do
