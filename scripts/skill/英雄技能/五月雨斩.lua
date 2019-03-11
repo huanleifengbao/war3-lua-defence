@@ -62,7 +62,7 @@ function mt:onCastShot()
 	--特效
 	ac.timer(0.1,(time/0.1)/2,function()
 		local dummy = hero:createUnit('关羽-分身',point,point/target)
-		sg.set_color(dummy,{a = 125})
+		sg.set_color(dummy,{a = 0.5})
 		local mover = self:jump(dummy)
 		function mover:onRemove()
 			dummy:remove()

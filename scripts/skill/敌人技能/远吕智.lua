@@ -2,6 +2,19 @@ local attack_range = 300
 
 local mt = ac.skill['远吕智-灾厄的三重奏']
 
+function mt:do_damage(area,func)
+	local hero = self:getOwner()
+	local point = hero:getPoint()
+	for _, u in ac.selector()
+	    : inRange(point,area)
+	    : isEnemy(hero)
+	    : ofNot '建筑'
+	    : ipairs()
+	do
+		func(u)
+	end
+end
+
 function mt:onCastStart()
 	local hero = self:getOwner()
 	sg.animation(hero,'stand ready',true)
@@ -15,6 +28,12 @@ function mt:onCastStart()
 	    height = 500,
 	    time = time,
 	    skipDeath = true,
+	}
+	ac.effect {
+	    target = point,
+	    size = 2,
+	    model = [[Abilities\Spells\Other\HowlOfTerror\HowlCaster.mdl]],
+	    time = 1,
 	}
 	local area = self.area
 	ac.effect {
@@ -36,10 +55,10 @@ function mt:onCastStart()
 		}
 		ac.effect {
 		    target = point,
-		    size = 10,
-		    height = 300,
+		    size = 5,
+		    height = 50,
 		    model = [[Abilities\Spells\Human\MagicSentry\MagicSentryCaster.mdl]],
-		    time = time + self.castChannelTime,
+		    time = time + self.pulse,
 		}		
 	end)
 end
@@ -57,7 +76,44 @@ function mt:onCastChannel()
 	    model = [[effect\BloodSlam.mdx]],
 	    time = 1,
 	}
-	ac.wait(self.pulse,function()
+	ac.effect {
+	    target = point,
+	    model = [[Abilities\Spells\Human\MarkOfChaos\MarkOfChaosDone.mdl]],
+	    time = 1,
+	}
+	self:do_damage(area,function(u)
+		local damage = self.damage * sg.get_allatr(hero)
+		hero:damage
+		{
+		    target = u,
+		    damage = damage,
+		    damage_type = self.damage_type,
+		    skill = self,
+		}
+	end)
+	local time = self.pulse
+	self.load = ac.effect {
+	    target = point,
+	    model = [[effect\Progressbar.mdx]],
+	    speed = 1/time,
+	    size = 2,
+	    height = 500,
+	    time = time,
+	    skipDeath = true,
+	}
+	ac.wait(time,function()
+		self:do_damage(self.range,function(u)
+			if u:getPoint() * point > area then
+				local damage = self.damage2 * sg.get_allatr(hero)
+				hero:damage
+				{
+				    target = u,
+				    damage = damage,
+				    damage_type = self.damage_type,
+				    skill = self,
+				}
+			end
+		end)
 		ac.effect {
 		    target = point,
 		    size = area/40,
@@ -65,6 +121,20 @@ function mt:onCastChannel()
 		    height = 20,
 		    model = [[effect\Blood Explosion.mdx]],
 		    time = 1,
+		}
+		ac.effect {
+		    target = point,
+		    model = [[Abilities\Spells\Human\MarkOfChaos\MarkOfChaosDone.mdl]],
+		    time = 1,
+		}
+		self.load = ac.effect {
+		    target = point,
+		    model = [[effect\Progressbar.mdx]],
+		    speed = 1/time,
+		    size = 2,
+		    height = 500,
+		    time = self.castChannelTime - time,
+		    skipDeath = true,
 		}
 	end)
 end
@@ -75,6 +145,23 @@ function mt:onCastShot()
 	sg.animation(hero,'spell')
 	hero:speed(1)
 	local area = self.area
+	ac.effect {
+	    target = point,
+	    size = area/100,
+	    zScale = 1,
+	    model = [[effect\Lightning Boom.mdx]],
+	    time = 1,
+	}
+	self:do_damage(self.range,function(u)
+		local facing = u:getFacing() + 360
+		local angle = u:getPoint()/point + 360
+		if math.abs(facing%360 - angle%360) <= 60 then
+			u:addBuff '石化'
+			{
+				time = self.stone,
+			}
+		end
+	end)
 end
 
 function mt:onCastStop()

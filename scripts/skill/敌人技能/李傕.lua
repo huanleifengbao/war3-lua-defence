@@ -77,6 +77,7 @@ function mt:onCastShot()
 				for _, u in ac.selector()
 				    : inRange(p,area)
 				    : isEnemy(hero)
+				    : ofNot '建筑'
 				    : ipairs()
 				do
 					local damage = skill.damage * sg.get_allatr(hero)
@@ -171,6 +172,7 @@ function mt:onCastShot()
 	for _, u in ac.selector()
 	    : inRange(target,area)
 	    : isEnemy(hero)
+	    : ofNot '建筑'
 	    : ipairs()
 	do
 		local damage = self.damage * sg.get_allatr(hero)

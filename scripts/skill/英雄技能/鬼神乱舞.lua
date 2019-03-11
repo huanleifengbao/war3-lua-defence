@@ -41,7 +41,7 @@ function mt:onCastShot()
 	    local dummy = hero:createUnit('吕布-分身',target,a)
 	    dummy:particle([[Abilities\Weapons\ZigguratMissile\ZigguratMissile.mdl]],'weapon')
 	    dummy:particle([[Abilities\Weapons\IllidanMissile\IllidanMissile.mdl]],'weapon')
-	    sg.set_color(dummy,{a = 125})
+	    sg.set_color(dummy,{a = 0.5})
 	    local moverline = hero:moverLine
 	    {
 			mover = line,
