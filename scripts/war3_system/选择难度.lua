@@ -1,5 +1,6 @@
 
 ac.wait(0, function()
+    sg.game_mod = '通常'
     for i = 1, 6 do
         local player = ac.player(i)
         if player:controller() == '用户' and player:gameState() == '在线' then
