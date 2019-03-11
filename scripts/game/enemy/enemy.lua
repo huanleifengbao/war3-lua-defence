@@ -155,6 +155,8 @@ local ex_data = {
 	},
 }
 
+sg.all_enemy = {}
+
 local function create_enemy(wave)
 	sg.enemy_timer = ac.timer(data.interval,data.count,function()
 		for i = 1,#start_point do
@@ -167,7 +169,8 @@ local function create_enemy(wave)
 			u:set('死亡金钱', data['死亡金钱'](wave))
 			u:set('死亡木材', data['死亡木材'](wave))
 			u:set('死亡经验', data['死亡经验'](wave))
-			sg.add_ai(u)	
+			sg.add_ai(u)
+			sg.all_enemy[u] = u
 		end
 	end)
 	--boss
@@ -182,6 +185,7 @@ local function create_enemy(wave)
 			end
 			u:set('生命',u:get'生命上限')
 			sg.add_ai(u)
+			sg.all_enemy[u] = u
 		end)
 		sg.timerdialog('boss',sg.boss_timer)
 	end

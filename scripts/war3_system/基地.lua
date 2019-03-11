@@ -65,28 +65,12 @@ local mt = ac.item['暂停刷怪']
 
 function mt:onAdd()
 	local time = self.time
-	if sg.wave_timer then
-		sg.wave_timer:pause()
-	end
-	if sg.enemy_timer then
-		sg.enemy_timer:pause()
-	end
-	if sg.boss_timer then
-		sg.boss_timer:pause()
-	end
+	sg.stop_enemy()
 	for i = 1,sg.max_player do
     	ac.player(i):message('|cffffff00暂时停止刷怪，持续' .. time .. '秒|r', 10)
 	end
     ac.wait(time,function()
-		if sg.wave_timer then
-			sg.wave_timer:resume()
-		end
-		if sg.enemy_timer then
-			sg.enemy_timer:resume()
-		end
-		if sg.boss_timer then
-			sg.boss_timer:resume()
-		end
+		sg.start_enemy()
     	for i = 1,sg.max_player do
 	    	ac.player(i):message('|cffffff00暂停刷怪时间结束|r', 5)
 		end
