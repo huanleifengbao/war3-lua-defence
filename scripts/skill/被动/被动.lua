@@ -80,6 +80,7 @@ for _,skill_name in pairs(tbl) do
 	end
 
 	function mt:onRemove()
+		local hero = self:getOwner()
 		for name,count in pairs(self.attr) do
 			hero:add(name,-count)
 		end

@@ -34,7 +34,12 @@ damage表内可定义的属性：
 local function avoid(damage)
 	local target = damage.target
 	if damage.truestrike == false and sg.get_random(target:get '闪避') then
-		sg.text_tag('|cffff0000miss|r',target:getPoint(),140)
+		sg.text_tag({
+			text = '|cffff0000miss|r',
+			size = 30,
+			point = target:getPoint(),
+			height = 100,
+		})
 		return false
 	else
 		return true
@@ -87,7 +92,12 @@ local function onCrit(damage)
 		cri = cri - target:get '抗暴'
 		if sg.get_random(cri) then
 			local now_damage = damage:get_currentdamage() * (cridamage + 100)/100
-			sg.text_tag('|cffff0000' .. math.floor(now_damage) .. '!|r',target:getPoint(),100)
+			sg.text_tag({
+				text = '|cffff0000' .. math.floor(now_damage) .. '!|r',
+				size = 25,
+				point = target:getPoint(),
+				height = 100,
+			})
 			damage:div_damage(now_damage)
 		end
 	end

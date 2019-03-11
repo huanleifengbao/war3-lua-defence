@@ -110,6 +110,6 @@ function mt:onAdd()
 	base:add('生命上限',self.hp)
 	base:add('护甲',self.amr)
 	for i = 1,sg.max_player do
-    	ac.player(i):message('|cffffff00本阵的耐久度提升了！|r', 3)
+    	ac.player(i):message('|cffffff00本阵的耐久度提升了 ' .. level .. '/' .. self.max_level .. '|r', 3)
 	end
 end
