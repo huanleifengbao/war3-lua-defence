@@ -140,6 +140,11 @@ for _, tbl_name in pairs(tbl) do
                 end
             end
         end
+        if #sg.get_free_slot(unit) > 0 then
+            unit:createItem(item_name)
+        else
+            unit:getPoint():createItem(item_name)
+        end
         unit:createItem(item_name)
         player:message('|cffffff00已获得|cffff7500'..item_name..'|r', 10)
         return true
