@@ -44,13 +44,41 @@ function mt:onRemove()
 	self.eff()
 end
 
+local mt = ac.buff['即将石化']
+mt.coverGlobal = 1
+mt.show = 1
+mt.icon = [[ReplaceableTextures\CommandButtons\BTNResistantSkin.blp]]
+mt.title = '石化'
+mt.description = '该单位直视了魔眼，即将被石化。'
+
+function mt:onAdd()
+	local u = self:getOwner()
+	local hero = self.source
+	local p = u:getPoint()
+	local dummy = hero:createUnit('远吕智-石化预警',p,p/hero:getPoint())
+	ac.wait(1,function()
+		dummy:remove()
+	end)
+end
+
+function mt:onCover(new)
+    return true
+end
+
 local mt = ac.buff['石化']
 mt.coverGlobal = 1
+mt.show = 1
+mt.icon = [[ReplaceableTextures\CommandButtons\BTNHardenedSkin.blp]]
+mt.title = '石化'
+mt.description = '该被石化了，无法行动，生命恢复速度降低，但是获得少许减伤。'
 
 function mt:onAdd()
 	local u = self:getOwner()
 	u:addRestriction '硬直'
 	u:speed(0)
+	u:add('减伤',25)
+	self.rec = u:get('生命恢复')
+	u:add('生命恢复',-self.rec)
 	sg.set_color(u,{r = 0.2,g = 0.2,b = 0.2})
 end
 
@@ -62,6 +90,8 @@ function mt:onRemove()
 	local u = self:getOwner()
 	u:removeRestriction '硬直'
 	u:speed(1)
+	u:add('减伤',-25)
+	u:add('生命恢复',self.rec)
 	sg.set_color(u)
 end
 

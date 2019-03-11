@@ -82,11 +82,11 @@ function mt:onCastStart()
 		}
 		self.eyes = ac.timer(0.5,(time + self.pulse)/0.5,function()
 			self:on_eyes(function(u)
-				local p = u:getPoint()
-				local dummy = hero:createUnit('远吕智-石化预警',p,p/point)
-				ac.wait(1,function()
-					dummy:remove()
-				end)
+				u:addBuff '即将石化'
+				{
+					source = hero,
+					time = 0.6,
+				}
 				--ac.effect {
 				--    target = p,
 				--    angle = point/p,
