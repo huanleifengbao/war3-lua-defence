@@ -73,43 +73,49 @@ function mt:onAdd()
 	local hero = self:getOwner()
 	local bag = {}
 	for i = 1,page do
-		local u = hero:createUnit('切换背包',ac.point(0,0),0)
-		u:bagSize(6)
-		bag[i] = u
+		--local u = hero:createUnit('切换背包',ac.point(0,0),0)
+		--u:bagSize(6)
+		bag[i] = {}
 	end
 	self.max_page = page
 	now_page[hero] = 1
 	self.bag = bag
-	local player = hero:getOwner()
-	function player:get_chick()
-		local tbl = {hero}
-		for i = 1,#bag do
-			table.insert(tbl,bag[i])
-		end
-		return tbl
-	end
-	local hero = player:getHero()
-	function hero:get_chick()
-		return player:getMesgerbag()
-	end
+	--local player = hero:getOwner()
+	--function player:get_chick()
+	--	local tbl = {hero}
+	--	for i = 1,#bag do
+	--		table.insert(tbl,bag[i])
+	--	end
+	--	return tbl
+	--end
+	--local hero = player:getHero()
+	--function hero:get_chick()
+	--	return player:getMesgerbag()
+	--end
 end
 
 function mt:onCastShot()
 	local hero = self:getOwner()
 	local max_page = self.max_page
 	local bag = self.bag
+	local now_bag = now_page[hero]
 	for item in hero:eachItem() do
 		local slot = item:getSlot()
-		item:give(bag[now_page[hero]],slot)
+		--item:give(bag[now_page[hero]],slot)
+		bag[now_bag][slot] = item
 	end
-	if now_page[hero] < max_page then
-		now_page[hero] = now_page[hero] + 1
+	if now_bag < max_page then
+		now_page[hero] = now_bag + 1
 	else
 		now_page[hero] = 1
 	end
-	for item in bag[now_page[hero]]:eachItem() do
-		local slot = item:getSlot()
+	now_bag = now_page[hero]
+	for slot,item in pairs(bag[now_bag]) do
 		item:give(hero,slot)
 	end
+	--for item in bag[now_page[hero]]:eachItem() do
+	--	local slot = item:getSlot()
+	--	item:give(hero,slot)
+	--end
 	hero:getOwner():message('当前背包：' .. now_page[hero] .. '/' .. max_page,3)
 end
