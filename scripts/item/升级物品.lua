@@ -95,7 +95,7 @@ for _, tbl_name in pairs(tbl) do
 end
 
 --不需要主体装备,将材料直接合成的
-local tbl = {'兑换玄铁-1'}
+local tbl = {'兑换玄铁-1','兑换玄铁-2','兑换玄铁-3','兑换玄铁-4'}
 
 for _, tbl_name in pairs(tbl) do
 	local mt = ac.item[tbl_name]
@@ -145,7 +145,6 @@ for _, tbl_name in pairs(tbl) do
         else
             unit:getPoint():createItem(item_name)
         end
-        unit:createItem(item_name)
         player:message('|cffffff00已获得|cffff7500'..item_name..'|r', 10)
         return true
     end
