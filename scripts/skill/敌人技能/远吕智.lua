@@ -1,6 +1,6 @@
 local attack_range = 300
 
-local mt = ac.skill['李傕-八刀一闪']
+local mt = ac.skill['远吕智-灾厄的三重奏']
 
 function mt:onCastStart()
 	local hero = self:getOwner()
@@ -23,9 +23,6 @@ function mt:onCastStart()
 	    model = [[Abilities\Spells\Human\Invisibility\InvisibilityTarget.mdl]],
 	    time = 1,
 	}
-	self.eff = hero:particle([[Abilities\Weapons\ZigguratFrostMissile\ZigguratFrostMissile.mdl]],'weapon')
-	self.eff2 = hero:particle([[Abilities\Weapons\ZigguratMissile\ZigguratMissile.mdl]],'weapon')
-	self.eff3 = hero:particle([[Abilities\Weapons\ChimaeraLightningMissile\ChimaeraLightningMissile.mdl]],'weapon')
 end
 
 function mt:onCastShot()
@@ -101,85 +98,4 @@ function mt:onCastStop()
 	self.eff()
 	self.eff2()
 	self.eff3()
-end
-
-local mt = ac.skill['李傕-次元空间斩']
-
-function mt:onCastStart()
-	local hero = self:getOwner()
-	local point = hero:getPoint()
-	local target = self:getTarget()
-	local angle = point/target
-	local time = self.castStartTime
-	local distance = self.back
-	target = sg.on_block(point,point - {angle,-distance})
-	sg.animation(hero,'spell throw')
-	hero:speed(0.6/time)
-	local mover = hero:moverLine
-    {
-		mover = hero,
-		target = target,
-		speed = distance/time,
-	}
-	function mover:onRemove()
-		hero:speed(1)
-	end
-end
-
-function mt:onCastChannel()
-	local hero = self:getOwner()
-	sg.animation(hero,'stand ready')
-	local time = self.castChannelTime
-	local point = hero:getPoint()
-	self.load = ac.effect {
-	    target = point,
-	    model = [[effect\Progressbar.mdx]],
-	    speed = 1/time,
-	    size = 2,
-	    height = 500,
-	    time = time,
-	    skipDeath = true,
-	}
-	ac.effect {
-	    target = point,
-	    size = 2,
-	    height = 250,
-	    model = [[Abilities\Spells\Human\Invisibility\InvisibilityTarget.mdl]],
-	    time = 1,
-	}	
-	local target = self:getTarget()
-	ac.effect {
-	    target = target,
-	    model = [[effect\Dimension Slash.mdx]],
-	    size = self.area/300,
-	    speed = 0.6/time,
-	    time = time * 2,
-	}
-end
-
-function mt:onCastShot()
-	local hero = self:getOwner()
-	local target = self:getTarget()
-	local area = self.area
-	sg.animationI(hero,0)
-	ac.effect {
-	    target = target,
-	    model = [[effect\DarkBlast.mdx]],
-	    size = self.area/250,
-	    time = 1,
-	}
-	for _, u in ac.selector()
-	    : inRange(target,area)
-	    : isEnemy(hero)
-	    : ipairs()
-	do
-		local damage = self.damage * sg.get_allatr(hero)
-		hero:damage
-		{
-		    target = u,
-		    damage = damage,
-		    damage_type = self.damage_type,
-		    skill = self,
-		}
-	end
 end

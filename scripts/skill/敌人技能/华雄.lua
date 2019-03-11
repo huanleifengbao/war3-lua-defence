@@ -1,4 +1,4 @@
-local attack_range = 300
+local attack_range = 200
 
 local mt = ac.skill['华雄-冲击波']
 
@@ -18,7 +18,7 @@ function mt:onCastStart()
 	}
 	ac.effect {
 	    target = point,
-	    size = 3,
+	    size = 2,
 	    model = [[Abilities\Spells\NightElf\Taunt\TauntCaster.mdl]],
 	    time = 1,
 	}
@@ -44,7 +44,7 @@ function mt:onCastShot()
 			if i < 0 then
 				k = -1
 			end
-			local p = t - {angle + 150 * k,area * 0.66 * math.abs(i)}
+			local p = t - {angle + 150 * k,area * math.abs(i)}
 			local mover = hero:moverLine
 			{
 				model = [[Abilities\Spells\Orc\Shockwave\ShockwaveMissile.mdl]],
@@ -93,7 +93,7 @@ function mt:onCastStart()
 	}
 	ac.effect {
 	    target = point,
-	    size = 3,
+	    size = 2,
 	    model = [[Abilities\Spells\Other\HowlOfTerror\HowlCaster.mdl]],
 	    time = 1,
 	}

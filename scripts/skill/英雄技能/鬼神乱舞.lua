@@ -65,7 +65,7 @@ function mt:onCastShot()
 		    local angle = p / target
 		    local distance = area * 2
 		    dummy:setFacing(angle)
-		   	sg.animationSpeed(dummy,2)
+		   	dummy:speed(2)
 		    sg.animation(dummy,'attack')
 		    local mover = hero:moverLine
 		    {

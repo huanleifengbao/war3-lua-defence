@@ -1,7 +1,7 @@
 local mt = ac.skill['五月雨斩']
 
 function mt:jump(hero)
-	sg.animationSpeed(hero,0.7)
+	hero:speed(0.7)
     sg.animation(hero,'attack slam')
     local mover = hero:moverLine
     {
@@ -57,7 +57,7 @@ function mt:onCastShot()
 	function mover:onRemove()
 		eff()
 		hero:removeRestriction '硬直'
-		sg.animationSpeed(hero,1)
+		hero:speed(1)
 	end
 	--特效
 	ac.timer(0.1,(time/0.1)/2,function()
