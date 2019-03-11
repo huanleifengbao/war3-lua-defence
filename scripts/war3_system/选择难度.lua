@@ -1,7 +1,7 @@
 
 ac.wait(0, function()
     sg.game_mod = '通常'
-    for i = 1, 6 do
+	for i = 1,sg.max_player do
         local player = ac.player(i)
         if player:controller() == '用户' and player:gameState() == '在线' then
             print('玩家'..i..'正在选择难度')

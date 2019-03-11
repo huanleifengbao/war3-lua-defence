@@ -19,7 +19,7 @@ base:event('单位-死亡', function (trg, unit)
     do
         base:kill(u)
     end
-    for i = 1, 6 do
+	for i = 1,sg.max_player do
         ac.player(i):moveCamera(p1, 0)
         ac.player(i):message('|cffffff00家都|cffff0000boom|cffffff00了你不会自己退?|r', 30)
         ac.wait(3.5, function()

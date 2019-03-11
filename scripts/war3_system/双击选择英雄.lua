@@ -37,7 +37,7 @@ for i = 1, #hero_tbl do
     ac.player(16):createUnit(hero_tbl[i][1], ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])
 end
 
-for i = 1, 6 do
+for i = 1,sg.max_player do
     ac.player(i):add('金币', 50000)
     ac.player(i):event('玩家-选中单位', function (trg, player, unit)
         if unit:getOwner():id() == 16 and not player:getHero() then

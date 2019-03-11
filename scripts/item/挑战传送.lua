@@ -15,6 +15,10 @@ for i = 1, #tbl do
 
     function mt:onCanAdd(unit)
         local player = unit:getOwner()
+        if sg.game_mod == '副本' then
+            player:message('|cffffff00副本中不可传送|r', 10)
+            return false
+        end
         unit:blink(tbl[i][2])
         unit:stop()
         player:moveCamera(tbl[i][2], 0.2)
@@ -35,6 +39,10 @@ for i = 1, #tbl do
 
     function mt:onCanAdd(unit)
         local player = unit:getOwner()
+        if sg.game_mod == '副本' then
+            player:message('|cffffff00副本中不可传送|r', 10)
+            return false
+        end
         if unit:userData('专属等级') and unit:userData('专属等级') >= tbl[i][3] then
             unit:blink(tbl[i][2])
             unit:stop()
@@ -58,6 +66,10 @@ local mt = ac.item['练功房']
 function mt:onCanAdd(unit)
     local player = unit:getOwner()
     local id = player:id()
+    if sg.game_mod == '副本' then
+        player:message('|cffffff00副本中不可传送|r', 10)
+        return false
+    end
     local target = point[id]
     unit:blink(target)
     unit:stop()
@@ -67,7 +79,7 @@ end
 local exercise_target = {}
 local exercise_count = {}
 local exercise_mark = {}
-for i = 1, 6 do
+for i = 1, sg.max_player do
     exercise_mark[i] = {}
     exercise_count[i] = 0
 end
@@ -189,6 +201,10 @@ local mt = ac.item['觉醒挑战房']
 function mt:onCanAdd(unit)
     local player = unit:getOwner()
     local id = player:id()
+    if sg.game_mod == '副本' then
+        player:message('|cffffff00副本中不可传送|r', 10)
+        return false
+    end
     local target = point[id]
     unit:blink(target)
     unit:stop()
@@ -346,8 +362,8 @@ function mt:onAdd()
 	local u = self:getOwner()
 	u:addRestriction '硬直'
 	u:addRestriction '无敌'
-	self.eff1 = u:particle([[Abilities\Spells\Orc\Ensnare\ensnareTarget.mdl]],'origin')
-    self.eff2 = u:particle([[Abilities\Spells\Human\DivineShield\DivineShieldTarget.mdl]],'origin')
+    u:speed(0)
+    u:color(1, 1, 1, 0.5)
 end
 
 function mt:onCover()
@@ -358,6 +374,6 @@ function mt:onRemove()
 	local u = self:getOwner()
 	u:removeRestriction '硬直'
     u:removeRestriction '无敌'
-    --self.eff1:remove()
-    --self.eff2:remove()
+    u:speed(1)
+    u:color(1, 1, 1, 1)
 end

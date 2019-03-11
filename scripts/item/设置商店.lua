@@ -113,7 +113,7 @@ shop:setItem('终极合成', 3, 'C')
 
 --野外挑战
 local shop = shop_list['野外挑战']
-shop:setBuyRange(2000)
+shop:setBuyRange(1000000)
 shop:setItem('挑战电', 9, 'Q')
 shop:setItem('挑战雷', 10, 'W')
 shop:setItem('挑战晓', 11, 'E')
@@ -137,7 +137,7 @@ local point = {
     ac.point(6593, 7740),    ac.point(9834, 7740),
     ac.point(6593, 5547),    ac.point(9834, 5547),
 }
-for i = 1, 6 do
+for i = 1, #point do
     local shop = ac.player(16):createShop('野外挑战', point[i], 270)
     ac.effect {
 	    target = point[i],
@@ -167,8 +167,9 @@ local point = {
     ac.point(2450, -3500),
     ac.point(4600, -3500),
 }
-for i = 1, 6 do
+for i = 1, #point do
     local shop = ac.player(16):createShop('野外挑战', point[i], 270)
+    shop:setBuyRange(1500)
     ac.effect {
 	    target = point[i],
 	    model = [[shop\juexingtiaozhan.mdx]],

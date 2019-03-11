@@ -15,10 +15,19 @@ local vtb_point = {
 
 local mt = ac.item['副本-大战黄巾贼']
 
+function mt:onCanAdd(unit)
+    local player = unit:getOwner()
+    if sg.game_mod == '副本' or sg.game_mod == '副本准备' then
+        player:message('|cffffff00目前某种副本正在激活|r', 10)
+        return false
+    end
+end
+
 function mt:onAdd()
+    sg.game_mod = '副本准备'
     local mark = {}
 
-    local time = 120
+    local time = 10
     local msg = '副本-大战黄巾贼'
     local time2 = 10
     local msg2 = '时间限制'
@@ -29,18 +38,7 @@ function mt:onAdd()
         size = 3,
         speed = 1,
     }
-    local timer = ac.wait(time, function()
-        for i = 1, 6 do
-            local player = ac.player(i)
-            player:message('|cffff7500时间到了鸭,副本关了,你看,飞机都|cffff0000boom|cffff7500了|r', 60)
-        end
-        eff:remove()
-    end)
-    for i = 1, 6 do
-        local player = ac.player(i)
-        player:timerDialog(msg, timer)
-        player:message('|cffff7500大战黄巾贼|r副本已激活,想去就所有人在|cffff7500飞机|r集合.jpg', 60)
-    end
+    local timer
 
     local rect = ac.rect(start_point, 500, 500)
     local function bihi()
@@ -51,13 +49,27 @@ function mt:onAdd()
         if timer then
             timer:remove()
         end
-        --如果根本没人上飞机就boom了
-        if #mark > 0 then
-            sg.game_mod = '副本'
-            local function game_mod_end()
-                sg.game_mod = '通常'
-                print('副本结束')
+        --结束副本一定会跑的函数
+        local function game_mod_end()
+            sg.start_enemy()
+            for _, u in pairs(sg.all_enemy) do
+                local buff = u:findBuff('冻结')
+                if buff then
+                    buff:remove()
+                end
             end
+            sg.game_mod = '通常'
+            for i = 1,sg.max_player do
+                local player = ac.player(i)
+                player:message('副本已结束,敌人重新开始|cffff7500进攻|r', 10)
+            end
+        end
+        --如果根本没人上飞机就直接end
+        if #mark == 0 then
+            game_mod_end()
+        else
+            sg.game_mod = '副本'
+            --时限
             local timer2 = ac.wait(time2, function()
                 for _, hero in ipairs(hero_mark) do
                     local player = hero:getOwner()
@@ -71,6 +83,7 @@ function mt:onAdd()
                     }
                 end
             end)
+            --遍历进入副本的英雄
             for k, u in ipairs(mark) do
                 u:getOwner():message('已进入副本,时间限制|cffff7500'..time2..'|r秒请注意', 10)
                 u:getOwner():message('|cff00ff00击杀所有boss|r就会胜利,|cffff0000团灭或超时|r副本挑战就失败了', 10)
@@ -81,7 +94,6 @@ function mt:onAdd()
                     trg:remove()
                     hero_count = hero_count - 1
                     if hero_count == 0 then
-                        game_mod_end()
                         timer2:remove()
                         for _, hero in ipairs(hero_mark) do
                             local player = hero:getOwner()
@@ -89,6 +101,7 @@ function mt:onAdd()
                         end
                         local end_time = 4
                         local end_timer = ac.wait(end_time, function()
+                            game_mod_end()
                             for _, boss in ipairs(boss_mark) do
                                 ac.effect {
                                     target = boss:getPoint(),
@@ -105,11 +118,13 @@ function mt:onAdd()
                 end)
                 u:blink(target_point)
             end
-            for i = 1, 6 do
+            --移动镜头
+            for i = 1,sg.max_player do
                 local player = ac.player(i)
                 player:timerDialog(msg2, timer2)
                 player:moveCamera(target_point, 0.2)
             end
+            --创建boss
             for i = 1, #vtb_point do
                 boss_count = boss_count + 1
                 local boss = ac.player(11):createUnit(vtb_point[i].name, vtb_point[i].point, 270)
@@ -133,7 +148,7 @@ function mt:onAdd()
                             end)
                             for _, hero in ipairs(hero_mark) do
                                 local player = hero:getOwner()
-                                player:message('|cffff7500boss团灭|r了xs,|cffff7500'..back_time..'|r秒后返回', 10)
+                                player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 10)
                                 player:timerDialog(back_msg, back_timer)
                             end
                             --打赢了当然要放点烟花(TNT)庆祝下
@@ -168,6 +183,8 @@ function mt:onAdd()
         eff:remove()
         rect:remove()
     end
+
+    --进入/离开副本区域
     function rect:onEnter(u)
         local player = u:getOwner()
         local id = player:id()
@@ -185,5 +202,24 @@ function mt:onAdd()
                 break
             end
         end
+    end
+
+    --进入副本的时限
+    timer = ac.wait(time, function()
+        for i = 1,sg.max_player do
+            local player = ac.player(i)
+            player:message('还没进副本的进不去了,飞机都|cffff0000boom|r了', 60)
+        end
+        bihi()
+    end)
+	for i = 1,sg.max_player do
+        local player = ac.player(i)
+        player:timerDialog(msg, timer)
+        sg.stop_enemy()
+        for _, u in pairs(sg.all_enemy) do
+            u:addBuff '冻结'{}
+        end
+        player:message('进攻的敌人已被|cff00ffff冻结|r', 60)
+        player:message('|cffff7500大战黄巾贼|r副本已激活,想去就所有人在|cffff7500'..time..'|r内去|cffff7500飞机|r集合.jpg', 60)
     end
 end

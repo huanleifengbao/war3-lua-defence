@@ -108,7 +108,7 @@ ac.wait(0, function()
         board[1][7]:text('战魂')
         board[1][8]:text('坐骑')
         board[1][9]:text('杀敌')
-        for i = 1, 6 do
+        for i = 1,sg.max_player do
             board[i][1]:width(0.07)
             board[i][2]:width(0.03)
             board[i][3]:width(0.02)
@@ -157,7 +157,7 @@ ac.wait(0, function()
         local id = player:id()
         board[id+1][6]:icon(title2_icon[unit:get('觉醒等级') + 1])
         board[id+1][6]:text(title2[unit:get('觉醒等级') + 1])
-        for i = 1, 6 do
+        for i = 1,sg.max_player do
             ac.player(i):message('|cffffff00'..unit:getName()..'觉醒了!已达到'..title2[unit:get('觉醒等级') + 1]..'|r', 10)
         end
 
@@ -184,7 +184,7 @@ ac.wait(0, function()
 
     --死亡
     --[[local hero_dead = {}
-    for i = 1, 6 do
+	for i = 1,sg.max_player do
         hero_dead[i] = 0
     end
     ac.game:event('地图-英雄死亡', function (_, unit, player, reborn_time)
@@ -204,7 +204,7 @@ ac.wait(0, function()
             unit:add('威望等级', 1)
             board[id+1][4]:icon(title_icon[unit:get('威望等级')])
             board[id+1][4]:text(title[unit:get('威望等级')])
-            for i = 1, 6 do
+            for i = 1,sg.max_player do
                 ac.player(i):message('|cffffff00'..unit:getName()..'威望提升,称号变成了'..title[unit:get('威望等级')]..'|r', 10)
             end
 
@@ -242,7 +242,7 @@ ac.wait(0, function()
 
     ac.loop(1, function()
         --修改玩家属性
-        for i = 1, 6 do
+	    for i = 1,sg.max_player do
             local player = ac.player(i)
             if player and player:controller() == '用户' then
                 local unit = player:getHero()

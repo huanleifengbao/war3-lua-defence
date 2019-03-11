@@ -46,10 +46,6 @@ end
 
 local mt = ac.buff['石化']
 mt.coverGlobal = 1
---mt.show = 1
---mt.icon = [[ReplaceableTextures\CommandButtons\BTNInvulnerable.blp]]
---mt.title = '石化'
---mt.description = '该单位被石化了，所以不能行动，但是会获得额外减伤。'
 
 function mt:onAdd()
 	local u = self:getOwner()
@@ -67,4 +63,24 @@ function mt:onRemove()
 	u:removeRestriction '硬直'
 	u:speed(1)
 	sg.set_color(u)
+end
+
+local mt = ac.buff['冻结']
+mt.coverGlobal = 1
+mt.show = 0
+
+function mt:onAdd()
+	u:addRestriction '无敌'
+    u:speed(0)
+    u:color(1, 1, 1, 0.5)
+end
+
+function mt:onCover()
+    return false
+end
+
+function mt:onRemove()
+    u:removeRestriction '无敌'
+    u:speed(1)
+    u:color(1, 1, 1, 1)
 end
