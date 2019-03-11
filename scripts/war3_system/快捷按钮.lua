@@ -27,7 +27,7 @@ ac.game:event('地图-选择英雄', function(_, hero, player)
 					player:moveCamera(home, 0.2)
 				end
 			else
-				player:message('副本中不可传送', 10)
+				player:message('|cffffff00副本中不可传送|r', 10)
 			end
         elseif name == '快捷练功' then
 			chose_hero(player)
@@ -36,7 +36,7 @@ ac.game:event('地图-选择英雄', function(_, hero, player)
 					hero:createItem('练功房')
 				end
 			else
-				player:message('副本中不可传送', 10)
+				player:message('|cffffff00副本中不可传送|r', 10)
 			end
         end
     end)

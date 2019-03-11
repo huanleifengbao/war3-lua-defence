@@ -15,6 +15,14 @@ local vtb_point = {
 
 local mt = ac.item['副本-大战黄巾贼']
 
+function mt:onCanAdd(unit)
+    local player = unit:getOwner()
+    if sg.game_mod == '副本' then
+        player:message('|cffffff00目前某种副本正在激活|r', 10)
+        return false
+    end
+end
+
 function mt:onAdd()
     local mark = {}
 
@@ -30,13 +38,13 @@ function mt:onAdd()
         speed = 1,
     }
     local timer = ac.wait(time, function()
-        for i = 1, 6 do
+        for i = 1,sg.max_player do
             local player = ac.player(i)
             player:message('|cffff7500时间到了鸭,副本关了,你看,飞机都|cffff0000boom|cffff7500了|r', 60)
         end
         eff:remove()
     end)
-    for i = 1, 6 do
+	for i = 1,sg.max_player do
         local player = ac.player(i)
         player:timerDialog(msg, timer)
         player:message('|cffff7500大战黄巾贼|r副本已激活,想去就所有人在|cffff7500飞机|r集合.jpg', 60)
@@ -54,10 +62,11 @@ function mt:onAdd()
         --如果根本没人上飞机就boom了
         if #mark > 0 then
             sg.game_mod = '副本'
+            --结束副本一定会跑的函数
             local function game_mod_end()
                 sg.game_mod = '通常'
-                print('副本结束')
             end
+            --时限
             local timer2 = ac.wait(time2, function()
                 for _, hero in ipairs(hero_mark) do
                     local player = hero:getOwner()
@@ -71,6 +80,7 @@ function mt:onAdd()
                     }
                 end
             end)
+            --遍历进入副本的英雄
             for k, u in ipairs(mark) do
                 u:getOwner():message('已进入副本,时间限制|cffff7500'..time2..'|r秒请注意', 10)
                 u:getOwner():message('|cff00ff00击杀所有boss|r就会胜利,|cffff0000团灭或超时|r副本挑战就失败了', 10)
@@ -105,11 +115,13 @@ function mt:onAdd()
                 end)
                 u:blink(target_point)
             end
-            for i = 1, 6 do
+            --移动镜头
+            for i = 1,sg.max_player do
                 local player = ac.player(i)
                 player:timerDialog(msg2, timer2)
                 player:moveCamera(target_point, 0.2)
             end
+            --创建boss
             for i = 1, #vtb_point do
                 boss_count = boss_count + 1
                 local boss = ac.player(11):createUnit(vtb_point[i].name, vtb_point[i].point, 270)
