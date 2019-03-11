@@ -30,7 +30,7 @@ mt.description = '该单位是无敌的，所以任何的攻击和魔法都对�
 
 function mt:onAdd()
 	local u = self:getOwner()
-	jass.SetUnitInvulnerable(u._handle,true)
+	u:addRestriction '无敌'
 	self.eff = u:particle([[Abilities\Spells\Human\DivineShield\DivineShieldTarget.mdl]],'overhead')
 end
 
@@ -40,6 +40,6 @@ end
 
 function mt:onRemove()
 	local u = self:getOwner()
-	jass.SetUnitInvulnerable(u._handle,false)
+	u:removeRestriction '无敌'
 	self.eff()
 end
