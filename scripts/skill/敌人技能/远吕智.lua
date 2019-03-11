@@ -15,6 +15,18 @@ function mt:do_damage(area,func)
 	end
 end
 
+function mt:on_eyes(func)
+	local hero = self:getOwner()
+	local point = hero:getPoint()
+	self:do_damage(self.range,function(u)
+		local facing = u:getFacing() + 360
+		local angle = u:getPoint()/point + 360
+		if math.abs(facing%360 - angle%360) <= 60 then
+			func(u)
+		end
+	end)
+end
+
 function mt:onCastStart()
 	local hero = self:getOwner()
 	sg.animation(hero,'stand ready',true)
@@ -38,10 +50,18 @@ function mt:onCastStart()
 	local area = self.area
 	ac.effect {
 	    target = point,
-	    size = area/55,
+	    size = area/200,
 	    zScale = 0.1,
 	    height = 20,
-	    model = [[effect\Blind Aura.mdx]],
+	    model = [[effect\Cosmic Slam.mdx]],
+	    time = time,
+	}
+	ac.effect {
+	    target = point,
+	    size = area/600,
+	    zScale = 0.1,
+	    height = 20,
+	    model = [[effect\Cosmic Slam.mdx]],
 	    time = time,
 	}
 	ac.wait(self.pulse,function()
@@ -59,7 +79,23 @@ function mt:onCastStart()
 		    height = 50,
 		    model = [[Abilities\Spells\Human\MagicSentry\MagicSentryCaster.mdl]],
 		    time = time + self.pulse,
-		}		
+		}
+		self.eyes = ac.timer(0.5,(time + self.pulse)/0.5,function()
+			self:on_eyes(function(u)
+				local p = u:getPoint()
+				local dummy = hero:createUnit('远吕智-石化预警',p,p/point)
+				ac.wait(1,function()
+					dummy:remove()
+				end)
+				--ac.effect {
+				--    target = p,
+				--    angle = point/p,
+				--    size = 3,
+				--    model = [[Abilities\Spells\Undead\CarrionSwarm\CarrionSwarmDamage.mdl]],
+				--    time = 1,
+				--}
+			end)
+		end)
 	end)
 end
 
@@ -73,6 +109,7 @@ function mt:onCastChannel()
 	    target = point,
 	    size = area/250,
 	    height = 20,
+	    speed = 2,
 	    model = [[effect\BloodSlam.mdx]],
 	    time = 1,
 	}
@@ -119,6 +156,7 @@ function mt:onCastChannel()
 		    size = area/40,
 		    zScale = 0.1,
 		    height = 20,
+		    speed = 2,
 		    model = [[effect\Blood Explosion.mdx]],
 		    time = 1,
 		}
@@ -152,19 +190,28 @@ function mt:onCastShot()
 	    model = [[effect\Lightning Boom.mdx]],
 	    time = 1,
 	}
-	self:do_damage(self.range,function(u)
-		local facing = u:getFacing() + 360
-		local angle = u:getPoint()/point + 360
-		if math.abs(facing%360 - angle%360) <= 60 then
-			u:addBuff '石化'
-			{
-				time = self.stone,
-			}
-		end
+	self:on_eyes(function(u)
+		u:addBuff '石化'
+		{
+			time = self.stone,
+		}
 	end)
+	--self:do_damage(self.range,function(u)
+	--	local facing = u:getFacing() + 360
+	--	local angle = u:getPoint()/point + 360
+	--	if math.abs(facing%360 - angle%360) <= 60 then
+	--		u:addBuff '石化'
+	--		{
+	--			time = self.stone,
+	--		}
+	--	end
+	--end)
 end
 
 function mt:onCastStop()
+	if self.eyes then
+		self.eyes:remove()
+	end
 	if self.load then
 		self.load:remove()
 	end
