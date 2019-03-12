@@ -1,19 +1,3 @@
-
-local player_colour = {
-    [1] = '|cFFF00000',
-    [2] = '|c000000FF',
-    [3] = '|c000EEEEE',
-    [4] = '|c77700077',
-    [5] = '|cFFFFFF00',
-    [6] = '|cFFF77700',
-    [7] = '|c000EEE00',
-    [8] = '|cFFF222FF',
-    [9] = '|c88888888',
-    [10] = '|c777DDDFF',
-    [11] = '|c00077766',
-    [12] = '|c44400000',
-}
-
 --威望
 local title_skill = {
     '1级威望',
@@ -121,7 +105,7 @@ ac.wait(0, function()
             if i ~= 1 then
                 local player = ac.player(i-1)
                 if player and player:controller() == '用户' and player:gameState() == '在线' then
-                    board[i][1]:text(player_colour[i-1]..player:name()..'|r')
+                    board[i][1]:text(sg.player_colour[i-1]..player:name()..'|r')
                 end
             end
         end
