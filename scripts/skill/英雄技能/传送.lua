@@ -15,7 +15,9 @@ function mt:onCastShot()
 		end
 	end
 	if target.type == 'unit' then
-		hero:blink(target:getPoint())
+		target = target:getPoint()
+		local x,y = target:getXY()
+		jass.SetUnitPosition(hero._handle, x, y)
 	else
 		hero:getOwner():message('|cffffff00指定点附近没有友军|r', 3)
 	end

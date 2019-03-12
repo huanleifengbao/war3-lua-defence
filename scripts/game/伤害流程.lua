@@ -117,7 +117,15 @@ local function exDamage(damage)
 end
 
 local function costLife(damage)
-	damage.target:add('生命', - damage:get_currentdamage())
+	local target = damage.target
+	local result = true
+	if damage:get_currentdamage() >= target:get('生命') then
+		result = target:eventDispatch('单位-即将死亡', damage)
+	end
+	target:add('生命', - damage:get_currentdamage())
+	if damage.target:get '生命' <= 0 and result ~= false then
+        damage.source:kill(target)
+    end
 end
 
 local function checkKill(damage)
@@ -203,14 +211,14 @@ ac.game:event('游戏-造成伤害', function(_,damage)
     onDefence(damage)	
 	--计算增伤
 	exDamage(damage)
-	--根据最终伤害扣除生命值
 	if damage:get_currentdamage() < 0 then
 		damage:div_damage(0)
 	end
-    costLife(damage)
-    checkKill(damage)
-    notifyEvent(damage)
-    --计算吸血
+	--计算吸血
     leech(damage)
+    --扣除生命
+    costLife(damage)
+    --checkKill(damage)
+    notifyEvent(damage)    
     return true
 end)
