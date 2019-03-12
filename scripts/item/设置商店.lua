@@ -147,16 +147,16 @@ for i = 1, #point do
 	    height = 300,
 	}
     shop:setBuyRange(1500)
-    shop:setItem('刷钱1', 9, 'Q')
-    shop:setItem('刷钱2', 10, 'W')
-    --shop:setItem('刷钱3', 11, 'E')
-    --shop:setItem('刷钱4', 12, 'R')
-    shop:setItem('刷木1', 5, 'A')
-    shop:setItem('刷木2', 6, 'S')
-    shop:setItem('刷木3', 7, 'D')
-    --shop:setItem('刷木4', 8, 'F')
-    shop:setItem('刷经验1', 1, 'Z')
-    shop:setItem('作弊刷怪', 2, 'X')
+    shop:setItem('刷经验1', 9, 'Q')
+    shop:setItem('作弊刷怪', 10, 'W')
+    shop:setItem('刷钱1', 5, 'A')
+    shop:setItem('刷钱2', 6, 'S')
+    --shop:setItem('刷钱3', 7, 'D')
+    --shop:setItem('刷钱4', 8, 'F')
+    shop:setItem('刷木1', 1, 'Z')
+    shop:setItem('刷木2', 2, 'X')
+    shop:setItem('刷木3', 3, 'C')
+    --shop:setItem('刷木4', 4, 'V')
 end
 
 --觉醒挑战房
