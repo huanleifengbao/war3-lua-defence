@@ -45,6 +45,7 @@ function mt:shot(count,direct)
 end
 
 function mt:onCastShot()
+	local hero = self:getOwner()
 	local direct = 1
 	local wait = self.pulse
 	local count = self.count - 1
@@ -53,7 +54,15 @@ function mt:onCastShot()
 		self:shot(self.laser,direct)
 	end)
 	timer()
-	ac.wait(wait * count + self.pulse2,function()
-		self:shot(self.laser2,0)
+	wait = wait * count + self.pulse2
+	ac.wait(wait - 0.3,function()
+		if hero:isAlive() then
+			sg.animation(hero,'spell')
+		end
+	end)
+	ac.wait(wait,function()
+		if hero:isAlive() then
+			self:shot(self.laser2,0)
+		end
 	end)
 end

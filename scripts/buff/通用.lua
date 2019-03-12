@@ -48,7 +48,7 @@ local mt = ac.buff['即将石化']
 mt.coverGlobal = 1
 mt.show = 1
 mt.icon = [[ReplaceableTextures\CommandButtons\BTNResistantSkin.blp]]
-mt.title = '石化'
+mt.title = '即将石化'
 mt.description = '该单位直视了魔眼，即将被石化。'
 
 function mt:onAdd()
