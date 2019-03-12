@@ -19,7 +19,20 @@ function mt:onCastShot()
 		end
 	end
 	if target.type == 'unit' then
-		hero:tp(target)
+		--ac.effect {
+		--    target = hero:getPoint(),
+		--    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportCaster.mdl]],
+		--    time = 2,
+		--}
+		target = target:getPoint()
+		--local x,y = target:getXY()
+		--jass.SetUnitPosition(hero._handle, x, y)
+		--ac.effect {
+		--    target = hero:getPoint(),
+		--    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportTarget.mdl]],
+		--    time = 2,
+		--}
+		hero:tp(target:getPoint())
 	else
 		hero:getOwner():message('|cffffff00指定点附近没有友军|r', 3)
 	end

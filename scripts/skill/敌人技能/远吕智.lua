@@ -1,5 +1,187 @@
 local attack_range = 300
 
+local mt = ac.skill['远吕智-陨石流星']
+
+function mt:onCastChannel()
+	local hero = self:getOwner()
+	sg.animation(hero,'stand ready',true)
+	local time = self.castChannelTime
+	local point = hero:getPoint()
+	local target = self:getTarget()
+	self.load = ac.effect {
+	    target = point,
+	    model = [[effect\Progressbar.mdx]],
+	    speed = 1/time,
+	    size = 2,
+	    height = 500,
+	    time = time,
+	    skipDeath = true,
+	}
+	ac.effect {
+	    target = point,
+	    model = [[Abilities\Spells\Human\FlameStrike\FlameStrikeTarget.mdl]],
+	    time = 3,
+	}
+	self.point = {}
+	for i = 1,self.count do
+		ac.wait(i * self.pulse,function()
+			local p = target - {math.random(360),math.random(self.minrandom,self.maxrandom)}
+			ac.effect {
+			    target = p,
+			    size = self.area/350,
+			    speed = 1.8/(time + self.wait),
+			    model = [[effect\calldown_4.mdx]],
+			    height = 20,
+			    time = time + self.wait,
+			    skipDeath = true,
+			}
+			self.point[i] = p
+		end)
+	end
+end
+
+function mt:onCastShot()
+	local hero = self:getOwner()
+	sg.animation(hero,'spell slam')
+	local wait = self.wait
+	local area = self.area
+	for i = 1,self.count do
+		ac.wait(i * self.pulse,function()
+			local p = self.point[i]
+			ac.effect {
+			    target = p,
+			    model = [[effect\firestone.mdx]],
+			    size = area/200,
+			    speed = 1/wait,
+			    time = 2,
+			}
+			ac.wait(wait,function()
+				for _, u in ac.selector()
+				    : inRange(p,area)
+				    : isEnemy(hero)
+				    : ofNot '建筑'
+				    : ipairs()
+				do
+					local damage = self.damage * sg.get_allatr(hero)
+					hero:damage
+					{
+					    target = u,
+					    damage = damage,
+					    damage_type = self.damage_type,
+					    skill = self,
+					}
+				end
+			end)
+		end)
+	end
+end
+
+function mt:onCastStop()
+	if self.load then
+		self.load:remove()
+	end
+end
+
+local mt = ac.skill['远吕智-大地摇动']
+
+function mt:do_damage(point,damage)
+	local hero = self:getOwner()
+	local area = self.area
+	for _, u in ac.selector()
+	    : inRange(point,area)
+	    : isEnemy(hero)
+	    : ofNot '建筑'
+	    : ipairs()
+	do
+		hero:damage
+		{
+		    target = u,
+		    damage = damage,
+		    damage_type = self.damage_type,
+		    skill = self,
+		}
+	end	
+end
+
+function mt:create_fire(point)
+	local hero = self:getOwner()
+	self:do_damage(point,self.damage * sg.get_allatr(hero))
+	local damage_pulse = self.damage_pulse
+	ac.timer(damage_pulse,self.time/damage_pulse,function()
+		self:do_damage(point,self.damage2 * sg.get_allatr(hero) * damage_pulse)
+	end)
+end
+
+function mt:onCastChannel()
+	local hero = self:getOwner()
+	sg.animation(hero,'stand ready',true)
+	local time = self.castChannelTime
+	local point = hero:getPoint()
+	self.load = ac.effect {
+	    target = point,
+	    model = [[effect\Progressbar.mdx]],
+	    speed = 1/time,
+	    size = 2,
+	    height = 500,
+	    time = time,
+	    skipDeath = true,
+	}
+	ac.effect {
+	    target = point,
+	    model = [[Abilities\Spells\NightElf\BattleRoar\RoarCaster.mdl]],
+	    size = 2,
+	    time = 1,
+	}
+end
+
+function mt:onCastShot()
+	local hero = self:getOwner()
+	sg.animation(hero,'spell')
+	local point = hero:getPoint()
+	local target = self:getTarget()
+	local angle = point/target
+	local distance = self.distance
+	local area = self.area
+	local mover = hero:moverLine
+	{
+		model = [[Abilities\Spells\Other\BreathOfFire\BreathOfFireMissile.mdl]],
+		start = point,
+		angle = angle,
+		speed = distance/0.5,
+		distance = distance,
+	}
+	ac.wait(self.wait,function()
+		local dis = 0
+		local count = self.count
+		local time = self.time		
+		ac.timer(self.pulse,count,function()
+			dis = dis + distance/count
+			local p = point - {angle,dis}
+			ac.effect {
+			    target = p,
+			    model = [[Abilities\Spells\Other\Incinerate\FireLordDeathExplode.mdl]],
+			    size = area/150,
+			    time = 1,
+			}
+			ac.effect {
+			    target = p,
+			    model = [[effect\Lava Crack.mdx]],
+			    angle = math.random(360),
+			    size = area/200,
+			    time = time,
+			}
+			self:create_fire(p)
+			time = time - self.pulse
+		end)
+	end)
+end
+
+function mt:onCastStop()
+	if self.load then
+		self.load:remove()
+	end
+end
+
 local mt = ac.skill['远吕智-灾厄的三重奏']
 
 function mt:do_damage(area,func)

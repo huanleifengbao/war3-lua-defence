@@ -118,13 +118,13 @@ function mt:onCastShot()
 	    model = [[Abilities\Spells\Human\Thunderclap\ThunderClapCaster.mdl]],
 	    time = 1,
 	}
+	local damage = skill.damage * sg.get_allatr(hero)
 	for _, u in ac.selector()
 	    : inRange(target,area)
 	    : isEnemy(hero)
 	    : ofNot '建筑'
 	    : ipairs()
-	do
-		local damage = skill.damage * sg.get_allatr(hero)
+	do	
 		hero:damage
 		{
 		    target = u,
