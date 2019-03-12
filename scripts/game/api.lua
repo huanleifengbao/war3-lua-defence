@@ -252,7 +252,7 @@ ac.game:event('单位-创建', function (_, unit)
 	--传送
 	unit.tp = function(self,target)
 		local player = unit:getOwner()
-		if sg.game_mod ~= '副本'  then
+		if sg.game_mod ~= '副本' then
 			ac.effect {
 			    target = unit:getPoint(),
 			    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportCaster.mdl]],

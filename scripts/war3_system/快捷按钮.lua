@@ -20,23 +20,13 @@ ac.game:event('地图-选择英雄', function(_, hero, player)
         local name = unit:getName()
 		if name == '快捷回城' then
 			chose_hero(player)
-			if sg.game_mod ~= '副本' then
-				if hero:isAlive() and not hero:hasRestriction '硬直' then
-					hero:blink(home)
-					hero:stop()
-					player:moveCamera(home, 0.2)
-				end
-			else
-				player:message('|cffffff00副本中不可传送|r', 10)
+			if hero:isAlive() and not hero:hasRestriction '硬直' then
+				hero:tp(home)
 			end
         elseif name == '快捷练功' then
 			chose_hero(player)
-			if sg.game_mod ~= '副本' then
-				if hero:isAlive() then
-					hero:createItem('练功房')
-				end
-			else
-				player:message('|cffffff00副本中不可传送|r', 10)
+			if hero:isAlive() then
+				hero:createItem('练功房')
 			end
         end
     end)

@@ -84,7 +84,7 @@ for _, tbl_name in pairs(tbl) do
                     end
                 end
                 item:remove()
-                local item2 = unit:createItem(item_name, item_slot)
+                unit:createItem(item_name, item_slot)
                 player:message('|cffff7500'..self.lvup_type..'|cffffff00已升级|r', 10)
                 return true
             end

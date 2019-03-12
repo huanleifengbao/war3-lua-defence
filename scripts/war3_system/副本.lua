@@ -1,4 +1,6 @@
 
+local mt = ac.item['副本-大战黄巾贼']
+
 --飞机位置
 local start_point = ac.point(6050, -9300)
 --副本位置
@@ -12,12 +14,10 @@ local instance_data = {
     {name = '副本-张梁', point = ac.point(-2000, 10280)},
 }
 
-local mt = ac.item['副本-大战黄巾贼']
-
 function mt:onCanAdd(unit)
     local player = unit:getOwner()
     if sg.game_mod == '副本' or sg.game_mod == '副本准备' then
-        player:message('|cffffff00目前某种副本正在激活|r', 10)
+        player:message('|cffffff00目前某种副本正在激活|r', 5)
         return false
     end
 end
@@ -56,14 +56,13 @@ function mt:onAdd()
             sg.game_mod = '通常'
             for i = 1,sg.max_player do
                 local player = ac.player(i)
-                player:message('副本已结束,敌人重新开始|cffff7500进攻|r', 10)
+                player:message('副本已结束,敌人重新开始|cffff7500进攻|r', 5)
             end
         end
         --如果根本没人上飞机就直接end
         if #mark == 0 then
             instance_end()
         else
-            sg.game_mod = '副本'
             local hero_mark = {}
             local hero_count = 0
             local boss_mark = {}
@@ -72,7 +71,7 @@ function mt:onAdd()
             local timer2 = ac.wait(time2, function()
                 for _, hero in ipairs(hero_mark) do
                     local player = hero:getOwner()
-                    player:message('哎鸭|cffff7500超时|r了', 10)
+                    player:message('哎鸭|cffff7500超时|r了', 8)
                     hero:kill(hero)
                     ac.effect {
                         target = hero:getPoint(),
@@ -82,16 +81,16 @@ function mt:onAdd()
                     }
                 end
             end)
-            local function game_over()
+            local function ace()
                 if hero_count == 0 then
                     timer2:remove()
                     for _, hero in ipairs(hero_mark) do
                         local player = hero:getOwner()
                         hero:kill(hero)
-                        player:message('啊欧|cffff7500团灭|r了,副本失败', 10)
+                        player:message('啊欧|cffff7500团灭|r了,副本失败', 8)
                     end
                     local end_time = 4
-                    local end_timer = ac.wait(end_time, function()
+                    ac.wait(end_time, function()
                         instance_end()
                         for _, boss in ipairs(boss_mark) do
                             ac.effect {
@@ -109,42 +108,55 @@ function mt:onAdd()
             end
             --遍历进入副本的英雄
             for k, u in ipairs(mark) do
-                u:getOwner():message('已进入副本,时间限制|cffff7500'..time2..'|r秒请注意', 10)
-                u:getOwner():message('|cff00ff00击杀所有boss|r就会胜利,|cffff0000团灭或超时|r副本挑战就失败了', 10)
-                u:getOwner():message('另外副本中可是|cffff7500禁止传送|r并且|cffff7500无法复活|r的哟', 10)
+                local player = u:getOwner()
+                local id = player:id()
+                player:timerDialog(msg2, timer2)
+                player:message('已进入副本,时间限制|cffff7500'..time2..'|r秒请注意', 8)
+                player:message('|cff00ff00击杀所有boss|r就会胜利,|cffff0000团灭或超时|r副本挑战就失败了', 8)
+                player:message('另外副本中可是|cffff7500禁止传送|r并且|cffff7500无法复活|r的哟', 8)
                 hero_mark[k] = u
                 hero_count = hero_count + 1
-                u:event('单位-即将死亡', function (trg, _)
-                    trg:remove()
+                local trg1, trg2
+                trg1 = u:event('单位-即将死亡', function ()
+                    trg1:remove()
+                    trg2:remove()
                     hero_count = hero_count - 1
-                    if hero_count == 0 then
-                        game_over()
+                    if hero_count <= 0 then
+                        ace()
                     else
                         --没团灭的死者会假死
                         u:addBuff '假死'{}
                         for i = 1,sg.max_player do
-                            local player = ac.player(i)
-                            local id = u:getOwner():id()
-                            player:message(sg.player_colour[id]..u:getName()..'|r被杀了!剩余英雄:|cffff7500'..hero_count..'|r', 10)
+                            ac.player(i):message(sg.player_colour[id]..u:getName()..'|r被杀了!剩余英雄:|cffff7500'..hero_count..'|r', 5)
                         end
                         return false
                     end
                 end)
-                u:event('单位-死亡', function (trg, _)
-                    trg:remove()
+                trg2 = u:event('单位-死亡', function ()
+                    trg1:remove()
+                    trg2:remove()
                     hero_count = hero_count - 1
-                    if hero_count == 0 then
-                        game_over()
+                    if hero_count <= 0 then
+                        ace()
                     end
                 end)
                 local p2 = target_point - {360 / #mark * k, 120}
-                u:blink(p2)
-            end
-            --移动镜头
-            for i = 1,sg.max_player do
-                local player = ac.player(i)
-                player:timerDialog(msg2, timer2)
-                player:moveCamera(target_point, 0.2)
+				u:tp(p2)
+                u:addRestriction '硬直'
+                local int = 5
+                ac.timer(1, 6, function()
+                    if int == 5 then
+                        player:message('目标:讨伐(击杀)|cff0070ff张宝|r,|cffff0000张角|r,|cff00aa00张梁|r', 8)
+                    end
+                    if int <= 3 and int >= 1 then
+                        player:message('开始倒计时:|cffff7500'..int..'|r', 1)
+                    end
+                    if int == 0 then
+                        player:message('|cffff7500葱鸭!|r', 2)
+                        u:removeRestriction '硬直'
+                    end
+                    int = int - 1
+                end)
             end
             --创建boss
             for i = 1, #instance_data do
@@ -162,15 +174,12 @@ function mt:onAdd()
                             local back_timer = ac.wait(back_time, function()
                                 instance_end()
                                 for _, hero in ipairs(hero_mark) do
-                                    local player = hero:getOwner()
-                                    hero:blink(home)
-                                    hero:stop()
-                                    player:moveCamera(home, 0.2)
+                                    hero:tp(home)
                                 end
                             end)
                             for _, hero in ipairs(hero_mark) do
                                 local player = hero:getOwner()
-                                player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 10)
+                                player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 8)
                                 player:timerDialog(back_msg, back_timer)
                             end
                             --打赢了当然要放点烟花(TNT)庆祝下
@@ -201,6 +210,7 @@ function mt:onAdd()
                     end
                 end)
             end
+            sg.game_mod = '副本'
         end
         eff:remove()
         rect:remove()
@@ -243,6 +253,6 @@ function mt:onAdd()
         local player = ac.player(i)
         player:timerDialog(msg, timer)
         player:message('进攻的敌人已被|cff00ffff冻结|r', 60)
-        player:message('|cffff7500大战黄巾贼|r副本已激活,想去就所有人在|cffff7500'..time..'|r内去|cffff7500飞机|r集合.jpg', 60)
+        player:message('|cffff7500大战黄巾贼|r副本已激活,想去就所有人在|cffff7500'..time..'|r秒内去|cffff7500飞机|r集合.jpg', 60)
     end
 end

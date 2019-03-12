@@ -14,14 +14,7 @@ for i = 1, #tbl do
 	local mt = ac.item[tbl[i][1]]
 
     function mt:onCanAdd(unit)
-        local player = unit:getOwner()
-        if sg.game_mod == '副本' then
-            player:message('|cffffff00副本中不可传送|r', 10)
-            return false
-        end
-        unit:blink(tbl[i][2])
-        unit:stop()
-        player:moveCamera(tbl[i][2], 0.2)
+        return unit:tp(tbl[i][2])
     end
 end
 
@@ -39,14 +32,8 @@ for i = 1, #tbl do
 
     function mt:onCanAdd(unit)
         local player = unit:getOwner()
-        if sg.game_mod == '副本' then
-            player:message('|cffffff00副本中不可传送|r', 10)
-            return false
-        end
         if unit:userData('专属等级') and unit:userData('专属等级') >= tbl[i][3] then
-            unit:blink(tbl[i][2])
-            unit:stop()
-            player:moveCamera(tbl[i][2], 0.2)
+            return unit:tp(tbl[i][2])
         else
             player:message('|cffffff00你没有资格挑战该boss,|cffff7500专属装备|cffffff00至少需要|cffff7500Lv'..tbl[i][3]..'|r', 10)
             return false
@@ -66,14 +53,8 @@ local mt = ac.item['练功房']
 function mt:onCanAdd(unit)
     local player = unit:getOwner()
     local id = player:id()
-    if sg.game_mod == '副本' then
-        player:message('|cffffff00副本中不可传送|r', 10)
-        return false
-    end
     local target = point[id]
-    unit:blink(target)
-    unit:stop()
-    player:moveCamera(target, 0.2)
+    return unit:tp(target)
 end
 
 local exercise_target = {}
@@ -201,14 +182,8 @@ local mt = ac.item['觉醒挑战房']
 function mt:onCanAdd(unit)
     local player = unit:getOwner()
     local id = player:id()
-    if sg.game_mod == '副本' then
-        player:message('|cffffff00副本中不可传送|r', 10)
-        return false
-    end
     local target = point[id]
-    unit:blink(target)
-    unit:stop()
-    player:moveCamera(target, 0.2)
+    return unit:tp(target)
 end
 
 local awake_boss = {}
