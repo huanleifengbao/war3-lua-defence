@@ -46,35 +46,53 @@ end
 local mt = ac.item['基地无敌']
 
 function mt:onAdd()
+    local unit = self:getOwner()
+    local i_player = unit:getOwner()
+	local id = i_player:id()
+	local hero = i_player:getHero()
+
 	local time = self.time
-	for i = 1,sg.max_player do
-    	ac.player(i):message('|cffffff00本阵进入无敌状态，持续' .. time .. '秒|r', 10)
-	end
+	local msg = '基地无敌'
+
 	base:addBuff '无敌'
     {
 		time = self.time,
     }
-    ac.wait(time,function()
+    local timer = ac.wait(time,function()
     	for i = 1,sg.max_player do
-	    	ac.player(i):message('|cffffff00本阵无敌结束|r', 5)
+	    	ac.player(i):message('|cffffff00本阵无敌|r已结束', 5)
 		end
     end)
+	for i = 1,sg.max_player do
+		local player = ac.player(i)
+		player:timerDialog(msg, timer)
+		player:message(sg.player_colour[id]..hero:getName()..'|r使用了|cffffff00本阵无敌|r,持续|cffff7500' .. time .. '|r秒', 5)
+	end
 end
 
 local mt = ac.item['暂停刷怪']
 
 function mt:onAdd()
+    local unit = self:getOwner()
+    local i_player = unit:getOwner()
+	local id = i_player:id()
+	local hero = i_player:getHero()
+
 	local time = self.time
+	local msg = '暂停刷怪'
+
 	sg.stop_enemy()
-	for i = 1,sg.max_player do
-    	ac.player(i):message('|cffffff00暂时停止刷怪，持续' .. time .. '秒|r', 10)
-	end
-    ac.wait(time,function()
+    local timer = ac.wait(time,function()
 		sg.start_enemy()
     	for i = 1,sg.max_player do
-	    	ac.player(i):message('|cffffff00暂停刷怪时间结束|r', 5)
+	    	ac.player(i):message('|cffffff00暂停刷怪|r已结束', 5)
 		end
     end)
+	for i = 1,sg.max_player do
+		local player = ac.player(i)
+		player:timerDialog(msg, timer)
+		player:message(sg.player_colour[id]..hero:getName()..'|r使用了|cffffff00暂停刷怪|r,持续|cffff7500' .. time .. '|r秒', 10)
+	end
 end
 
 local mt = ac.item['基地升级']
@@ -90,10 +108,15 @@ function mt:onCanBuy(hero)
 end
 
 function mt:onAdd()
+    local unit = self:getOwner()
+    local i_player = unit:getOwner()
+	local id = i_player:id()
+	local hero = i_player:getHero()
+
 	level = level + 1
 	base:add('生命上限',self.hp)
 	base:add('护甲',self.amr)
 	for i = 1,sg.max_player do
-    	ac.player(i):message('|cffffff00本阵的耐久度提升了 ' .. level .. '/' .. self.max_level .. '|r', 3)
+    	ac.player(i):message(sg.player_colour[id]..hero:getName()..'|r强化了本阵的耐久度|cffffff00(' .. level .. '/' .. self.max_level .. ')|r', 3)
 	end
 end
