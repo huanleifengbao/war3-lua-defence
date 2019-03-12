@@ -84,7 +84,7 @@ function mt:onCastShot()
 	}	
 	if #list > 0 then
 		local dummy = hero:createUnit('刘备-分身',hero:getPoint(),hero:getFacing())
-		sg.set_color(dummy,{a = 200})
+		sg.set_color(dummy,{a = 0.8})
 		dummy:speed(2)
 		dummy:particle([[Abilities\Weapons\PhoenixMissile\Phoenix_Missile_mini.mdl]],'weapon')
 		dummy:particle([[Abilities\Weapons\FaerieDragonMissile\FaerieDragonMissile.mdl]],'hand')

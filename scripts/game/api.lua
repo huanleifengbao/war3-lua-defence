@@ -96,8 +96,11 @@ end
 function sg.set_color(unit,tbl)
 	local handle = unit._handle
 	local nt = {r = 255,g = 255,b = 255,a = 255}
+	if not tbl then
+		tbl = {}
+	end
 	for k,v in pairs(tbl) do
-		nt[k] = v
+		nt[k] = nt[k] * v
 	end
 	jass.SetUnitVertexColor(handle,nt.r,nt.g,nt.b,nt.a)
 end

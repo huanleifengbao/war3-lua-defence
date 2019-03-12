@@ -155,6 +155,15 @@ local ex_data = {
 	},
 }
 
+local function init_unit(u)
+	sg.add_ai(u)
+	sg.all_enemy[u] = u
+	u:set('生命',u:get'生命上限')
+	u:event('单位-死亡', function(_, _, _)
+		sg.all_enemy[u] = nil
+	end)
+end
+
 sg.all_enemy = {}
 
 local function create_enemy(wave)
@@ -165,12 +174,10 @@ local function create_enemy(wave)
 			for key,val in pairs(data.attribute) do
 				u:set(key,val(wave))
 			end
-			u:set('生命',u:get'生命上限')
 			u:set('死亡金钱', data['死亡金钱'](wave))
 			u:set('死亡木材', data['死亡木材'](wave))
 			u:set('死亡经验', data['死亡经验'](wave))
-			sg.add_ai(u)
-			sg.all_enemy[u] = u
+			init_unit(u)
 		end
 	end)
 	--boss
@@ -183,9 +190,7 @@ local function create_enemy(wave)
 			for key,val in pairs(boss_data.attribute) do
 				u:set(key,val(num))
 			end
-			u:set('生命',u:get'生命上限')
-			sg.add_ai(u)
-			sg.all_enemy[u] = u
+			init_unit(u)
 		end)
 		sg.timerdialog('boss',sg.boss_timer)
 	end
