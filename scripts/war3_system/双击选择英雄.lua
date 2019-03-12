@@ -45,7 +45,7 @@ for i = 1,sg.max_player do
                 trg:remove()
                 --unit:setOwner(player, true)
                 local name = unit:getName()
-                for i = 1, 1 do
+                for _ = 1, 1 do
                     local hero = player:createUnit(name, ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])                             
                     player:addHero(hero)
                     local start_p = ac.point(7044, -8792)

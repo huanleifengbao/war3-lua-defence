@@ -103,6 +103,7 @@ function mt:onAdd()
 	local u = self:getOwner()
 	u:addRestriction '硬直'
 	u:addRestriction '无敌'
+	u:addRestriction '幽灵'
     u:speed(0)
     u:color(1, 1, 1, 0.5)
 end
@@ -115,6 +116,7 @@ function mt:onRemove()
 	local u = self:getOwner()
 	u:removeRestriction '硬直'
     u:removeRestriction '无敌'
+	u:removeRestriction '幽灵'
     u:speed(1)
     u:color(1, 1, 1, 1)
 end
@@ -130,6 +132,7 @@ function mt:onAdd()
 	local u = self:getOwner()
 	u:addRestriction '硬直'
 	u:addRestriction '无敌'
+	u:addRestriction '幽灵'
 	u:animation('death')
 	self.hps = u:get('生命恢复')
 	u:add('生命恢复', - self.hps)
@@ -143,6 +146,7 @@ function mt:onRemove()
 	local u = self:getOwner()
 	u:removeRestriction '硬直'
 	u:removeRestriction '无敌'
+	u:removeRestriction '幽灵'
 	if u:isAlive() then
 		u:animation('stand')
 	else

@@ -234,13 +234,14 @@ function mt:onAdd()
         end
         instance()
     end)
+    --冻结所有怪物
+    sg.stop_enemy()
+    for _, u in pairs(sg.all_enemy) do
+        u:addBuff '冻结'{}
+    end
 	for i = 1,sg.max_player do
         local player = ac.player(i)
         player:timerDialog(msg, timer)
-        sg.stop_enemy()
-        for _, u in pairs(sg.all_enemy) do
-            u:addBuff '冻结'{}
-        end
         player:message('进攻的敌人已被|cff00ffff冻结|r', 60)
         player:message('|cffff7500大战黄巾贼|r副本已激活,想去就所有人在|cffff7500'..time..'|r内去|cffff7500飞机|r集合.jpg', 60)
     end
