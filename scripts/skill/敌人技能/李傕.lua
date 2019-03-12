@@ -109,7 +109,7 @@ local mt = ac.skill['李傕-次元空间斩']
 function mt:onCastStart()
 	local hero = self:getOwner()
 	local point = hero:getPoint()
-	local target = self:getTarget()
+	local target = self:getTarget():getPoint()
 	local angle = point/target
 	local time = self.castStartTime
 	local distance = self.back
@@ -148,9 +148,9 @@ function mt:onCastChannel()
 	    model = [[Abilities\Spells\Human\Invisibility\InvisibilityTarget.mdl]],
 	    time = 1,
 	}	
-	local target = self:getTarget()
+	self.target_point = self:getTarget():getPoint()
 	ac.effect {
-	    target = target,
+	    target = self.target_point,
 	    model = [[effect\Dimension Slash.mdx]],
 	    size = self.area/300,
 	    speed = 0.6/time,
@@ -160,28 +160,30 @@ end
 
 function mt:onCastShot()
 	local hero = self:getOwner()
-	local target = self:getTarget()
+	local target = self.target_point
 	local area = self.area
 	sg.animationI(hero,0)
-	ac.effect {
-	    target = target,
-	    model = [[effect\DarkBlast.mdx]],
-	    size = self.area/250,
-	    time = 1,
-	}
-	for _, u in ac.selector()
-	    : inRange(target,area)
-	    : isEnemy(hero)
-	    : ofNot '建筑'
-	    : ipairs()
-	do
-		local damage = self.damage * sg.get_allatr(hero)
-		hero:damage
-		{
-		    target = u,
-		    damage = damage,
-		    damage_type = self.damage_type,
-		    skill = self,
+	ac.wait(0.2,function()
+		ac.effect {
+		    target = target,
+		    model = [[effect\DarkBlast.mdx]],
+		    size = self.area/250,
+		    time = 1,
 		}
-	end
+		for _, u in ac.selector()
+		    : inRange(target,area)
+		    : isEnemy(hero)
+		    : ofNot '建筑'
+		    : ipairs()
+		do
+			local damage = self.damage * sg.get_allatr(hero)
+			hero:damage
+			{
+			    target = u,
+			    damage = damage,
+			    damage_type = self.damage_type,
+			    skill = self,
+			}
+		end
+	end)
 end

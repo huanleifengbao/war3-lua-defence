@@ -217,7 +217,9 @@ function sg.get_free_slot(hero)
 end
 
 --暂停刷怪
+local stop = 0
 function sg.stop_enemy()
+	stop = stop + 1
 	if sg.wave_timer then
 		sg.wave_timer:pause()
 	end
@@ -231,13 +233,16 @@ end
 
 --继续刷怪
 function sg.start_enemy()
-	if sg.wave_timer then
-		sg.wave_timer:resume()
-	end
-	if sg.enemy_timer then
-		sg.enemy_timer:resume()
-	end
-	if sg.boss_timer then
-		sg.boss_timer:resume()
+	stop = stop - 1
+	if stop <= 0 then
+		if sg.wave_timer then
+			sg.wave_timer:resume()
+		end
+		if sg.enemy_timer then
+			sg.enemy_timer:resume()
+		end
+		if sg.boss_timer then
+			sg.boss_timer:resume()
+		end
 	end
 end
