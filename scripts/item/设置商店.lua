@@ -9,12 +9,13 @@ shop:setItem('基地升级', 7, 'D')
 shop:setItem('副本-大战黄巾贼', 1, 'Z')
 
 local shop_list = {
-	['药水商店'] = {p = ac.point(6644, -10529),n = [[shop\yaoshuishangdian.mdx]]},
+	['黑市商人'] = {p = ac.point(5644, -10529),n = [[shop\heishishangren.mdx]]},
+    ['药水商店'] = {p = ac.point(6344, -10529),n = [[shop\yaoshuishangdian.mdx]]},
+    --中心
 	['新手装备'] = {p = ac.point(7044, -10529),n = [[shop\xinshouzhuangbei.mdx]]},
-	['进阶挑战'] = {p = ac.point(7444, -10529),n = [[shop\jinjietiaozhan.mdx]]},
-	['装备进阶'] = {p = ac.point(7844, -10529),n = [[shop\zhuangbeijinjie.mdx]]},
-	['野外挑战'] = {p = ac.point(8244, -10529),n = [[shop\yewaitiaozhan.mdx]]},
-	['黑市商人'] = {p = ac.point(8644, -10529),n = [[shop\heishishangren.mdx]]},
+	['进阶挑战'] = {p = ac.point(7744, -10529),n = [[shop\jinjietiaozhan.mdx]]},
+	['装备进阶'] = {p = ac.point(8444, -10529),n = [[shop\zhuangbeijinjie.mdx]]},
+	['野外挑战'] = {p = ac.point(9144, -10529),n = [[shop\yewaitiaozhan.mdx]]},
 }
 
 for name,data in pairs(shop_list) do

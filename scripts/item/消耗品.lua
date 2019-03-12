@@ -86,11 +86,29 @@ function mt:onAdd()
     }
 end
 
+local mt = ac.item['作弊属性']
+
+function mt:onAdd()
+    local item = self
+    --作用目标是玩家英雄
+    local unit = item:getOwner()
+    local i_player = unit:getOwner()
+    local hero = i_player:getHero()
+
+    hero:add('力量', self.attribute['力量'])
+    hero:add('敏捷', self.attribute['敏捷'])
+    hero:add('智力', self.attribute['智力'])
+    hero:particle([[Abilities\Spells\Other\Charm\CharmTarget.mdl]], 'origin', 0)
+end
+
 local mt = ac.skill['治疗药水-小']
 
 function mt:onCastShot()
     local skill = self
-    local hero = skill:getOwner()
+    --作用目标是玩家英雄
+    local unit = skill:getOwner()
+    local i_player = unit:getOwner()
+    local hero = i_player:getHero()
 
     local heal = skill.heal
     hero:add('生命', heal)
@@ -109,7 +127,10 @@ local mt = ac.skill['治疗药水-大']
 
 function mt:onCastShot()
     local skill = self
-    local hero = skill:getOwner()
+    --作用目标是玩家英雄
+    local unit = skill:getOwner()
+    local i_player = unit:getOwner()
+    local hero = i_player:getHero()
 
     local heal = skill.heal
     hero:add('生命', heal)

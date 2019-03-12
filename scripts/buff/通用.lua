@@ -100,26 +100,6 @@ mt.coverGlobal = 1
 mt.show = 0
 
 function mt:onAdd()
-	u:addRestriction '无敌'
-    u:speed(0)
-    u:color(1, 1, 1, 0.5)
-end
-
-function mt:onCover()
-    return false
-end
-
-function mt:onRemove()
-    u:removeRestriction '无敌'
-    u:speed(1)
-    u:color(1, 1, 1, 1)
-end
-
-local mt = ac.buff['假死']
-mt.coverGlobal = 1
-mt.show = 0
-
-function mt:onAdd()
 	local u = self:getOwner()
 	u:addRestriction '硬直'
 	u:addRestriction '无敌'
@@ -137,4 +117,45 @@ function mt:onRemove()
     u:removeRestriction '无敌'
     u:speed(1)
     u:color(1, 1, 1, 1)
+end
+
+local mt = ac.buff['假死']
+mt.coverGlobal = 1
+mt.show = 1
+mt.icon = [[ReplaceableTextures\CommandButtons\BTNAnkh.blp]]
+mt.title = '死亡'
+mt.description = '你死了,祈祷队友获胜吧...'
+
+function mt:onAdd()
+	local u = self:getOwner()
+	u:addRestriction '硬直'
+	u:addRestriction '无敌'
+	u:animation('death')
+	self.hps = u:get('生命恢复')
+	u:add('生命恢复', - self.hps)
+end
+
+function mt:onCover()
+    return false
+end
+
+function mt:onRemove()
+	local u = self:getOwner()
+	u:removeRestriction '硬直'
+	u:removeRestriction '无敌'
+	if u:isAlive() then
+		u:animation('stand')
+	else
+		u:speed(0)
+		--[=[ac.effect {
+			target = u:getPoint(),
+			model = [[Objects\Spawnmodels\Undead\UndeadDissipate\UndeadDissipate.mdl]],
+			speed = 1,
+			time = 0,
+		}]=]--
+		ac.wait(2.5, function()
+			u:speed(1)
+		end)
+	end
+	u:add('生命恢复', self.hps)
 end
