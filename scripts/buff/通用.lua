@@ -67,3 +67,27 @@ function mt:onRemove()
     u:speed(1)
     u:color(1, 1, 1, 1)
 end
+
+local mt = ac.buff['假死']
+mt.coverGlobal = 1
+mt.show = 0
+
+function mt:onAdd()
+	local u = self:getOwner()
+	u:addRestriction '硬直'
+	u:addRestriction '无敌'
+    u:speed(0)
+    u:color(1, 1, 1, 0.5)
+end
+
+function mt:onCover()
+    return false
+end
+
+function mt:onRemove()
+	local u = self:getOwner()
+	u:removeRestriction '硬直'
+    u:removeRestriction '无敌'
+    u:speed(1)
+    u:color(1, 1, 1, 1)
+end
