@@ -250,27 +250,29 @@ end
 --unit额外api
 ac.game:event('单位-创建', function (_, unit)
 	--传送
-	unit.tp = function(self,target)
-		local player = unit:getOwner()
-		if sg.game_mod ~= '副本' then
-			ac.effect {
-			    target = unit:getPoint(),
-			    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportCaster.mdl]],
-			    time = 2,
-			}
-			unit:blink(target)
-			unit:stop()
-			local target = unit:getPoint()
-	    	player:moveCamera(target, 0.2)
-			ac.effect {
-			    target = target,
-			    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportTarget.mdl]],
-			    time = 2,
-			}
-			return true
-		else
-			player:message('|cffffff00副本中不可传送|r', 3)
-			return false
+	unit.tp = function(self,target,boolean)
+		if boolean == true or (unit:isAlive() and not unit:hasRestriction '硬直') then
+			local player = unit:getOwner()
+			if sg.game_mod ~= '副本' then
+				ac.effect {
+				    target = unit:getPoint(),
+				    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportCaster.mdl]],
+				    time = 2,
+				}
+				unit:blink(target)
+				unit:stop()
+				local target = unit:getPoint()
+		    	player:moveCamera(target, 0.2)
+				ac.effect {
+				    target = target,
+				    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportTarget.mdl]],
+				    time = 2,
+				}
+				return true
+			else
+				player:message('|cffffff00副本中不可传送|r', 3)
+				return false
+			end
 		end
 	end
 end)

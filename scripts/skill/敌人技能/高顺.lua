@@ -1,6 +1,6 @@
 local attack_range = 300
 
-local mt = ac.skill['李傕-八刀一闪']
+local mt = ac.skill['高顺-八刀一闪']
 
 function mt:onCastStart()
 	local hero = self:getOwner()
@@ -26,6 +26,7 @@ function mt:onCastStart()
 	self.eff = hero:particle([[Abilities\Weapons\ZigguratFrostMissile\ZigguratFrostMissile.mdl]],'weapon')
 	self.eff2 = hero:particle([[Abilities\Weapons\ZigguratMissile\ZigguratMissile.mdl]],'weapon')
 	self.eff3 = hero:particle([[Abilities\Weapons\ChimaeraLightningMissile\ChimaeraLightningMissile.mdl]],'weapon')
+	hero:setFacing(point/self:getTarget(),0.1)
 end
 
 function mt:onCastShot()
@@ -62,7 +63,7 @@ function mt:onCastShot()
 			end
 			local unit = {}
 			for j = 1,2 do
-				local u = hero:createUnit('李傕-八刀一闪',p,angle)
+				local u = hero:createUnit('高顺-八刀一闪',p,angle)
 				u:speed(2.6 - 0.2 * i)
 				sg.animationI(u,tbl[j])
 				sg.set_color(u,{a = 0})
@@ -104,7 +105,7 @@ function mt:onCastStop()
 	self.eff3()
 end
 
-local mt = ac.skill['李傕-次元空间斩']
+local mt = ac.skill['高顺-次元空间斩']
 
 function mt:onCastStart()
 	local hero = self:getOwner()
@@ -125,6 +126,7 @@ function mt:onCastStart()
 	function mover:onRemove()
 		hero:speed(1)
 	end
+	hero:setFacing(point/self:getTarget(),0.1)
 end
 
 function mt:onCastChannel()

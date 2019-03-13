@@ -57,6 +57,7 @@ function mt:onCastChannel()
 	    time = time,
 	    skipDeath = true,
 	}
+	hero:setFacing(point/self:getTarget(),0.1)
 end
 
 function mt:onCastShot()
@@ -161,6 +162,7 @@ function mt:onCastChannel()
 	    model = [[Abilities\Spells\Undead\AnimateDead\AnimateDeadTarget.mdl]],
 	    time = 1,
 	}
+	hero:setFacing(point/self:getTarget(),0.1)
 end
 
 function mt:onCastShot()

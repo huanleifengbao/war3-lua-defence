@@ -115,18 +115,32 @@ local function check_point(u)
 end
 
 --若长时间未产生位移且不在攻击状态，则使其继续向下个点移动
-local idle_time = 5
+local max_idle = 5
 local function check_move(u)
 	local data = ai_groups[u]
 	local point = data.last_point
 	local now_point = u:getPoint()
 	data.last_point = now_point
-	--判断是否在位移状态
-	local stop = point * now_point <= 1
-	--判断是否是在进行攻击
-	local attack = data.is_attack
-	if stop and not attack then
-		attack_move(u)
+	if point * now_point <= 1 and data.is_attack == false then
+		data.idle = data.idle + pulse
+		if data.idle >= max_idle then
+			data.idle = 0
+			local stuck = true
+			for _,_ in ac.selector()
+			    : inRange(u:getPoint(),1000)
+			    : isEnemy(u)
+			    : isVisible(u)
+			    : ipairs()
+			do
+				stuck = false				
+				break
+			end
+			if stuck == true then
+				attack_move(u)
+			end
+		end
+	else
+		data.idle = 0
 	end
 end
 
