@@ -1,5 +1,8 @@
 sg = {}
+--预设的最大玩家数量
 sg.max_player = 6
+--正在游戏的玩家数量,选英雄会加,退游戏会扣
+sg.player_count = 0
 --玩家颜色
 sg.player_colour = {
     [1] = '|cFFF00000',
