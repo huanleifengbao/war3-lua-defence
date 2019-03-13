@@ -189,7 +189,7 @@ mt.coverGlobal = 1
 mt.show = 1
 mt.icon = [[ReplaceableTextures\CommandButtons\BTNEnsnare.blp]]
 mt.title = '诱捕'
-mt.description = '该单位被逮捕了，所以不能移动。'
+mt.description = '该单位被逮捕了(无误)，所以不能移动。'
 
 function mt:onAdd()
 	local u = self:getOwner()
