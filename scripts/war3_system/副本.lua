@@ -34,9 +34,21 @@ function mt:onAdd()
     local eff = ac.effect {
         target = start_point,
         model = [[units\creeps\GoblinZeppelin\GoblinZeppelin.mdl]],
-        size = 3,
+        height = 300,
+        angle = 90,
+        size = 2.5,
         speed = 1,
     }
+    local eff2 = ac.effect {
+        target = start_point,
+        model = [[buildings\other\CircleOfPower\CircleOfPower.mdl]],
+        size = 3.5,
+        speed = 1,
+    }
+    local textTag_msg = '|cffffcc00'..msg..'|n|cffffff00参与人数:'..'0'..'/'..sg.player_count..'|r'
+    local textTag = ac.textTag()
+        : text(textTag_msg, 0.04)
+        : at(start_point, 50)
     local timer
 
     local rect = ac.rect(start_point, 500, 500)
@@ -213,6 +225,8 @@ function mt:onAdd()
             sg.game_mod = '副本'
         end
         eff:remove()
+        eff2:remove()
+        textTag:remove()
         rect:remove()
     end
 
@@ -222,7 +236,9 @@ function mt:onAdd()
         local id = player:id()
         if u:isHero() and (id >= 1 and id <= 6) then
             table.insert(mark, u)
-            if #mark >= 1 then
+            textTag_msg = '|cffffcc00'..msg..'|n|cffffff00参与人数:'..#mark..'/'..sg.player_count..'|r'
+            textTag:text(textTag_msg, 0.04)
+            if #mark >= sg.player_count then
                 instance()
             end
         end
@@ -231,6 +247,8 @@ function mt:onAdd()
         for k, unit in ipairs(mark) do
             if u == unit then
                 table.remove(mark, k)
+                textTag_msg = '|cffffcc00'..msg..'|n|cffffff00参与人数:'..#mark..'/'..sg.player_count..'|r'
+                textTag:text(textTag_msg, 0.04)
                 break
             end
         end

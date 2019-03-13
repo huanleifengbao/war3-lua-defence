@@ -46,6 +46,7 @@ for i = 1,sg.max_player do
                 --unit:setOwner(player, true)
                 local name = unit:getName()
                 for _ = 1, 1 do
+                    sg.player_count = sg.player_count + 1
                     local hero = player:createUnit(name, ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])                             
                     player:addHero(hero)
                     local start_p = ac.point(7044, -8792)
