@@ -163,3 +163,26 @@ function mt:onRemove()
 	end
 	u:add('生命恢复', self.hps)
 end
+
+local mt = ac.buff['诱捕']
+mt.coverGlobal = 1
+mt.show = 1
+mt.icon = [[ReplaceableTextures\CommandButtons\BTNEnsnare.blp]]
+mt.title = '诱捕'
+mt.description = '无法移动!'
+
+function mt:onAdd()
+	local u = self:getOwner()
+	u:addRestriction '定身'
+	self.eff = u:particle([[Abilities\Spells\Orc\Ensnare\ensnareTarget.mdl]],'origin')
+end
+
+function mt:onCover(new)
+    return new.time > self:remaining()
+end
+
+function mt:onRemove()
+	local u = self:getOwner()
+	u:removeRestriction '定身'
+	self.eff()
+end

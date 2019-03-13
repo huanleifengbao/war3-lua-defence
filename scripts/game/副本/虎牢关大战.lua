@@ -12,7 +12,12 @@ local instance_data = {
     {name = '副本-虎牢关吕布', point = ac.point(-8800, 1400), facing = 180},
 }
 --事件:一群刁民
-local event1 = ac.point(7044, -8792)
+local event1_mark = false
+local event1_rect = ac.rect(ac.point(-11300, 450), ac.point(-9900, 900))
+local event1_monster_data = {
+    {name = '副本-虎牢关老阴比', point = ac.point(-10600, 1100), count = 15, width = 1200, facing = 270},
+    {name = '副本-虎牢关老阴比', point = ac.point(-10600, -200), count = 15, width = 1200, facing = 90},
+}
 
 function mt:onCanAdd(unit)
     local player = unit:getOwner()
@@ -25,13 +30,18 @@ end
 function mt:onAdd()
     sg.game_mod = '副本准备'
     local mark = {}
+    local hero_mark = {}
+    local hero_count = 0
+    local boss_mark = {}
+    local boss_count = 0
+    local event1_monster_mark = {}
 
     local time = 120
     local msg = '副本-虎牢关大战'
     local time2 = 300
     local msg2 = '时间限制'
     --飞机特效
-    local eff = ac.effect {
+    local eff1 = ac.effect {
         target = start_point,
         model = [[units\human\Gyrocopter\Gyrocopter_V1.mdl]],
         height = 300,
@@ -65,6 +75,23 @@ function mt:onAdd()
                     buff:remove()
                 end
             end
+            --清空事件
+            event1_mark = false
+            if #event1_monster_mark > 0 then
+                for _, u in ipairs(event1_monster_mark) do
+                    ac.effect {
+                        target = u:getPoint(),
+                        model = [[Abilities\Spells\Human\Polymorph\PolyMorphTarget.mdl]],
+                        speed = 2,
+                        time = 0,
+                    }
+                    u:kill(u)
+                    u:remove()
+                end
+                event1_monster_mark = {}
+            end
+            hero_mark = {}
+            boss_mark = {}
             sg.game_mod = '通常'
             for i = 1,sg.max_player do
                 local player = ac.player(i)
@@ -75,10 +102,6 @@ function mt:onAdd()
         if #mark == 0 then
             instance_end()
         else
-            local hero_mark = {}
-            local hero_count = 0
-            local boss_mark = {}
-            local boss_count = 0
             --时限
             local timer2 = ac.wait(time2, function()
                 for _, hero in ipairs(hero_mark) do
@@ -103,7 +126,6 @@ function mt:onAdd()
                     end
                     local end_time = 4
                     ac.wait(end_time, function()
-                        instance_end()
                         for _, boss in ipairs(boss_mark) do
                             ac.effect {
                                 target = boss:getPoint(),
@@ -115,6 +137,7 @@ function mt:onAdd()
                             boss:kill(boss)
                             boss:remove()
                         end
+                        instance_end()
                     end)
                 end
             end
@@ -223,8 +246,39 @@ function mt:onAdd()
                 end)
             end
             sg.game_mod = '副本'
+            event1_mark = true
+            --事件:进入区域会刷兵
+            function event1_rect:onEnter(u)
+                local player = u:getOwner()
+                local id = player:id()
+                if event1_mark == true and u:isHero() and (id >= 1 and id <= sg.max_player) then
+                    event1_mark = false
+                    u:addBuff '诱捕'
+                    {
+                        time = 5,
+                    }
+                    local p1 = u:getPoint()
+                    for _, hero in ipairs(hero_mark) do
+                        hero:getOwner():message('被|cffff7500埋伏|r了!', 8)
+                    end
+                    for i = - event1_monster_data[1].count / 2, event1_monster_data[1].count / 2 do
+                        local width = event1_monster_data[1].width / event1_monster_data[1].count
+                        local p2 = event1_monster_data[1].point - {0, width * i}
+                        local monster = ac.player(11):createUnit(event1_monster_data[1].name, p2, event1_monster_data[1].facing)
+                        monster:attack(p1)
+                        table.insert(event1_monster_mark, monster)
+                    end
+                    for i = - event1_monster_data[2].count / 2, event1_monster_data[2].count / 2 do
+                        local width = event1_monster_data[2].width / event1_monster_data[2].count
+                        local p2 = event1_monster_data[2].point - {0, width * i}
+                        local monster = ac.player(11):createUnit(event1_monster_data[2].name, p2, event1_monster_data[2].facing)
+                        monster:attack(p1)
+                        table.insert(event1_monster_mark, monster)
+                    end
+                end
+            end
         end
-        eff:remove()
+        eff1:remove()
         eff2:remove()
         textTag:remove()
         rect:remove()
@@ -234,7 +288,7 @@ function mt:onAdd()
     function rect:onEnter(u)
         local player = u:getOwner()
         local id = player:id()
-        if u:isHero() and (id >= 1 and id <= 6) then
+        if u:isHero() and (id >= 1 and id <= sg.max_player) then
             table.insert(mark, u)
             textTag_msg = '|cffffcc00'..msg..'|n|cffffff00参与人数:'..#mark..'/'..sg.player_count..'|r'
             textTag:text(textTag_msg, 0.04)

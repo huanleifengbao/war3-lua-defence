@@ -25,13 +25,17 @@ end
 function mt:onAdd()
     sg.game_mod = '副本准备'
     local mark = {}
+    local hero_mark = {}
+    local hero_count = 0
+    local boss_mark = {}
+    local boss_count = 0
 
     local time = 120
     local msg = '副本-大战黄巾贼'
     local time2 = 300
     local msg2 = '时间限制'
     --飞机特效
-    local eff = ac.effect {
+    local eff1 = ac.effect {
         target = start_point,
         model = [[units\creeps\GoblinZeppelin\GoblinZeppelin.mdl]],
         height = 300,
@@ -65,6 +69,8 @@ function mt:onAdd()
                     buff:remove()
                 end
             end
+            hero_mark = {}
+            boss_mark = {}
             sg.game_mod = '通常'
             for i = 1,sg.max_player do
                 local player = ac.player(i)
@@ -75,10 +81,6 @@ function mt:onAdd()
         if #mark == 0 then
             instance_end()
         else
-            local hero_mark = {}
-            local hero_count = 0
-            local boss_mark = {}
-            local boss_count = 0
             --时限
             local timer2 = ac.wait(time2, function()
                 for _, hero in ipairs(hero_mark) do
@@ -103,7 +105,6 @@ function mt:onAdd()
                     end
                     local end_time = 4
                     ac.wait(end_time, function()
-                        instance_end()
                         for _, boss in ipairs(boss_mark) do
                             ac.effect {
                                 target = boss:getPoint(),
@@ -115,6 +116,7 @@ function mt:onAdd()
                             boss:kill(boss)
                             boss:remove()
                         end
+                        instance_end()
                     end)
                 end
             end
@@ -224,7 +226,7 @@ function mt:onAdd()
             end
             sg.game_mod = '副本'
         end
-        eff:remove()
+        eff1:remove()
         eff2:remove()
         textTag:remove()
         rect:remove()
@@ -234,7 +236,7 @@ function mt:onAdd()
     function rect:onEnter(u)
         local player = u:getOwner()
         local id = player:id()
-        if u:isHero() and (id >= 1 and id <= 6) then
+        if u:isHero() and (id >= 1 and id <= sg.max_player) then
             table.insert(mark, u)
             textTag_msg = '|cffffcc00'..msg..'|n|cffffff00参与人数:'..#mark..'/'..sg.player_count..'|r'
             textTag:text(textTag_msg, 0.04)
