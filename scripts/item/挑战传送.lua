@@ -121,7 +121,7 @@ local function exercise(unit, id, data)
                     target = u:getPoint(),
                     model = [[Abilities\Spells\Human\Polymorph\PolyMorphTarget.mdl]],
                     speed = 2,
-                    time = 1,
+                    time = 0,
                 }
             end
             u:remove()
