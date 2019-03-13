@@ -1,7 +1,7 @@
 local wave = 0	--当前波数
-local player = ac.player(12)	--刷怪玩家
-sg.creeps_player = ac.player(11)
-sg.enemy_player = player
+sg.creeps_player = ac.player(11)	--野怪玩家
+sg.enemy_player = ac.player(12)	--刷怪玩家
+local player = sg.enemy_player
 local start_point = {	--出怪点，有几个点就出几路怪
 	ac.point(6050,3900),
 	ac.point(6950,3900),
@@ -17,15 +17,6 @@ function sg.get_boss_id(num)
 	num = math.ceil(num)
 	return 'BOSS' .. num
 end
-
---难度系数
-sg.difficult = 0
-local dif_tbl = {
-	[1] = 0.5,
-	[2] = 1,
-	[3] = 2,
-	[4] = 4,
-}
 
 --生命值表
 local hp_tbl = {
@@ -80,7 +71,7 @@ local data = {
 			if not hp then
 				hp = hp_tbl[#hp_tbl]
 			end
-			return hp * dif_tbl[sg.difficult]
+			return hp
 		end,
 		['攻击'] = function(n)
 			local atk
@@ -89,7 +80,7 @@ local data = {
 			else
 				atk = n * 100
 			end
-			return atk * dif_tbl[sg.difficult]
+			return atk
 		end,
 		['护甲'] = function(n)
 			local def = def_tbl[n]
@@ -118,15 +109,6 @@ local boss_data = {
 		return sg.get_boss_id(n)
 	end,
 	attribute = {	--进攻怪物属性公式
-		--['生命上限'] = function(n)
-		--	return (10000 + n * 100) * dif_tbl[sg.difficult]
-		--end,
-		--['攻击'] = function(n)
-		--	return (2000 + n * 200) * dif_tbl[sg.difficult]
-		--end,
-		--['护甲'] = function(n)
-		--	return 20 + n * 10
-		--end,
 		['力量'] = function(n)
 			return 10^n * 10000
 		end,
@@ -140,6 +122,9 @@ local boss_data = {
 			return 500
 		end,
 	},
+	level = function(n)
+		return 2000 * n
+	end,
 }
 
 local ex_data = {
@@ -152,10 +137,10 @@ local ex_data = {
 	max_wave = 0,
 		attribute = {
 		['生命上限'] = function(n)
-			return (1000 + n * 100) * dif_tbl[sg.difficult]
+			return (1000 + n * 100)
 		end,
 		['攻击'] = function(n)
-			return (200 + n * 20) * dif_tbl[sg.difficult]
+			return (200 + n * 20)
 		end,
 		['护甲'] = function(n)
 			return 20 + n * 10
@@ -178,19 +163,21 @@ end
 sg.all_enemy = {}
 
 local function create_enemy(wave)
-	sg.enemy_timer = ac.timer(data.interval,data.count,function()
-		for i = 1,#start_point do
-			local p = start_point[i]
-			local u = player:createUnit(data.id(wave),p,270)
-			for key,val in pairs(data.attribute) do
-				u:set(key,val(wave))
+	if data.count > 0 then
+		sg.enemy_timer = ac.timer(data.interval,data.count,function()
+			for i = 1,#start_point do
+				local p = start_point[i]
+				local u = player:createUnit(data.id(wave),p,270)
+				for key,val in pairs(data.attribute) do
+					u:set(key,val(wave))
+				end
+				u:set('死亡金钱', data['死亡金钱'](wave))
+				u:set('死亡木材', data['死亡木材'](wave))
+				u:set('死亡经验', data['死亡经验'](wave))
+				init_unit(u)
 			end
-			u:set('死亡金钱', data['死亡金钱'](wave))
-			u:set('死亡木材', data['死亡木材'](wave))
-			u:set('死亡经验', data['死亡经验'](wave))
-			init_unit(u)
-		end
-	end)
+		end)
+	end
 	--boss
 	local boss_wave = data.boss
 	if boss_wave ~= 0 and wave%boss_wave == 0 then
@@ -203,6 +190,11 @@ local function create_enemy(wave)
 			end
 			init_unit(u)
 			sg.add_ai_skill(u)
+			u:addBuff '纯化'
+			{
+				time = 0,
+			}
+			u:level(boss_data.level(num),false)
 		end)
 		sg.timerdialog('boss',sg.boss_timer)
 	end
