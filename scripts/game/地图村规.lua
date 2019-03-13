@@ -14,3 +14,26 @@ ac.game:event('单位-属性变化', function (_, hero, name, count)
 		end
 	end
 end)
+
+--难度系数
+sg.difficult = 0
+local dif_tbl = {
+	[0] = 1,
+	[1] = 1,
+	[2] = 2,
+	[3] = 4,
+	[4] = 8,
+}
+ac.game:event('单位-创建', function (_, unit)
+	local player = unit:getOwner()
+	if player == sg.creeps_player or player == sg.enemy_player then
+		ac.wait(0,function()
+			local num = dif_tbl[sg.difficult]
+			unit:set('生命上限',unit:get('生命上限') * num)
+			unit:set('攻击',unit:get('攻击') * num)
+			unit:set('力量',unit:get('力量') * num)
+			unit:set('敏捷',unit:get('敏捷') * num)
+			unit:set('智力',unit:get('智力') * num)
+		end)
+	end
+end)

@@ -27,7 +27,7 @@ damage表内可定义的属性：
 '单位-即将造成/受到伤害'事件中damage可调用的api：
 	damage:get_damage() --> 返回原始伤害(number)
 	damage:get_currentdamage() --> 返回当前伤害(number)
-	damage:change_type([string]) --> 设置damage_type为[string]
+	damage:set_type([string]) --> 设置damage_type为[string]
 	damage:div_damage([number]) --> 设置当前伤害为[number]
 ]]--
 
@@ -160,7 +160,7 @@ local function createDamage(damage)
 	damage.get_currentdamage = function(self)
 		return damage.currentDamage
 	end
-	damage.change_type = function(self,new)
+	damage.set_type = function(self,new)
 		self.damage_type = new
 	end
 	damage.div_damage = function(self,new)

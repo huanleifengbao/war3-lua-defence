@@ -163,3 +163,24 @@ function mt:onRemove()
 	end
 	u:add('生命恢复', self.hps)
 end
+
+local mt = ac.buff['纯化']
+mt.coverGlobal = 1
+mt.show = 1
+mt.icon = [[ReplaceableTextures\CommandButtons\BTNOrbOfDeath.blp]]
+mt.title = '纯化'
+mt.description = '该单位的普通攻击造成无视护甲的纯粹伤害。'
+
+function mt:onAdd()
+	local u = self:getOwner()
+	self.trg = u:event('单位-即将造成伤害', function(_,_,damage)
+		if damage:isCommonAttack() == true then
+			damage:set_type '纯粹'
+		end
+	end)
+end
+
+function mt:onRemove()
+	local u = self:getOwner()
+	self.trg:remove()
+end

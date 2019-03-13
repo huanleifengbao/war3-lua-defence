@@ -216,7 +216,7 @@ end
 function mt:on_eyes(func)
 	local hero = self:getOwner()
 	local point = hero:getPoint()
-	self:do_damage(self.range,function(u)
+	self:do_damage(self.eyearea,function(u)
 		local facing = u:getFacing() + 360
 		local angle = u:getPoint()/point + 360
 		if math.abs(facing%360 - angle%360) <= 60 then

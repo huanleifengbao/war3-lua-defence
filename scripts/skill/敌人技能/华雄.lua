@@ -57,14 +57,16 @@ function mt:onCastShot()
 				hitType = '敌方',
 			}		
 			function mover:onHit(u)
-				local damage = skill.damage * sg.get_allatr(hero)
-				hero:damage
-				{
-				    target = u,
-				    damage = damage,
-				    damage_type = skill.damage_type,
-				    skill = skill,
-				}
+				if not u:isType '建筑' then
+					local damage = skill.damage * sg.get_allatr(hero)
+					hero:damage
+					{
+					    target = u,
+					    damage = damage,
+					    damage_type = skill.damage_type,
+					    skill = skill,
+					}
+				end
 			end
 		end
 	end
@@ -138,6 +140,7 @@ function mt:onCastShot()
 		{
 			time = skill.stun,
 		}
+		print(u)
 	end
 	for i = 1,count do
 		local mover = hero:moverLine
@@ -151,14 +154,16 @@ function mt:onCastShot()
 			hitType = '敌方',
 		}
 		function mover:onHit(u)
-			local damage = skill.damage2 * sg.get_allatr(hero)
-			hero:damage
-			{
-			    target = u,
-			    damage = damage,
-			    damage_type = skill.damage_type,
-			    skill = skill,
-			}
+			if not u:isType '建筑' then
+				local damage = skill.damage2 * sg.get_allatr(hero)
+				hero:damage
+				{
+				    target = u,
+				    damage = damage,
+				    damage_type = skill.damage_type,
+				    skill = skill,
+				}
+			end
 		end
 	end
 end

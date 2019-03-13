@@ -188,15 +188,17 @@ function mt:onCastShot()
 			finishHeight = 50,
 		}
 		function mover:onHit(u)
-			local damage = skill.damage * sg.get_allatr(hero)
-			hero:damage
-			{
-			    target = u,
-			    damage = damage,
-			    damage_type = skill.damage_type,
-			    skill = skill,
-			}
-			self:remove()
+			if not u:isType '建筑' then
+				local damage = skill.damage * sg.get_allatr(hero)
+				hero:damage
+				{
+				    target = u,
+				    damage = damage,
+				    damage_type = skill.damage_type,
+				    skill = skill,
+				}
+				self:remove()
+			end
 		end
 		local pulse = 0.15
 		local index = 1
