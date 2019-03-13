@@ -175,7 +175,7 @@ function mt:onAdd()
             --创建boss
             for i = 1, #instance_data do
                 boss_count = boss_count + 1
-                local boss = ac.player(11):createUnit(instance_data[i].name, instance_data[i].point, instance_data[i].facing)
+                local boss = sg.creeps_player:createUnit(instance_data[i].name, instance_data[i].point, instance_data[i].facing)
                 table.insert(boss_mark, boss)
                 boss:event('单位-死亡', function (trg, _, killer)
                     trg:remove()

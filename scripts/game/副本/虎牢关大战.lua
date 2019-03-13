@@ -196,7 +196,7 @@ function mt:onAdd()
             --创建boss
             for i = 1, #instance_data do
                 boss_count = boss_count + 1
-                local boss = ac.player(11):createUnit(instance_data[i].name, instance_data[i].point, instance_data[i].facing)
+                local boss = sg.creeps_player:createUnit(instance_data[i].name, instance_data[i].point, instance_data[i].facing)
                 table.insert(boss_mark, boss)
                 boss:event('单位-死亡', function (trg, _, killer)
                     trg:remove()
@@ -266,14 +266,14 @@ function mt:onAdd()
                     for i = - event1_monster_data[1].count / 2, event1_monster_data[1].count / 2 do
                         local width = event1_monster_data[1].width / event1_monster_data[1].count
                         local p2 = event1_monster_data[1].point - {0, width * i}
-                        local monster = ac.player(11):createUnit(event1_monster_data[1].name, p2, event1_monster_data[1].facing)
+                        local monster = sg.creeps_player:createUnit(event1_monster_data[1].name, p2, event1_monster_data[1].facing)
                         monster:attack(p1)
                         table.insert(event1_monster_mark, monster)
                     end
                     for i = - event1_monster_data[2].count / 2, event1_monster_data[2].count / 2 do
                         local width = event1_monster_data[2].width / event1_monster_data[2].count
                         local p2 = event1_monster_data[2].point - {0, width * i}
-                        local monster = ac.player(11):createUnit(event1_monster_data[2].name, p2, event1_monster_data[2].facing)
+                        local monster = sg.creeps_player:createUnit(event1_monster_data[2].name, p2, event1_monster_data[2].facing)
                         monster:attack(p1)
                         table.insert(event1_monster_mark, monster)
                     end

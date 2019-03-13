@@ -87,7 +87,7 @@ local function exercise(unit, id, data)
     local rect = ac.rect(p, 2688, 2176)
     local timer = false
     for _ = 1, data.count do
-        local u = ac.player(11):createUnit(data.name, p, 270)
+        local u = sg.creeps_player:createUnit(data.name, p, 270)
         u:set('死亡金钱', data.gold)
         u:set('死亡木材', data.lumber)
         u:set('死亡经验', data.exp)
@@ -211,7 +211,7 @@ awake_point_ex = {90, 600}
 --召唤boss
 local function awake(unit, id, data)
     local p = awake_point[id]
-    awake_boss[id] = ac.player(11):createUnit(data.name, p - awake_point_ex, 270)
+    awake_boss[id] = sg.creeps_player:createUnit(data.name, p - awake_point_ex, 270)
     --冻结boss,可以按继续再打
     local function awake_zzz()
         if not awake_boss[id]:userData('暂停挑战') then
