@@ -176,7 +176,7 @@ function mt:onAdd()
                     end
                 end)
                 local p2 = target_point - {360 / #mark * k, 120}
-				u:tp(p2)
+				u:tp(p2, true)
                 u:addRestriction '硬直'
                 local int = 5
                 ac.timer(1, 6, function()
@@ -207,16 +207,18 @@ function mt:onAdd()
                             local back_time = 10
                             local back_msg = '即将返回'
                             local back_timer = ac.wait(back_time, function()
-                                instance_end()
                                 for _, hero in ipairs(hero_mark) do
-                                    hero:tp(home)
+                                    hero:tp(home, true)
                                 end
+                                instance_end()
                             end)
                             for _, hero in ipairs(hero_mark) do
                                 local player = hero:getOwner()
                                 player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 8)
                                 player:timerDialog(back_msg, back_timer)
                             end
+                            --赢了也会关掉所有事件
+                            event1_mark = false
                             --打赢了当然要放点烟花(TNT)庆祝下
                             --放个p
                             --[==[local p1 = boss:getPoint()

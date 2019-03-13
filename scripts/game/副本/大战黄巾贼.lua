@@ -155,7 +155,7 @@ function mt:onAdd()
                     end
                 end)
                 local p2 = target_point - {360 / #mark * k, 120}
-				u:tp(p2)
+				u:tp(p2, true)
                 u:addRestriction '硬直'
                 local int = 5
                 ac.timer(1, 6, function()
@@ -186,10 +186,10 @@ function mt:onAdd()
                             local back_time = 10
                             local back_msg = '即将返回'
                             local back_timer = ac.wait(back_time, function()
-                                instance_end()
                                 for _, hero in ipairs(hero_mark) do
-                                    hero:tp(home)
+                                    hero:tp(home, true)
                                 end
+                                instance_end()
                             end)
                             for _, hero in ipairs(hero_mark) do
                                 local player = hero:getOwner()
