@@ -165,8 +165,6 @@ for _, tbl_name in pairs(tbl) do
     end
 end
 
-
-
 --挑战觉醒boss,跟练功房机制差不多
 local point = {
     ac.point(-6800, -3900),
@@ -263,6 +261,10 @@ for _, tbl_name in pairs(tbl) do
         end
         if data.awake > unit:get('觉醒等级') then
             player:message('|cffffff00觉醒程度不足|cffff7500 '..data.awake..'阶 |cffffff00无法挑战|r', 10)
+            mark = false
+        end
+        if data.awake < unit:get('觉醒等级') then
+            player:message('|cffffff00这家伙已经是个手下败将了|r', 10)
             mark = false
         end
         if mark == false then
