@@ -31,7 +31,7 @@ mt.description = '该单位是无敌的，所以任何的攻击和魔法都对�
 function mt:onAdd()
 	local u = self:getOwner()
 	u:addRestriction '无敌'
-	self.eff = u:particle([[Abilities\Spells\Human\DivineShield\DivineShieldTarget.mdl]],'overhead')
+	self.eff = u:particle([[Abilities\Spells\Human\DivineShield\DivineShieldTarget.mdl]],'origin')
 end
 
 function mt:onCover(new)

@@ -38,6 +38,7 @@ function mt:onCastChannel()
 			self.point[i] = p
 		end)
 	end
+	hero:setFacing(point/self:getTarget(),0.1)
 end
 
 function mt:onCastShot()
@@ -132,6 +133,7 @@ function mt:onCastChannel()
 	    size = 2,
 	    time = 1,
 	}
+	hero:setFacing(point/self:getTarget(),0.1)
 end
 
 function mt:onCastShot()
@@ -142,21 +144,35 @@ function mt:onCastShot()
 	local angle = point/target
 	local distance = self.distance
 	local area = self.area
+	local dummy = hero:createUnit('远吕智-激光预警',point,0)
+	local wait = self.wait
 	local mover = hero:moverLine
 	{
-		model = [[Abilities\Spells\Other\BreathOfFire\BreathOfFireMissile.mdl]],
+		mover = dummy,
 		start = point,
 		angle = angle,
-		speed = distance/0.5,
+		speed = distance/wait,
 		distance = distance,
 	}
-	ac.wait(self.wait,function()
+	local lighting = ac.lightning {
+	    source = point - {angle + 20,130},
+	    target = dummy,
+	    model = 'AFOD',
+	    sourceHeight = 180,
+	}
+	function mover:onRemove()
+		lighting:remove()
+		dummy:remove()
+	end
+	hero:particle([[Abilities\Spells\Orc\Bloodlust\BloodlustSpecial.mdl]],'hand left',1)
+	ac.wait(wait,function()
 		local dis = 0
 		local count = self.count
 		local time = self.time		
 		ac.timer(self.pulse,count,function()
 			dis = dis + distance/count
 			local p = point - {angle,dis}
+			p = p - {angle + 90,math.random(-50,50)}
 			ac.effect {
 			    target = p,
 			    model = [[Abilities\Spells\Other\Incinerate\FireLordDeathExplode.mdl]],
@@ -279,6 +295,7 @@ function mt:onCastStart()
 			end)
 		end)
 	end)
+	hero:setFacing(point/self:getTarget(),0.1)
 end
 
 function mt:onCastChannel()

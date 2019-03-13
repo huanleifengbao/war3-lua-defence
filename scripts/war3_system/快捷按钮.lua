@@ -20,9 +20,7 @@ ac.game:event('地图-选择英雄', function(_, hero, player)
         local name = unit:getName()
 		if name == '快捷回城' then
 			chose_hero(player)
-			if hero:isAlive() and not hero:hasRestriction '硬直' then
-				hero:tp(home)
-			end
+			hero:tp(home)
         elseif name == '快捷练功' then
 			chose_hero(player)
 			if hero:isAlive() then

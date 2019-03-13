@@ -22,6 +22,7 @@ function mt:onCastStart()
 	    model = [[Abilities\Spells\NightElf\Taunt\TauntCaster.mdl]],
 	    time = 1,
 	}
+	hero:setFacing(point/self:getTarget(),0.1)
 end
 
 function mt:onCastChannel()
@@ -97,6 +98,7 @@ function mt:onCastStart()
 	    model = [[Abilities\Spells\Other\HowlOfTerror\HowlCaster.mdl]],
 	    time = 1,
 	}
+	hero:setFacing(point/self:getTarget(),0.1)
 end
 
 function mt:onCastChannel()

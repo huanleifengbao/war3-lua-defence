@@ -1,5 +1,7 @@
 local wave = 0	--当前波数
-local player = ac.player(11)	--刷怪玩家
+local player = ac.player(12)	--刷怪玩家
+sg.creeps_player = ac.player(11)
+sg.enemy_player = player
 local start_point = {	--出怪点，有几个点就出几路怪
 	ac.point(6050,3900),
 	ac.point(6950,3900),
@@ -67,9 +69,9 @@ local data = {
 	end,
 	start_time = 10,	--前置等待时间
 	time_out = 80,	--每波间隔时间
-	count = 20,	--每条路怪物数量
+	count = 15,	--每条路怪物数量
 	boss = 10,	--每多少波出一次boss
-	boss_time = 10,	--开始几秒后BOSS出现
+	boss_time = 8,	--开始几秒后BOSS出现
 	interval = 0.5,	--每只怪物出生间隔
 	max_wave = 40,	--最大波数
 	attribute = {	--进攻怪物属性公式
@@ -116,17 +118,26 @@ local boss_data = {
 		return sg.get_boss_id(n)
 	end,
 	attribute = {	--进攻怪物属性公式
-		['生命上限'] = function(n)
-			return (10000 + n * 100) * dif_tbl[sg.difficult]
+		--['生命上限'] = function(n)
+		--	return (10000 + n * 100) * dif_tbl[sg.difficult]
+		--end,
+		--['攻击'] = function(n)
+		--	return (2000 + n * 200) * dif_tbl[sg.difficult]
+		--end,
+		--['护甲'] = function(n)
+		--	return 20 + n * 10
+		--end,
+		['力量'] = function(n)
+			return 10^n * 10000
 		end,
-		['攻击'] = function(n)
-			return (2000 + n * 200) * dif_tbl[sg.difficult]
+		['敏捷'] = function(n)
+			return 10^n * 10000
 		end,
-		['护甲'] = function(n)
-			return 20 + n * 10
+		['智力'] = function(n)
+			return 10^n * 10000
 		end,
 		['移动速度'] = function(n)
-			return 300 + n * 10
+			return 500
 		end,
 	},
 }
@@ -191,6 +202,7 @@ local function create_enemy(wave)
 				u:set(key,val(num))
 			end
 			init_unit(u)
+			sg.add_ai_skill(u)
 		end)
 		sg.timerdialog('boss',sg.boss_timer)
 	end
@@ -201,15 +213,15 @@ local function create_wave()
 	create_enemy(wave)
 	local time_out = data.time_out
 	local str = '第' .. wave + 1 .. '波'
-	sg.wave_timer = ac.wait(data.time_out,function()
-		local max_wave = data.max_wave
+	local max_wave = data.max_wave
+	sg.wave_timer = ac.wait(data.time_out,function()		
 		if max_wave == 0 or wave < max_wave then
 			create_wave()
-		else
-			sg.remove_timer('波数')
 		end
 	end)
-	sg.timerdialog(str,sg.wave_timer)
+	if wave <= max_wave then
+		sg.timerdialog(str,sg.wave_timer)
+	end
 end
 
 local function game_start()

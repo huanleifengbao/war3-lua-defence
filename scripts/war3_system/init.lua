@@ -14,3 +14,5 @@ for i = 1, sg.max_player do
     ac.player(10):alliance(ac.player(i), '结盟', true)
     ac.player(i):alliance(ac.player(10), '结盟', true)
 end
+sg.enemy_player:alliance(sg.creeps_player, '结盟', true)
+sg.creeps_player:alliance(sg.enemy_player, '结盟', true)

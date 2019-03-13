@@ -2,7 +2,7 @@
 ac.game:event('单位-死亡', function (_, dead, killer)
     local player_dead = dead:getOwner()
     local player_killer = killer:getOwner()
-    if player_dead:id() == 11 and (player_killer:id() >= 1 and player_killer:id() <= 6) then
+    if (player_dead == sg.creeps_player or player_dead == sg.enemy_player) and (player_killer:id() >= 1 and player_killer:id() <= sg.max_player) then
         killer:userData('杀敌数', killer:userData('杀敌数') + 1)
         ac.game:eventNotify('地图-英雄杀敌', killer, player_killer, dead)
         local gold = (dead:get('死亡金钱') + killer:get('击杀金钱')) * (1 + killer:get('击杀金钱%'))
