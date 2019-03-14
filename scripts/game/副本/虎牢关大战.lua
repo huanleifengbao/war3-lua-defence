@@ -215,7 +215,9 @@ function mt:onAdd()
                             for _, hero in ipairs(hero_mark) do
                                 local player = hero:getOwner()
                                 player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 8)
+                                player:message('所有参与者获得|cffffdd00200000|r金钱和|cff25cc75200000木材|r,爽死了', 8)
                                 player:timerDialog(back_msg, back_timer)
+                                hero:createItem('副本奖励1')
                             end
                             --赢了也会关掉所有事件
                             event1_mark = false

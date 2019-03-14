@@ -39,6 +39,7 @@ shop:setItem('治疗药水-大', 10, 'W')
 shop:setItem('经验之书', 5, 'A')
 shop:setItem('作弊等级', 6, 'S')
 shop:setItem('作弊属性', 7, 'D')
+shop:setItem('作弊自杀', 1, 'Z')
 
 --新手装备
 local shop = shop_list['新手装备']
