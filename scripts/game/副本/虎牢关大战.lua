@@ -68,6 +68,7 @@ function mt:onAdd()
         end
         --结束副本一定会跑的函数
         local function instance_end()
+        	sg.camera()
             sg.start_enemy()
             for _, u in pairs(sg.all_enemy) do
                 local buff = u:findBuff('冻结')
@@ -248,6 +249,7 @@ function mt:onAdd()
                 end)
             end
             sg.game_mod = '副本'
+            sg.camera({left = ac.point(-10500,1200),right = ac.point(-9500,-700)})
             event1_mark = true
             --事件:进入区域会刷兵
             function event1_rect:onEnter(u)

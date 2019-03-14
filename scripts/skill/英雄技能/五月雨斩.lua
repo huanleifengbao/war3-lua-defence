@@ -18,7 +18,7 @@ function mt:onCastShot()
     local skill = self
     local hero = skill:getOwner()
     local point = hero:getPoint()
-    local target = sg.leap_block(point,skill:getTarget())
+    local target = sg.on_block(point,skill:getTarget())
     local time = skill.time
     local area = skill.area
     hero:addRestriction '硬直'
