@@ -105,6 +105,11 @@ function sg.set_color(unit,tbl)
 	jass.SetUnitVertexColor(handle,nt.r,nt.g,nt.b,nt.a)
 end
 
+--改变单位尺寸
+function sg.scale(unit,num)
+	jass.SetUnitScale(unit._handle,num,num,num)
+end
+
 --取两点之间接触到碰撞的点
 function sg.on_block(p1,p2)
 	local angle = p1/p2
@@ -251,28 +256,43 @@ end
 ac.game:event('单位-创建', function (_, unit)
 	--传送
 	unit.tp = function(self,target,boolean)
-		if boolean == true or (unit:isAlive() and not unit:hasRestriction '硬直') then
-			local player = unit:getOwner()
-			if sg.game_mod ~= '副本' then
-				ac.effect {
-				    target = unit:getPoint(),
-				    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportCaster.mdl]],
-				    time = 2,
-				}
-				unit:blink(target)
-				unit:stop()
-				local target = unit:getPoint()
-		    	player:moveCamera(target, 0.2)
-				ac.effect {
-				    target = target,
-				    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportTarget.mdl]],
-				    time = 2,
-				}
-				return true
-			else
-				player:message('|cffffff00副本中不可传送|r', 3)
-				return false
-			end
+		if boolean == true or (unit:isAlive() and not unit:hasRestriction '硬直' and sg.game_mod ~= '副本') then
+			ac.effect {
+			    target = unit:getPoint(),
+			    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportCaster.mdl]],
+			    time = 2,
+			}
+			unit:blink(target)
+			unit:stop()
+			local target = unit:getPoint()
+		    player:moveCamera(target, 0.2)
+			ac.effect {
+			    target = target,
+			    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportTarget.mdl]],
+			    time = 2,
+			}
+			return true
+		elseif sg.game_mod == '副本' then
+			unit:getOwner():message('|cffffff00副本中不可传送|r', 3)
 		end
+		return false
 	end
 end)
+
+--设置镜头区域
+function sg.camera(data)
+	if not data then
+		data = {left = ac.point(-11008,11008),right = ac.point(11008,-11520)}
+	end
+	local xl,yl = data.left:getXY()
+	local xr,yr = data.right:getXY()
+	jass.SetCameraBounds(xl,yr,xl,yl,xr,yl,xr,yr)
+end
+
+--所有玩家消息
+function sg.message(msg,time)
+	if not time then time = 5 end
+	for i = 1,sg.max_player do
+		ac.player(i):message(msg,time)
+	end
+end
