@@ -143,7 +143,7 @@ function mt:onAdd()
                 end
             end
             --锁镜头区域
-            sg.camera({left = ac.point(-10500,1200),right = ac.point(-9500,-700)})
+            sg.camera({left = ac.point(-10500,1300),right = ac.point(-9500,-800)})
             --遍历进入副本的英雄
             for k, u in ipairs(mark) do
                 local player = u:getOwner()

@@ -5,9 +5,10 @@ local direct = 180
 
 function mt:onAdd()
 	local hero = self:getOwner()
-	self.trg = hero:event('单位-受到伤害',function(_,_,damage)
+	self.trg = hero:event('单位-即将受到伤害',function(_,_,damage)
 		if self:getCd() == 0 and damage:get_currentdamage() > hero:get('生命') - hero:get('生命上限')/2 then
 			hero:cast(self:getName(),damage.target:getPoint())
+			return false
 		end
 	end)
 end
@@ -78,7 +79,7 @@ function mt:onCastShot()
 			local name = {'吕布-张飞','吕布-刘备','吕布-关羽'}
 			for i = 1,3 do
 				local angle = direct - 150 + 75 * i
-				local p = npc_point - {angle,100}
+				local p = npc_point - {angle,150}
 				npc[i] = sg.ally_player:createUnit(name[i],p,angle + 180)
 				ac.effect {
 				    target = p,
@@ -176,7 +177,7 @@ function mt:onCastShot()
 										sg.animation(unit,'attack')
 										local mover = hero:moverLine
 										{
-											model = [[effect\Cauterize.mdx]],
+											model = [[Abilities\Spells\Human\HolyBolt\HolyBoltSpecialArt.mdl]],
 											start = unit:getPoint(),
 											target = npc_point,
 											speed = 1000,
@@ -216,7 +217,7 @@ function mt:onCastShot()
 						timer[4] = ac.wait(self.ready,function()
 							sg.animation(u,'attack slam','stand ready')
 							--秒杀大招
-							ac.wait(0.5,function()
+							ac.wait(0.4,function()
 								if not self.is_stop then
 									local distance = 0
 									timer[5] = ac.timer(0.1,10,function()
@@ -227,6 +228,11 @@ function mt:onCastShot()
 											ac.effect {
 											    target = p,
 											    model = [[effect\psiwave.mdx]],
+											    time = 1,
+											}
+											ac.effect {
+											    target = p,
+											    model = [[Objects\Spawnmodels\Naga\NagaDeath\NagaDeath.mdl]],
 											    time = 1,
 											}
 										end
