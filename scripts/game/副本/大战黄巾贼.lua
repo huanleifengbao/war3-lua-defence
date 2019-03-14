@@ -195,6 +195,7 @@ function mt:onAdd()
                                 local player = hero:getOwner()
                                 player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 8)
                                 player:timerDialog(back_msg, back_timer)
+                                hero:createItem('副本奖励2')
                             end
                             --打赢了当然要放点烟花(TNT)庆祝下
                             --放个p
