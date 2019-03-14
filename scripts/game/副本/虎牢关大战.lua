@@ -142,6 +142,8 @@ function mt:onAdd()
                     end)
                 end
             end
+            --锁镜头区域
+            sg.camera({left = ac.point(-10500,1200),right = ac.point(-9500,-700)})
             --遍历进入副本的英雄
             for k, u in ipairs(mark) do
                 local player = u:getOwner()
@@ -250,8 +252,7 @@ function mt:onAdd()
                     end
                 end)
             end
-            sg.game_mod = '副本'
-            sg.camera({left = ac.point(-10500,1200),right = ac.point(-9500,-700)})
+            sg.game_mod = '副本'           
             event1_mark = true
             --事件:进入区域会刷兵
             function event1_rect:onEnter(u)

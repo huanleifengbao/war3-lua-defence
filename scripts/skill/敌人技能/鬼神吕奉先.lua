@@ -61,7 +61,7 @@ function mt:onCastShot()
 	local npc = {}
 	local npc_point = start - {direct + 12,1000}
 	ac.wait(wait,function()
-		local name = {'刘备','关羽','张飞'}
+		local name = {'张飞','刘备','关羽'}
 		for i = 1,3 do
 			local angle = direct - 150 + 75 * i
 			local p = npc_point - {angle,100}
@@ -73,6 +73,9 @@ function mt:onCastShot()
 			}
 			npc[i]:set('生命恢复',0)
 			sg.message('|cffffff00'.. name[i] .. '前来助战！|r',3)
+			npc[i]:event('单位-死亡',function()
+				npc[i]:speed(1)
+			end)
 		end
 	end)
 	wait = wait + 2
@@ -88,27 +91,28 @@ function mt:onCastShot()
 			{
 			    target = npc[i],
 			    damage = npc[i]:get('生命上限') * self.npc_damage/100,
-			    damage_type = skill.damage_type,
-			    skill = skill,
+			    damage_type = '真实',
+			    skill = self,
 			}
 		end
 	end
 	--代打攻击
+	local t1,t2
 	ac.wait(wait,function()
-		sg.animationI(u,1)
-		sg.animation(npc[1],'spell')
-		sg.animationI(npc[2],0)
-		sg.animationI(npc[3],8)
+		sg.animationI(u,1)	
+		sg.animationI(npc[1],8)
+		sg.animation(npc[2],'spell')
+		sg.animationI(npc[3],0)
 		ac.wait(0.5,function()
 			sg.message('迅速击破方天画戟，保护三英！',5)
 			for i = 1,3 do
 				npc[i]:speed(0)
 			end
 			npc_damage()
-			ac.loop(self.pulse,npc_damage)
+			t1 = ac.loop(self.pulse,npc_damage)
 			--反复招架
 			local index = 1
-			ac.loop(0.1,function()
+			t2 = ac.loop(0.1,function()
 				index = -index
 				u:speed(index)
 				ac.effect {
