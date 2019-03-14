@@ -41,7 +41,7 @@ function mt:onAdd()
         end)
 end
 
-local mt = ac.item['作弊金钱']
+--[=[local mt = ac.item['作弊金钱']
 
 function mt:onAdd()
     local item = self
@@ -84,7 +84,7 @@ function mt:onAdd()
         size = 2,
         time = 1.5,
     }
-end
+end]=]
 
 local mt = ac.item['作弊属性']
 
