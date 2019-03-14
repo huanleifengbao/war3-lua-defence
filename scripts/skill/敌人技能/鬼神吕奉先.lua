@@ -12,7 +12,7 @@ function mt:onCastStart()
 	}
 	local point = hero:getPoint()
 	local time = self.castStartTime
-	sg.load_bar({target = point,time = time})
+	self.load = sg.load_bar({target = point,time = time})
 end
 
 function mt:onCastChannel()
@@ -97,22 +97,22 @@ function mt:onCastShot()
 		end
 	end
 	--代打攻击
-	local t1,t2
+	local timer = {}
 	ac.wait(wait,function()
-		sg.animationI(u,1)	
-		sg.animationI(npc[1],8)
+		sg.animation(u,1,'stand ready')	
+		sg.animation(npc[1],8)
 		sg.animation(npc[2],'spell')
-		sg.animationI(npc[3],0)
+		sg.animation(npc[3],0)
 		ac.wait(0.5,function()
 			sg.message('迅速击破方天画戟，保护三英！',5)
 			for i = 1,3 do
 				npc[i]:speed(0)
 			end
 			npc_damage()
-			t1 = ac.loop(self.pulse,npc_damage)
+			timer[1] = ac.loop(self.pulse,npc_damage)
 			--反复招架
 			local index = 1
-			t2 = ac.loop(0.1,function()
+			timer[2] = ac.loop(0.1,function()
 				index = -index
 				u:speed(index)
 				ac.effect {
@@ -121,6 +121,21 @@ function mt:onCastShot()
 				    model = [[Abilities\Spells\Items\AIlb\AIlbSpecialArt.mdl]],
 				    time = 1,
 				}
+			end)
+			--攻击结束
+			timer[3] = ac.wait(self.time,function()
+				u:speed(1)
+				if timer[1] then
+					timer[1]:remove()
+				end
+				if timer[2] then
+					timer[2]:remove()
+				end
+				local time = self.rest
+				self.load = sg.load_bar({target = start,time = time})
+				timer[4] = ac.wait(time,function()
+					sg.animation(u,'attack slam','stand ready')	
+				end)
 			end)
 		end)
 	end)
