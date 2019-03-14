@@ -118,6 +118,9 @@ local boss_data = {
 		['智力'] = function(n)
 			return 10^n * 10000
 		end,
+		['魔抗'] = function(n)
+			return n * 15
+		end,
 		['移动速度'] = function(n)
 			return 500
 		end,

@@ -7,15 +7,7 @@ function mt:onCastStart()
 	sg.animation(hero,'stand ready',true)
 	local time = self.castStartTime
 	local point = hero:getPoint()
-	self.load = ac.effect {
-	    target = point,
-	    model = [[effect\Progressbar.mdx]],
-	    speed = 1/time,
-	    size = 2,
-	    height = 500,
-	    time = time,
-	    skipDeath = true,
-	}
+	self.load = sg.load_bar({target = point,time = time})
 	ac.effect {
 	    target = point,
 	    size = 2,
@@ -23,9 +15,10 @@ function mt:onCastStart()
 	    model = [[Abilities\Spells\Human\Invisibility\InvisibilityTarget.mdl]],
 	    time = 1,
 	}
-	self.eff = hero:particle([[Abilities\Weapons\ZigguratFrostMissile\ZigguratFrostMissile.mdl]],'weapon')
-	self.eff2 = hero:particle([[Abilities\Weapons\ZigguratMissile\ZigguratMissile.mdl]],'weapon')
-	self.eff3 = hero:particle([[Abilities\Weapons\ChimaeraLightningMissile\ChimaeraLightningMissile.mdl]],'weapon')
+	self.eff = {}
+	self.eff[#self.eff + 1] = hero:particle([[Abilities\Weapons\ZigguratFrostMissile\ZigguratFrostMissile.mdl]],'weapon')
+	self.eff[#self.eff + 1] = hero:particle([[Abilities\Weapons\ZigguratMissile\ZigguratMissile.mdl]],'weapon')
+	self.eff[#self.eff + 1] = hero:particle([[Abilities\Weapons\ChimaeraLightningMissile\ChimaeraLightningMissile.mdl]],'weapon')
 	hero:setFacing(point/self:getTarget(),0.1)
 end
 
@@ -50,9 +43,9 @@ function mt:onCastShot()
 	local skill = self
 	function mover:onRemove()
 		hero:speed(1)
-		skill.eff()
-		skill.eff2()
-		skill.eff3()
+		for _,eff in pairs(skill.eff) do
+			eff()
+		end
 	end
 	ac.wait(time,function()
 		for i = 1,count do
@@ -100,9 +93,9 @@ function mt:onCastStop()
 	if self.load then
 		self.load:remove()
 	end
-	self.eff()
-	self.eff2()
-	self.eff3()
+	for _,eff in pairs(self.eff) do
+		eff()
+	end
 end
 
 local mt = ac.skill['高顺-次元空间斩']
@@ -134,15 +127,7 @@ function mt:onCastChannel()
 	sg.animation(hero,'stand ready')
 	local time = self.castChannelTime
 	local point = hero:getPoint()
-	self.load = ac.effect {
-	    target = point,
-	    model = [[effect\Progressbar.mdx]],
-	    speed = 1/time,
-	    size = 2,
-	    height = 500,
-	    time = time,
-	    skipDeath = true,
-	}
+	self.load = sg.load_bar({target = point,time = time})
 	ac.effect {
 	    target = point,
 	    size = 2,
@@ -188,4 +173,10 @@ function mt:onCastShot()
 			}
 		end
 	end)
+end
+
+function mt:onCastStop()
+	if self.load then
+		self.load:remove()
+	end
 end
