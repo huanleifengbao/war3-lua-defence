@@ -256,6 +256,7 @@ end
 ac.game:event('单位-创建', function (_, unit)
 	--传送
 	unit.tp = function(self,target,boolean)
+		local player = unit:getOwner()
 		if boolean == true or (unit:isAlive() and not unit:hasRestriction '硬直' and sg.game_mod ~= '副本') then
 			ac.effect {
 			    target = unit:getPoint(),
@@ -273,7 +274,7 @@ ac.game:event('单位-创建', function (_, unit)
 			}
 			return true
 		elseif sg.game_mod == '副本' then
-			unit:getOwner():message('|cffffff00副本中不可传送|r', 3)
+			player:message('|cffffff00副本中不可传送|r', 3)
 		end
 		return false
 	end
