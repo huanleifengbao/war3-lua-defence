@@ -13,6 +13,7 @@ ac.wait(0, function()
                 {'4', 'R', '|cffff00ffLunatic(R)|r'},
             }
             function dialog:onClick(name)
+	            sg.difficult = tonumber(name)
                 ac.game:eventNotify('地图-选择难度', tonumber(name))
             end
             break

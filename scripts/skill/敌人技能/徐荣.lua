@@ -32,15 +32,8 @@ function mt:onCastChannel()
 	hero:speed(0.3)
 	local time = self.castChannelTime
 	local point = hero:getPoint()
-	self.load = ac.effect {
-	    target = point,
-	    model = [[effect\Progressbar.mdx]],
-	    speed = 1/time,
-	    size = 2,
-	    height = 500,
-	    time = time,
-	    skipDeath = true,
-	}
+	self.eff = {}
+	self.eff[#self.eff + 1] = sg.load_bar({target = point,time = time})
 	ac.effect {
 	    target = point,
 	    size = 2,
@@ -48,7 +41,7 @@ function mt:onCastChannel()
 	    time = 1,
 	}
 	local target = self:getTarget()
-	ac.effect {
+	self.eff[#self.eff + 1] = ac.effect {
 	    target = target,
 	    size = self.area/350,
 	    speed = 1.8/time,
@@ -66,7 +59,7 @@ function mt:onCastShot()
 	local target = self:getTarget()
 	local area = self.area
 	local stun = self.stun
-	self.eff = ac.effect {
+	ac.effect {
 	    target = target,
 	    size = area/150,
 	    height = -300,
@@ -96,8 +89,10 @@ function mt:onCastShot()
 end
 
 function mt:onCastStop()
-	if self.load then
-		self.load:remove()
+	for _,eff in pairs(self.eff) do
+		if eff then
+			eff:remove()
+		end
 	end
 	local hero = self:getOwner()
 	hero:speed(1)
@@ -147,15 +142,7 @@ function mt:onCastChannel()
 	hero:speed(0.5)
 	local time = self.castChannelTime
 	local point = hero:getPoint()
-	self.load = ac.effect {
-	    target = point,
-	    model = [[effect\Progressbar.mdx]],
-	    speed = 1/time,
-	    size = 2,
-	    height = 500,
-	    time = time,
-	    skipDeath = true,
-	}
+	self.load = sg.load_bar({target = point,time = time})
 	ac.effect {
 	    target = point,
 	    size = 2,

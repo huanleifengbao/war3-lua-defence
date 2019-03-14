@@ -7,15 +7,7 @@ function mt:onCastStart()
 	sg.animation(hero,'spell throw',true)
 	local time = self.castStartTime
 	local point = hero:getPoint()
-	self.load = ac.effect {
-	    target = point,
-	    model = [[effect\Progressbar.mdx]],
-	    speed = 1/time,
-	    size = 2,
-	    height = 500,
-	    time = time,
-	    skipDeath = true,
-	}
+	self.load = sg.load_bar({target = point,time = time})
 	ac.effect {
 	    target = point,
 	    size = 2,
@@ -85,15 +77,7 @@ function mt:onCastStart()
 	sg.animation(hero,'Spell Slam',true)
 	local time = self.castStartTime
 	local point = hero:getPoint()
-	self.load = ac.effect {
-	    target = point,
-	    model = [[effect\Progressbar.mdx]],
-	    speed = 1/time,
-	    size = 2,
-	    height = 500,
-	    time = time,
-	    skipDeath = true,
-	}
+	self.load = sg.load_bar({target = point,time = time})
 	ac.effect {
 	    target = point,
 	    size = 2,
@@ -140,7 +124,6 @@ function mt:onCastShot()
 		{
 			time = skill.stun,
 		}
-		print(u)
 	end
 	for i = 1,count do
 		local mover = hero:moverLine
