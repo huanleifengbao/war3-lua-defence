@@ -126,7 +126,7 @@ for _, tbl_name in pairs(tbl) do
                 if size_int > 0 then
                     size = size + (size_int - 8) * 0.0015
                 else
-                    text:life(4.5, 3)
+                    text:life(0.6, 0.3)
                     timer:remove()
                 end
                 size_int = size_int - 1

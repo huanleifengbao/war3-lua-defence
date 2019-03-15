@@ -4,20 +4,36 @@ local mt = ac.item['副本-过五关斩六将']
 --飞机位置
 local start_point = ac.point(6050, -9300)
 --副本位置
-local target_point = ac.point(-8900, -750)
+local target_point = {
+    ac.point(-7600, 10150),
+    ac.point(-6800, -1250),
+    ac.point(-7300, 7400),
+    ac.point(-3000, 4100),
+    ac.point(-4000, -1150),
+}
 --回城
 local home = ac.point(7044, -8792)
 --副本初始怪物
 local instance_data = {
-    {name = '副本-虎牢关吕布', point = ac.point(-8800, 1400), facing = 180},
+    {
+        {name = '副本-孔秀', point = ac.point(-7777, 11350), facing = 180},
+    },
+    {
+        {name = '副本-韩福', point = ac.point(-6800, 2600), facing = 180},
+        {name = '副本-孟坦', point = ac.point(-6725, 5625), facing = 180},
+    },
+    {
+        {name = '副本-卞喜', point = ac.point(-7300, 8700), facing = 180},
+    },
+    {
+        {name = '副本-王植', point = ac.point(-3000, 5100), facing = 180},
+    },
+    {
+        {name = '副本-秦琪', point = ac.point(-1950, 1125), facing = 180},
+    },
 }
---事件:一群刁民
-local event1_mark = false
-local event1_rect = ac.rect(ac.point(-11300, 450), ac.point(-9900, 900))
-local event1_monster_data = {
-    {name = '副本-虎牢关老阴比', point = ac.point(-10600, 1100), count = 15, width = 1200, facing = 270},
-    {name = '副本-虎牢关老阴比', point = ac.point(-10600, -200), count = 15, width = 1200, facing = 90},
-}
+--副本阶段数量
+local instance_count = 5
 
 function mt:onCanAdd(unit)
     local player = unit:getOwner()
@@ -34,7 +50,8 @@ function mt:onAdd()
     local hero_count = 0
     local boss_mark = {}
     local boss_count = 0
-    local event1_monster_mark = {}
+    --副本当前阶段
+    local instance_lv = 0
 
     local time = 120
     local msg = '副本-过五关斩六将'
@@ -44,9 +61,9 @@ function mt:onAdd()
     local eff1 = ac.effect {
         target = start_point,
         model = [[units\undead\UndeadAirBarge\UndeadAirBarge.mdl]],
-        height = 300,
-        angle = 150,
-        size = 2.5,
+        height = 350,
+        angle = 120,
+        size = 2,
         speed = 1,
     }
     local eff2 = ac.effect {
@@ -75,21 +92,6 @@ function mt:onAdd()
                 if buff then
                     buff:remove()
                 end
-            end
-            --清空事件
-            event1_mark = false
-            if #event1_monster_mark > 0 then
-                for _, u in ipairs(event1_monster_mark) do
-                    ac.effect {
-                        target = u:getPoint(),
-                        model = [[Abilities\Spells\Human\Polymorph\PolyMorphTarget.mdl]],
-                        speed = 2,
-                        time = 0,
-                    }
-                    u:kill(u)
-                    u:remove()
-                end
-                event1_monster_mark = {}
             end
             hero_mark = {}
             boss_mark = {}
@@ -142,15 +144,13 @@ function mt:onAdd()
                     end)
                 end
             end
-            --锁镜头区域
-            sg.camera({left = ac.point(-10500,1200),right = ac.point(-9500,-700)})
             --遍历进入副本的英雄
             for k, u in ipairs(mark) do
                 local player = u:getOwner()
                 local id = player:id()
                 player:timerDialog(msg2, timer2)
                 player:message('已进入副本,时间限制|cffff7500'..time2..'|r秒请注意', 8)
-                player:message('|cff00ff00击杀虎牢关吕布|r就会胜利,|cffff0000团灭或超时|r副本挑战就失败了', 8)
+                player:message('|cff00ff00攻略所有关卡|r才会胜利,|cffff0000团灭或超时|r副本挑战就失败了', 8)
                 player:message('另外副本中可是|cffff7500禁止传送|r并且|cffff7500无法复活|r的哟', 8)
                 hero_mark[k] = u
                 hero_count = hero_count + 1
@@ -178,8 +178,6 @@ function mt:onAdd()
                         ace()
                     end
                 end)
-                local p2 = target_point - {360 / #mark * k, 120}
-				u:tp(p2, true)
                 u:addRestriction '硬直'
                 local int = 5
                 ac.timer(1, 6, function()
@@ -196,94 +194,60 @@ function mt:onAdd()
                     int = int - 1
                 end)
             end
-            --创建boss
-            for i = 1, #instance_data do
-                boss_count = boss_count + 1
-                local boss = sg.creeps_player:createUnit(instance_data[i].name, instance_data[i].point, instance_data[i].facing)
-                table.insert(boss_mark, boss)
-                boss:event('单位-死亡', function (trg, _, killer)
-                    trg:remove()
-                    if killer ~= boss then
-                        boss_count = boss_count - 1
-                        if boss_count == 0 then
-                            timer2:remove()
-                            local back_time = 10
-                            local back_msg = '即将返回'
-                            local back_timer = ac.wait(back_time, function()
-                                for _, hero in ipairs(hero_mark) do
-                                    hero:tp(home, true)
+            local next_lv
+            function next_lv()
+                instance_lv = instance_lv + 1
+                --传送英雄
+                for k, hero in ipairs(hero_mark) do
+                    local player = hero:getOwner()
+                    local p2 = target_point[instance_lv] - {360 / #hero_mark * k, 120}
+                    hero:tp(p2, true)
+                    player:message('第|cffff7500'..instance_lv..'|r关', 8)
+                end
+                for i = 1, #instance_data[instance_lv] do
+                    boss_count = boss_count + 1
+                    --创建boss
+                    local boss = sg.creeps_player:createUnit(instance_data[instance_lv][i].name, instance_data[instance_lv][i].point, instance_data[instance_lv][i].facing)
+                    table.insert(boss_mark, boss)
+                    boss:event('单位-死亡', function (trg, _, killer)
+                        trg:remove()
+                        if killer ~= boss then
+                            boss_count = boss_count - 1
+                            if boss_count == 0 then
+                                if instance_lv >= instance_count then
+                                    timer2:remove()
+                                    local back_time = 10
+                                    local back_msg = '即将返回'
+                                    local back_timer = ac.wait(back_time, function()
+                                        for _, hero in ipairs(hero_mark) do
+                                            hero:tp(home, true)
+                                        end
+                                        instance_end()
+                                    end)
+                                    for _, hero in ipairs(hero_mark) do
+                                        local player = hero:getOwner()
+                                        player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 8)
+                                        player:message('所有参与者获得|cffffdd00600000|r金钱和|cff25cc75600000|r木材,爽死了', 8)
+                                        player:timerDialog(back_msg, back_timer)
+                                        hero:createItem('副本奖励3')
+                                    end
+                                else
+                                    local next_time = 5
+                                    for _, hero in ipairs(hero_mark) do
+                                        local player = hero:getOwner()
+                                        player:message('|cff00ff00boss团灭|r了xs,但还没胜利了,|cffff7500'..next_time..'|r秒后进入下一关', 8)
+                                    end
+                                    ac.wait(5, function()
+                                        next_lv()
+                                    end)
                                 end
-                                instance_end()
-                            end)
-                            for _, hero in ipairs(hero_mark) do
-                                local player = hero:getOwner()
-                                player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 8)
-                                player:message('所有参与者获得|cffffdd00200000|r金钱和|cff25cc75200000|r木材,爽死了', 8)
-                                player:timerDialog(back_msg, back_timer)
-                                hero:createItem('副本奖励1')
                             end
-                            --赢了也会关掉所有事件
-                            event1_mark = false
-                            --打赢了当然要放点烟花(TNT)庆祝下
-                            --放个p
-                            --[==[local p1 = boss:getPoint()
-                            ac.timer(0.05, 100, function()
-                                local p2 = p1 - {math.random(360), math.random(100, 800)}
-                                local mover = boss:moverLine
-                                {
-                                    model = [[Abilities\Weapons\DemolisherFireMissile\DemolisherFireMissile.mdl]],
-                                    start = p2,
-                                    angle = 0,
-                                    speed = 600,
-                                    distance = 1200,
-                                    startHeight = 1500,
-                                    middleHeight = 1500,
-                                    finishHeight = 0,
-                                }
-                                --[=[ac.effect {
-                                    target = p2,
-                                    model = [[Abilities\Weapons\DemolisherFireMissile\DemolisherFireMissile.mdl]],
-                                    speed = 1,
-                                    size = math.random(10, 30) / 10,
-                                    time = 0,
-                                }]=]
-                            end)]==]--
                         end
-                    end
-                end)
-            end
-            sg.game_mod = '副本'           
-            event1_mark = true
-            --事件:进入区域会刷兵
-            function event1_rect:onEnter(u)
-                local player = u:getOwner()
-                local id = player:id()
-                if event1_mark == true and u:isHero() and (id >= 1 and id <= sg.max_player) then
-                    event1_mark = false
-                    u:addBuff '诱捕'
-                    {
-                        time = 5,
-                    }
-                    local p1 = u:getPoint()
-                    for _, hero in ipairs(hero_mark) do
-                        hero:getOwner():message('被|cffff7500埋伏|r了!', 8)
-                    end
-                    for i = - event1_monster_data[1].count / 2, event1_monster_data[1].count / 2 do
-                        local width = event1_monster_data[1].width / event1_monster_data[1].count
-                        local p2 = event1_monster_data[1].point - {0, width * i}
-                        local monster = sg.creeps_player:createUnit(event1_monster_data[1].name, p2, event1_monster_data[1].facing)
-                        monster:attack(p1)
-                        table.insert(event1_monster_mark, monster)
-                    end
-                    for i = - event1_monster_data[2].count / 2, event1_monster_data[2].count / 2 do
-                        local width = event1_monster_data[2].width / event1_monster_data[2].count
-                        local p2 = event1_monster_data[2].point - {0, width * i}
-                        local monster = sg.creeps_player:createUnit(event1_monster_data[2].name, p2, event1_monster_data[2].facing)
-                        monster:attack(p1)
-                        table.insert(event1_monster_mark, monster)
-                    end
+                    end)
                 end
             end
+            next_lv()
+            sg.game_mod = '副本'
         end
         eff1:remove()
         eff2:remove()

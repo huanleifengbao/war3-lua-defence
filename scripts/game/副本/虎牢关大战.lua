@@ -80,14 +80,16 @@ function mt:onAdd()
             event1_mark = false
             if #event1_monster_mark > 0 then
                 for _, u in ipairs(event1_monster_mark) do
-                    ac.effect {
-                        target = u:getPoint(),
-                        model = [[Abilities\Spells\Human\Polymorph\PolyMorphTarget.mdl]],
-                        speed = 2,
-                        time = 0,
-                    }
-                    u:kill(u)
-                    u:remove()
+                    if u:isAlive() then
+                        ac.effect {
+                            target = u:getPoint(),
+                            model = [[Abilities\Spells\Human\Polymorph\PolyMorphTarget.mdl]],
+                            speed = 2,
+                            time = 0,
+                        }
+                        u:kill(u)
+                        u:remove()
+                    end
                 end
                 event1_monster_mark = {}
             end
@@ -222,8 +224,20 @@ function mt:onAdd()
                                 player:timerDialog(back_msg, back_timer)
                                 hero:createItem('副本奖励1')
                             end
-                            --赢了也会关掉所有事件
+                            --赢了也会关掉所有事件并且清掉小怪
                             event1_mark = false
+                            for _, u in ipairs(event1_monster_mark) do
+                                if u:isAlive() then
+                                    ac.effect {
+                                        target = u:getPoint(),
+                                        model = [[Abilities\Spells\Human\Polymorph\PolyMorphTarget.mdl]],
+                                        speed = 2,
+                                        time = 0,
+                                    }
+                                    u:kill(u)
+                                    u:remove()
+                                end
+                            end
                             --打赢了当然要放点烟花(TNT)庆祝下
                             --放个p
                             --[==[local p1 = boss:getPoint()
@@ -252,7 +266,7 @@ function mt:onAdd()
                     end
                 end)
             end
-            sg.game_mod = '副本'           
+            sg.game_mod = '副本'
             event1_mark = true
             --事件:进入区域会刷兵
             function event1_rect:onEnter(u)
