@@ -1,3 +1,53 @@
+local mt = ac.skill['吕布-横扫千军']
+
+function mt:onAdd()
+	local hero = self:getOwner()
+	local count = 3
+	self.trg = hero:event('单位-攻击出手', function (_, _, target, _, _)
+		local point = hero:getPoint()
+		local angle = point/target:getPoint()
+		local section = self.section
+		local radius = self.radius
+		local now_section = section * 0.85
+		local wave = count
+		if wave == 3 then
+			now_section = now_section * 0.75
+			count = 4
+		else
+			count = 3
+		end
+		local add = now_section/(wave - 1)
+		for i = 1,wave do
+			local a = angle - now_section/2 - add + add * i
+			hero:moverLine
+			{
+				model = [[effect\getsugabluenew.mdx]],
+				distance = radius,
+				speed = radius/0.25,
+				angle = a,
+			}
+		end
+		for _, u in ac.selector()
+		    : inSector(point,radius,angle,section)
+		    : isEnemy(hero)
+		    : ipairs()
+		do
+			local damage = self.damage * sg.get_allatr(hero)
+			hero:damage
+			{
+			    target = u,
+			    damage = damage,
+			    damage_type = self.damage_type,
+			    skill = self,
+			}
+		end
+	end)
+end
+
+function mt:onRemove()
+	self.trg:remove()
+end
+
 local mt = ac.skill['吕布-鬼神降临']
 
 local start = ac.point(-9400,320)
@@ -5,7 +55,7 @@ local direct = 180
 
 function mt:onAdd()
 	local hero = self:getOwner()
-	self.trg = hero:event('单位-即将受到伤害',function(_,_,damage)
+	self.trg = hero:event('单位-即将扣除生命',function(_,_,damage)
 		if self:getCd() == 0 and damage:get_currentdamage() > hero:get('生命') - hero:get('生命上限') * self.casthp/100 then
 			hero:cast(self:getName(),damage.target:getPoint())
 			hero:set('生命',hero:get('生命上限') * self.casthp/100)
@@ -17,7 +67,7 @@ end
 function mt:onCastStart()
 	local hero = self:getOwner()
 	sg.animation(hero,'stand ready',true)
-	self.buff = hero:addBuff '无敌'
+	hero:addBuff '无敌'
 	{
 		time = 0,
 	}
@@ -106,6 +156,25 @@ function mt:onCastShot()
 			    damage = npc[i]:get('生命上限') * self.npc_damage/100,
 			    damage_type = '真实',
 			    skill = self,
+			}
+		end
+		for _,u in ac.selector()
+		    : inRange(npc_point,self.knock_area)
+		    : isEnemy(hero)
+		    : ofNot '建筑'
+		    : filter(function (u)
+		        return u:getOwner() ~= sg.ally_player
+		    end)
+		    : ipairs()
+		do
+			local p = u:getPoint()
+			local target = sg.on_block(p,p - {npc_point/p,self.knock_distance})
+			hero:moverLine
+			{
+				mover = u,
+				start = p,
+				target = target,
+				speed = self.knock_speed,
 			}
 		end
 	end
@@ -287,6 +356,7 @@ function mt:onCastShot()
 														sg.set_color(hero,{a = color})
 														if color > 0.95 then
 															skill:stop()
+															sg.add_ai_skill(hero)
 														end
 													end)
 												end
@@ -316,8 +386,9 @@ end
 function mt:onCastStop()
 	local hero = self:getOwner()
 	self.is_stop = true
-	if self.buff then
-		self.buff:remove()
+	local buff = hero:findBuff '无敌'
+	if buff then
+		buff:remove()
 	end
 	sg.set_color(hero,{a = 1})
 	if self.dummy then
@@ -432,7 +503,7 @@ function mt:onCastChannel()
 						}
 						u:addBuff '麻痹'
 						{
-							self.stun,
+							time = self.stun,
 						}
 					end
 				end
