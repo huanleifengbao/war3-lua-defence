@@ -184,8 +184,19 @@ function mt:onCastShot()
     local hero = i_player:getHero()
 
     local heal = skill.heal
+    local heal_rate = skill.heal_rate * hero:get('生命上限') / 100
+    heal = heal + heal_rate
     hero:add('生命', heal)
     hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin', 0)
+    local msg = '|cff00ff00+'..math.floor(heal)..'|n'
+    ac.textTag()
+        : text(msg, 0.02)
+        : at(hero:getPoint(), 100)
+        : speed(0.03, 90)
+        : life(1.5, 0.8)
+        : show(function (player)
+            return player == i_player
+        end)
 
     local item = skill:getItem()
     if item then
@@ -206,8 +217,19 @@ function mt:onCastShot()
     local hero = i_player:getHero()
 
     local heal = skill.heal
+    local heal_rate = skill.heal_rate * hero:get('生命上限') / 100
+    heal = heal + heal_rate
     hero:add('生命', heal)
     hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin', 0)
+    local msg = '|cff00ff00+'..math.floor(heal)..'|n'
+    ac.textTag()
+        : text(msg, 0.02)
+        : at(hero:getPoint(), 100)
+        : speed(0.03, 90)
+        : life(1.5, 0.8)
+        : show(function (player)
+            return player == i_player
+        end)
 
     local item = skill:getItem()
     if item then
