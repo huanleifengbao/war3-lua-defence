@@ -7,34 +7,25 @@ function mt:shot(point,angle,pulse)
 	local dis = area * 0.3
 	local wait = pulse/3
 	for i = -1,1 do
-		local target = point - {angle + 90,dis * i}
-		target = target - {math.random(360),math.random(area * 0.2)}
-		local dummy = hero:createUnit('黄忠-射手天箭',target,0)
-		--ac.wait(math.random(10)/100,function()
 		ac.wait(pulse * (i + 1),function()
-		    local mover = hero:moverLine
-		    {
-				mover = dummy,
-				distance = 1,
-				angle = angle,
-				speed = 1/time,
-				startHeight = 2000,
+			local target = point - {angle + 90,dis * i}
+			target = target - {math.random(360),math.random(area * 0.2)}
+			ac.effect {
+			    target = target,
+			    model = [[effect\RainOfArrow.mdx]],
+			    angle = math.random(360),
+			    speed = 1/time,
+			    time = 1,
 			}
-			function mover:onRemove()
-				ac.effect {
-				    target = target,
-				    model = [[Abilities\Weapons\GlaiveMissile\GlaiveMissileTarget.mdl]],
-				    size = 0.5,
-				    angle = math.random(360),
-				    time = 1,
-				}
-
-				ac.wait(2,function()					
-					dummy:remove()
-				end)
-			end
 		end)
 	end
+	ac.effect {
+	    target = point - {angle + 90,math.random(-50,50)},
+	    model = [[effect\WhiteElement.mdx]],
+	    size = area/500,
+	    speed = 0.8/time,
+	    time = 2,
+	}
 	--伤害
 	ac.wait(time,function()
 		for _, u in ac.selector()
