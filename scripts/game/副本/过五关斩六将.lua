@@ -45,7 +45,7 @@ function mt:onAdd()
         target = start_point,
         model = [[units\undead\UndeadAirBarge\UndeadAirBarge.mdl]],
         height = 300,
-        angle = 135,
+        angle = 150,
         size = 2.5,
         speed = 1,
     }
