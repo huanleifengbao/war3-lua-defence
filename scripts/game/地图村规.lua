@@ -1,5 +1,6 @@
 --增加三维并增加对应属性
 ac.game:event('单位-属性变化', function (_, hero, name, count)
+	print(hero,name,count,hero:get('生命上限'))
 	if hero:isHero() then
 		if name == '力量' then
 			hero:add('生命上限',25 * count)
@@ -13,6 +14,7 @@ ac.game:event('单位-属性变化', function (_, hero, name, count)
 			hero:add('攻击',1 * count)
 		end
 	end
+	print(hero:get('生命上限'))
 end)
 
 --难度系数
