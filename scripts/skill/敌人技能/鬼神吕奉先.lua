@@ -6,7 +6,7 @@ local direct = 180
 function mt:onAdd()
 	local hero = self:getOwner()
 	self.trg = hero:event('单位-即将受到伤害',function(_,_,damage)
-		if self:getCd() == 0 and damage:get_currentdamage() > hero:get('生命') - hero:get('生命上限')/2 then
+		if self:getCd() == 0 and damage:get_currentdamage() > hero:get('生命') - hero:get('生命上限') * self.casthp/100 then
 			hero:cast(self:getName(),damage.target:getPoint())
 			return false
 		end
