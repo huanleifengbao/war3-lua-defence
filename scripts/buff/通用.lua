@@ -9,6 +9,7 @@ function mt:onAdd()
 	local u = self:getOwner()
 	self.eff = u:particle([[Abilities\Spells\Human\Thunderclap\ThunderclapTarget.mdl]],'overhead')
 	u:addRestriction '硬直'
+	u:stop()
 end
 
 function mt:onCover(new)
@@ -205,4 +206,39 @@ function mt:onRemove()
 	local u = self:getOwner()
 	u:removeRestriction '定身'
 	self.eff()
+end
+
+local mt = ac.buff['麻痹']
+mt.coverGlobal = 1
+mt.show = 1
+mt.icon = [[ReplaceableTextures\CommandButtons\BTNPurge.blp]]
+mt.title = '麻痹'
+mt.description = '该单位被麻痹了，每2秒都有概率陷入无法行动的状态。'
+mt.pulse = 2
+mt.odds = 50
+mt.stun = 1
+
+function mt:torpor()
+	local u = self:getOwner()
+	u:particle([[Abilities\Spells\Orc\Purge\PurgeBuffTarget.mdl]],'origin',1)
+	u:addRestriction '硬直'
+	u:stop()
+	ac.wait(self.stun,function()
+		u:removeRestriction '硬直'
+	end)
+end
+
+function mt:onAdd()
+	local u = self:getOwner()
+	self:torpor()
+end
+
+function mt:onCover(new)
+    return new.time > self:remaining()
+end
+
+function mt:onPulse()
+	if sg.get_random(self.odds) then
+		self:torpor()
+	end
 end

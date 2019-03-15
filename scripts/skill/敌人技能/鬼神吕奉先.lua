@@ -8,6 +8,7 @@ function mt:onAdd()
 	self.trg = hero:event('单位-即将受到伤害',function(_,_,damage)
 		if self:getCd() == 0 and damage:get_currentdamage() > hero:get('生命') - hero:get('生命上限') * self.casthp/100 then
 			hero:cast(self:getName(),damage.target:getPoint())
+			hero:set('生命',hero:get('生命上限') * self.casthp/100)
 			return false
 		end
 	end)
@@ -76,11 +77,11 @@ function mt:onCastShot()
 	local npc_point = start - {direct + 12,1000}
 	ac.wait(wait,function()
 		if not self.is_stop then
-			local name = {'吕布-张飞','吕布-刘备','吕布-关羽'}
+			local name = {'张飞','刘备','关羽'}
 			for i = 1,3 do
 				local angle = direct - 150 + 75 * i
 				local p = npc_point - {angle,150}
-				npc[i] = sg.ally_player:createUnit(name[i],p,angle + 180)
+				npc[i] = sg.ally_player:createUnit('吕布-' .. name[i],p,angle + 180)
 				ac.effect {
 				    target = p,
 				    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportTarget.mdl]],
@@ -217,7 +218,7 @@ function mt:onCastShot()
 						timer[4] = ac.wait(self.ready,function()
 							sg.animation(u,'attack slam','stand ready')
 							--秒杀大招
-							ac.wait(0.4,function()
+							ac.wait(0.5,function()
 								if not self.is_stop then
 									local distance = 0
 									timer[5] = ac.timer(0.1,10,function()
@@ -232,7 +233,9 @@ function mt:onCastShot()
 											}
 											ac.effect {
 											    target = p,
-											    model = [[Objects\Spawnmodels\Naga\NagaDeath\NagaDeath.mdl]],
+											    model = [[effect\Lightning Boom.mdx]],
+											    zScale = 0.5,
+											    speed = 2,
 											    time = 1,
 											}
 										end
@@ -338,5 +341,113 @@ end
 function mt:onRemove()
 	if self.trg then
 		self.trg:remove()
+	end
+end
+
+local mt = ac.skill['吕布-雷鸣咆哮']
+
+function mt:onCastStart()
+	local hero = self:getOwner()
+	sg.animation(hero,'stand ready',true)
+	local point = hero:getPoint()
+	local time = self.castStartTime
+	self.load = sg.load_bar({target = point,time = time})
+	ac.effect {
+	    target = point,
+	    model = [[Abilities\Spells\Human\FlameStrike\FlameStrikeTarget.mdl]],
+	    time = 3,
+	}
+end
+
+function mt:onCastChannel()
+	local gap = self.gap
+	local list = {
+		[1] = {p = ac.point(-11000,1700),a = 0},
+		[2] = {p = ac.point(-8550,1700),a = 270},
+	}
+	local index = math.random(#list)
+	local direct = list[index].a
+	local p = list[index].p
+	local p2 = p - {direct - 90,gap}
+	local hero = self:getOwner()
+	sg.animation(hero,'spell')
+	ac.effect {
+	    target = hero:getPoint(),
+	    size = 2,
+	    model = [[Abilities\Spells\Other\HowlOfTerror\HowlCaster.mdl]],
+	    time = 1,
+	}
+	local count = math.ceil(self.count/2)
+	local area = self.area
+	local wait = self.wait
+	local function create_fire(start)
+		local pulse = self.pulse
+		for i = 1,count do
+			local target = start - {direct - 90,gap * 2 * (i - 1)}
+			ac.effect {
+			    target = target,
+			    size = area/350,
+			    speed = 1.8/(wait),
+			    model = [[effect\calldown_4.mdx]],
+			    height = 20,
+			    time = wait,
+			    skipDeath = true,
+			}
+		end
+		local distance = 0
+		ac.wait(wait - pulse,function()
+			local step = self.step
+			ac.timer(pulse,self.step_count,function()
+				for i = 1,count do
+					local target = start - {direct - 90,gap * 2 * (i - 1)}
+					target = target - {direct,distance}
+					ac.effect {
+					    target = target,
+					    size = area/400,
+					    model = [[effect\psiwave.mdx]],
+					    time = 1,
+					}
+					ac.effect {
+					    target = target,
+					    model = [[effect\Lightning Boom.mdx]],
+					    xScale = area/200,
+					    yScale = area/200,
+					    zScale = area/400,
+					    speed = 2,
+					    time = 1,
+					}
+					for _, u in ac.selector()
+					    : inRange(target,area)
+					    : isEnemy(hero)
+					    : ofNot '建筑'
+					    : ipairs()
+					do
+						local damage = self.damage * sg.get_allatr(hero)
+						hero:damage
+						{
+						    target = u,
+						    damage = damage,
+						    damage_type = self.damage_type,
+						    skill = self,
+						}
+						u:addBuff '麻痹'
+						{
+							self.stun,
+						}
+					end
+				end
+				distance = distance + step
+			end)
+		end)
+	end
+	create_fire(p)
+	ac.wait(wait/2,function()
+		create_fire(p2)
+	end)
+end
+
+function mt:onCastStop()
+	if self.load then
+		self.load:remove()
 	end
 end
