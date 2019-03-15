@@ -24,7 +24,6 @@ function mt:onCastShot()
 		--    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportCaster.mdl]],
 		--    time = 2,
 		--}
-		target = target:getPoint()
 		--local x,y = target:getXY()
 		--jass.SetUnitPosition(hero._handle, x, y)
 		--ac.effect {

@@ -27,8 +27,8 @@ damage表内可定义的属性：
 '单位-即将造成/受到伤害'事件中damage可调用的api：
 	damage:get_damage() --> 返回原始伤害(number)
 	damage:get_currentdamage() --> 返回当前伤害(number)
-	damage:set_type([string]) --> 设置damage_type为[string]
-	damage:div_damage([number]) --> 设置当前伤害为[number]
+	damage:set_type([string]) --> 设置damage_type为[string]，只能在'即将造成伤害'事件里使用
+	damage:div_damage([number]) --> 设置当前伤害为[number]，只能在'即将造成伤害'事件里使用
 ]]--
 
 local function avoid(damage)
@@ -128,12 +128,6 @@ local function costLife(damage)
     end
 end
 
-local function checkKill(damage)
-    if damage.target:get '生命' <= 0 then
-        damage.source:kill(damage.target)
-    end
-end
-
 local function notifyEvent(damage)
     damage.source:eventNotify('单位-造成伤害', damage.source, damage)
     damage.target:eventNotify('单位-受到伤害', damage.target, damage)
@@ -154,6 +148,7 @@ local function leech(damage)
 end
 
 local function createDamage(damage)
+	damage.div_on = true
 	damage.get_damage = function(self)
 		return damage.damage
 	end
@@ -161,11 +156,15 @@ local function createDamage(damage)
 		return damage.currentDamage
 	end
 	damage.set_type = function(self,new)
-		self.damage_type = new
+		if self.div_on == true then
+			self.damage_type = new
+		end
 	end
 	damage.div_damage = function(self,new)
 		if type(new) == 'number' then
-			self.currentDamage = new
+			if self.div_on == true then
+				self.currentDamage = new
+			end
 		else
 			error('哎鸭给我填数字鸭')
 		end
@@ -204,6 +203,8 @@ ac.game:event('游戏-造成伤害', function(_,damage)
     if result == false or result2 == false then
 	    return false
     end
+    --错过即将造成伤害事件后，不可再修改伤害
+    damage.div_on = false
     --计算闪避，若闪避成功则直接跳过后续逻辑
     if avoid(damage) == false then
 	    return false
@@ -217,11 +218,15 @@ ac.game:event('游戏-造成伤害', function(_,damage)
 	if damage:get_currentdamage() < 0 then
 		damage:div_damage(0)
 	end
+	--实际伤害计算完毕，可返回return false阻止这次伤害
+    local result = damage.target:eventDispatch('单位-即将扣除生命', damage.target, damage)
+    if result == false then
+	    return false
+    end
 	--计算吸血
     leech(damage)
     --扣除生命
     costLife(damage)
-    --checkKill(damage)
-    notifyEvent(damage)    
+    notifyEvent(damage)
     return true
 end)

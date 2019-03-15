@@ -20,7 +20,7 @@ function sg.add_ai_skill(u)
 	ai_groups[u] = {}
 	for i = 1,4 do
 		local skill = u:findSkill(i,'技能')
-		if skill then
+		if skill and skill.passive ~= 1 then
 			table.insert(ai_groups[u],skill)
 		end
 	end
