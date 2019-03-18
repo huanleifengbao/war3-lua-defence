@@ -214,10 +214,12 @@ function mt:onAdd()
                             local back_timer = ac.wait(back_time, function()
                                 for _, hero in ipairs(hero_mark) do
                                     hero:tp(home, true)
+                                    hero:removeRestriction '无敌'
                                 end
                                 instance_end()
                             end)
                             for _, hero in ipairs(hero_mark) do
+                                hero:addRestriction '无敌'
                                 local player = hero:getOwner()
                                 player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 8)
                                 player:message('所有参与者获得|cffffdd00200000|r金钱和|cff25cc75200000|r木材,爽死了', 8)

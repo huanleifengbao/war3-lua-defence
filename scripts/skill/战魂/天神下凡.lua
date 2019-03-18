@@ -44,7 +44,7 @@ function mt:onAdd()
 			sg.add_allatr(hero,self.atr2)
 		end
 	end)
-	ac.game:eventNotify('地图-获得战魂', hero:getOwner())
+	ac.game:eventNotify('地图-获得战魂', hero)
 end
 
 function mt:onRemove()
@@ -55,5 +55,5 @@ function mt:onRemove()
     self.trg:remove()
     self.trg2:remove()
     --self.trg3:remove()
-    ac.game:eventNotify('地图-失去战魂', hero:getOwner())
+    ac.game:eventNotify('地图-失去战魂', hero)
 end
