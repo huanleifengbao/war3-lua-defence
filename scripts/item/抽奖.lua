@@ -23,20 +23,25 @@ local function get_skill(hero,name)
 	end
 end
 
+--抽中战魂
+function sg.get_sow(hero,name)
+	if get_skill(hero,name) == false then
+		local slot = sg.get_free_slot(hero)
+		if #slot > 0 then
+			hero:createItem(name,slot[1])
+		else
+			hero:getPoint():createItem(name)
+		end
+	end	
+end
+
 --抽奖
 local function draw(hero)
 	local player = hero:getOwner()
 	if sg.get_random(#prize/10) then
 		local name = prize[math.random(#prize)]	
 		player:message('你抽到了' .. name, 5)
-		if get_skill(hero,name)	== false then
-			local slot = sg.get_free_slot(hero)
-			if #slot > 0 then
-				hero:createItem(name,slot[1])
-			else
-				hero:getPoint():createItem(name)
-			end
-		end	
+		sg.get_sow(hero,name)
 	else
 		player:message('你抽到了空气', 5)
 	end
@@ -50,6 +55,22 @@ for _,name in pairs(tbl) do
 		for i = 1,self.count do
 	    	draw(hero)
     	end
+	end
+end
+
+--抽奖券
+local mt = ac.item['使用抽奖券']
+
+function mt:onCanAdd(hero)
+	local player = hero:getOwner()
+	if player:get_shop_info '抽奖券' > 0 then
+		player:add_shop_info('抽奖券',-1)
+		for i = 1,self.count do
+	    	draw(hero)
+    	end
+	else
+		player:message('抽奖券不足', 5)
+		return false
 	end
 end
 

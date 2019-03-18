@@ -72,16 +72,14 @@ function mt:onCastShot()
 	ac.wait(0.5,function()
 		if not self.is_stop then
 			sg.animation(hero,'spell')
-			target = sg.on_block(point,point - {distance,angle})
+			target = sg.on_block(point,point - {angle,distance})
 			local eff = hero:particle([[effect\desgaron by deckai.mdx]],'origin')
 			local mover = hero:moverLine
 			{
 				mover = hero,
 				start = point,
 				target = target,
-				distance = distance,
 				speed = distance/0.1,
-				angle = angle,
 				hitArea = self.area,
 				hitType = '敌方',
 			}

@@ -11,6 +11,7 @@ shop:setItem('副本-大战黄巾贼', 2, 'X')
 shop:setItem('副本-过五关斩六将', 3, 'C')
 
 local shop_list = {
+	['商城道具'] = {p = ac.point(4944, -10529),n = [[shop\shangchengdaoju.mdx]]},
 	['黑市商人'] = {p = ac.point(5644, -10529),n = [[shop\heishishangren.mdx]]},
     ['药水商店'] = {p = ac.point(6344, -10529),n = [[shop\yaoshuishangdian.mdx]]},
     --中心
@@ -130,10 +131,19 @@ local shop = shop_list['黑市商人']
 shop:setBuyRange(1000000)
 shop:setItem('抽奖', 9, 'Q')
 shop:setItem('十连抽奖', 10, 'W')
+shop:setItem('使用抽奖券', 11, 'E')
 shop:setItem('兑换玄铁-1', 5, 'A')
 shop:setItem('兑换玄铁-2', 6, 'S')
 shop:setItem('兑换玄铁-3', 7, 'D')
 shop:setItem('兑换玄铁-4', 8, 'F')
+
+--商城道具
+local shop = shop_list['商城道具']
+shop:setBuyRange(1000000)
+shop:setItem('新手礼包', 9, 'Q')
+shop:setItem('荣光不败的白亚之翼', 10, 'W')
+shop:setItem('原初的符文', 11, 'E')
+shop:setItem('土豪玩家', 12, 'R')
 
 --练功
 local point = {

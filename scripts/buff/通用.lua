@@ -220,7 +220,7 @@ mt.stun = 1
 
 function mt:torpor()
 	local u = self:getOwner()
-	u:particle([[Abilities\Spells\Orc\Purge\PurgeBuffTarget.mdl]],'origin',1)
+	u:particle([[Abilities\Spells\Orc\Purge\PurgeBuffTarget.mdl]],'origin',1.2)
 	u:addRestriction '硬直'
 	u:stop()
 	ac.wait(self.stun,function()
@@ -241,4 +241,22 @@ function mt:onPulse()
 	if sg.get_random(self.odds) then
 		self:torpor()
 	end
+end
+
+local mt = ac.buff['伤害加深']
+mt.coverGlobal = 1
+mt.coverType = 1
+mt.show = 1
+mt.icon = [[ReplaceableTextures\CommandButtons\BTNIncinerate.blp]]
+mt.title = '伤害加深'
+mt.description = '该单位受到攻击时会产生额外伤害。'
+
+function mt:onAdd()
+	local u = self:getOwner()
+	u:add('减伤',-self.add)
+end
+
+function mt:onRemove()
+	local u = self:getOwner()
+	u:add('减伤',self.add)
 end
