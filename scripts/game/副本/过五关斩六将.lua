@@ -16,21 +16,29 @@ local home = ac.point(7044, -8792)
 --副本初始怪物
 local instance_data = {
     {
-        {name = '副本-孔秀', point = ac.point(-7777, 11350), facing = 180},
+        {name = '副本-孔秀', point = ac.point(-7777, 11350), facing = 270},
     },
     {
-        {name = '副本-韩福', point = ac.point(-6800, 2600), facing = 180},
-        {name = '副本-孟坦', point = ac.point(-6725, 5625), facing = 180},
+        {name = '副本-韩福', point = ac.point(-6800, 2600), facing = 270},
+        {name = '副本-孟坦', point = ac.point(-6725, 5625), facing = 270},
     },
     {
-        {name = '副本-卞喜', point = ac.point(-7300, 8700), facing = 180},
+        {name = '副本-卞喜', point = ac.point(-7300, 8700), facing = 270},
     },
     {
-        {name = '副本-王植', point = ac.point(-3000, 5100), facing = 180},
+        {name = '副本-王植', point = ac.point(-3000, 5100), facing = 270},
     },
     {
-        {name = '副本-秦琪', point = ac.point(-1950, 1125), facing = 180},
+        {name = '副本-秦琪', point = ac.point(-1950, 1125), facing = 270},
     },
+}
+--打boss前的额外怪物
+local monster_data = {
+    {name = '副本-秦琪随从', point = ac.point(-3200, -100), count = 120, kill_count = 100, max_count = 20},
+    nil,
+    nil,
+    {name = '副本-王植随从', point = ac.point(-2900, 4600), count = 100, kill_count = 60, max_count = 30},
+    {name = '副本-秦琪随从', point = ac.point(-3200, -100), count = 120, kill_count = 100, max_count = 20},
 }
 --副本阶段数量
 local instance_count = 5
@@ -136,8 +144,57 @@ function mt:onAdd()
                     }
                 end
             end)
+
+            --刷小怪
+            local monster_start, monster_end
+            local monster_timer = nil
+            local monster_count = 0
+            function monster_start()
+                local count = monster_data[instance_lv].count
+                local kill_count = monster_data[instance_lv].kill_count
+                monster_timer = ac.loop(0.3, function()
+                    if monster_count < monster_data[instance_lv].max_count then
+                        if count > 0 then
+                            count = count - 1
+                            monster_count = monster_count + 1
+                            local p1 = hero_mark[math.random(#hero_mark)]:getPoint()
+                            local p2 = ac.point(monster_data[instance_lv].point[1] + math.random(-1500,1500),monster_data[instance_lv].point[2] + math.random(-1500,1500))
+                            local monster = sg.creeps_player:createUnit(monster_data[instance_lv].name, p2, math.random(360))
+                            monster:attack(p1)
+                            table.insert(monster_mark, monster)
+                            monster:event('单位-死亡', function (trg)
+                                monster_count = monster_count - 1
+                                if kill_count > 0 then
+                                    kill_count = kill_count - 1
+                                else
+                                    monster_end()
+                                end
+                                trg:remove()
+                            end)
+                        else
+                            monster_timer:remove()
+                            monster_timer = nil
+                        end
+                    end
+                end)
+            end
+            --清空小怪
+            function monster_end()
+                if monster_timer then
+                    monster_timer:remove()
+                    monster_timer = nil
+                end
+                for _, u in ipairs(monster_mark) do
+                    if u:isAlive() then
+                        u:kill(u)
+                    end
+                end
+                monster_mark = {}
+            end
+
             local function ace()
                 if hero_count == 0 then
+                    monster_end()
                     timer2:remove()
                     for _, hero in ipairs(hero_mark) do
                         local player = hero:getOwner()
@@ -161,6 +218,7 @@ function mt:onAdd()
                     end)
                 end
             end
+
             --遍历进入副本的英雄
             for k, u in ipairs(mark) do
                 local player = u:getOwner()
@@ -231,20 +289,7 @@ function mt:onAdd()
                         if killer ~= boss then
                             boss_count = boss_count - 1
                             if boss_count == 0 then
-                                --赢了清掉小怪
-                                for _, u in ipairs(monster_mark) do
-                                    if u:isAlive() then
-                                        ac.effect {
-                                            target = u:getPoint(),
-                                            model = [[Abilities\Spells\Human\Polymorph\PolyMorphTarget.mdl]],
-                                            speed = 2,
-                                            time = 0,
-                                        }
-                                        u:kill(u)
-                                        u:remove()
-                                    end
-                                end
-                                monster_mark = {}
+                                monster_end()
                                 --下一关或者通关
                                 if instance_lv >= instance_count then
                                     timer2:remove()
@@ -278,6 +323,10 @@ function mt:onAdd()
                             end
                         end
                     end)
+                    --如果有怪物表不为空就刷怪
+                    if monster_data[instance_lv] then
+                        monster_start()
+                    end
                 end
             end
             next_lv()
@@ -333,3 +382,44 @@ function mt:onAdd()
         player:message('|cffff7500过五关斩六将|r副本已激活,想去就所有人在|cffff7500'..time..'|r秒内去|cffff7500飞机|r集合.jpg', 60)
     end
 end
+
+--小怪额外装逼表现
+ac.game:event('单位-创建', function (_, u)
+    if u:getName() == '副本-王植随从' then
+        u:addRestriction '隐藏'
+        u:addRestriction '硬直'
+        u:moverLine
+        {
+            model = [[Abilities\Weapons\DemolisherFireMissile\DemolisherFireMissile.mdl]],
+            angle = 0,
+            speed = 1,
+            distance = 1.5,
+            startHeight = 1500,
+            middleHeight = 1500,
+            finishHeight = 0,
+        }
+        ac.wait(1.5, function()
+            if u:isAlive() then
+                u:animation('birth')
+            end
+            u:removeRestriction '隐藏'
+            ac.wait(0.67, function()
+                u:removeRestriction '硬直'
+            end)
+        end)
+    end
+    if u:getName() == '副本-秦琪随从' then
+        u:addRestriction '硬直'
+        u:animation('spell')
+        ac.effect {
+            target = u:getPoint(),
+			model = [[Abilities\Spells\Undead\RaiseSkeletonWarrior\RaiseSkeleton.mdl]],
+            speed = 0.7,
+            size = 1.5,
+            time = 0,
+		}
+        ac.wait(2, function()
+            u:removeRestriction '硬直'
+        end)
+    end
+end)
