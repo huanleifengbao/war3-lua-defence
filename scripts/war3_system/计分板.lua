@@ -125,14 +125,19 @@ ac.wait(0, function()
             board[id+1][2]:text(math.floor(unit:get('战力'))..'%')
             board[id+1][3]:text(math.floor(unit:get('抗性'))..'%')
             board[id+1][4]:text(math.floor(unit:get('闪避'))..'%')
+            --威望
             board[id+1][5]:style(true, true)
             board[id+1][5]:icon(title_icon[unit:get('威望等级')])
             board[id+1][5]:text(title[unit:get('威望等级')])
+            --觉醒
             board[id+1][6]:style(true, true)
             board[id+1][6]:icon(title2_icon[unit:get('觉醒等级') + 1])
             board[id+1][6]:text(title2[unit:get('觉醒等级') + 1])
+            --战魂数量
             board[id+1][7]:text(math.floor(unit:get('战魂数量')))
+            --坐骑数量
             board[id+1][8]:text(math.floor(unit:get('坐骑数量')))
+            --杀敌
             board[id+1][9]:text('0')
         end
     end)
@@ -152,6 +157,20 @@ ac.wait(0, function()
             local skill2 = unit:addSkill(name, '技能', 6)
             unit:userData('觉醒技能', skill2)
         end
+    end)
+
+    --战魂数量变化
+    ac.game:event('地图-获得战魂', function (_, unit)
+        local player = unit:getOwner()
+        local id = player:id()
+        unit:add('战魂数量', 1)
+        board[id+1][7]:text(math.floor(unit:get('战魂数量')))
+    end)
+    ac.game:event('地图-失去战魂', function (_, unit)
+        local player = unit:getOwner()
+        local id = player:id()
+        unit:add('战魂数量', -1)
+        board[id+1][7]:text(math.floor(unit:get('战魂数量')))
     end)
 
     --等级

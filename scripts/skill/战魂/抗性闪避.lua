@@ -16,7 +16,7 @@ for _,skill_name in pairs(tbl) do
 				sg.add_allatr(hero,self.atr * count)
 			end
 		end)
-		ac.game:eventNotify('地图-获得战魂', hero:getOwner())
+		ac.game:eventNotify('地图-获得战魂', hero)
 	end
 
 	function mt:onRemove()
@@ -25,6 +25,6 @@ for _,skill_name in pairs(tbl) do
 	    hero:add('闪避',-self.avo)
 	    self.trg:remove()
 	    self.trg2:remove()
-	    ac.game:eventNotify('地图-失去战魂', hero:getOwner())
+	    ac.game:eventNotify('地图-失去战魂', hero)
 	end
 end

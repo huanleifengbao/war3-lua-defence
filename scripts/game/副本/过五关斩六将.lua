@@ -50,6 +50,7 @@ function mt:onAdd()
     local hero_count = 0
     local boss_mark = {}
     local boss_count = 0
+    local monster_mark = {}
     --副本当前阶段
     local instance_lv = 0
 
@@ -100,6 +101,22 @@ function mt:onAdd()
                 local player = ac.player(i)
                 player:message('副本已结束,敌人重新开始|cffff7500进攻|r', 5)
             end
+        end
+        --删除剩余小怪
+        if #monster_mark > 0 then
+            for _, u in ipairs(monster_mark) do
+                if u:isAlive() then
+                    ac.effect {
+                        target = u:getPoint(),
+                        model = [[Abilities\Spells\Human\Polymorph\PolyMorphTarget.mdl]],
+                        speed = 2,
+                        time = 0,
+                    }
+                    u:kill(u)
+                    u:remove()
+                end
+            end
+            monster_mark = {}
         end
         --如果根本没人上飞机就直接end
         if #mark == 0 then
@@ -182,7 +199,7 @@ function mt:onAdd()
                 local int = 5
                 ac.timer(1, 6, function()
                     if int == 5 then
-                        player:message('目标:讨伐(击杀)|cffff00ff虎牢关吕布|r', 8)
+                        player:message('目标:通过|cffff7550所有关卡|r', 8)
                     end
                     if int <= 3 and int >= 1 then
                         player:message('开始倒计时:|cffff7500'..int..'|r', 1)
@@ -214,6 +231,21 @@ function mt:onAdd()
                         if killer ~= boss then
                             boss_count = boss_count - 1
                             if boss_count == 0 then
+                                --赢了清掉小怪
+                                for _, u in ipairs(monster_mark) do
+                                    if u:isAlive() then
+                                        ac.effect {
+                                            target = u:getPoint(),
+                                            model = [[Abilities\Spells\Human\Polymorph\PolyMorphTarget.mdl]],
+                                            speed = 2,
+                                            time = 0,
+                                        }
+                                        u:kill(u)
+                                        u:remove()
+                                    end
+                                end
+                                monster_mark = {}
+                                --下一关或者通关
                                 if instance_lv >= instance_count then
                                     timer2:remove()
                                     local back_time = 10
@@ -221,10 +253,12 @@ function mt:onAdd()
                                     local back_timer = ac.wait(back_time, function()
                                         for _, hero in ipairs(hero_mark) do
                                             hero:tp(home, true)
+                                            hero:removeRestriction '无敌'
                                         end
                                         instance_end()
                                     end)
                                     for _, hero in ipairs(hero_mark) do
+                                        hero:addRestriction '无敌'
                                         local player = hero:getOwner()
                                         player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 8)
                                         player:message('所有参与者获得|cffffdd00600000|r金钱和|cff25cc75600000|r木材,爽死了', 8)
