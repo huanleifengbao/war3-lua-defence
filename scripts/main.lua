@@ -24,5 +24,6 @@ require 'skill'
 require 'war3_system'
 require 'item'
 require 'buff'
+require 'shop'
 jass.FogEnable(false)
 jass.FogMaskEnable(false)

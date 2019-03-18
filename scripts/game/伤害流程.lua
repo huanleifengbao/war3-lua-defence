@@ -118,14 +118,13 @@ end
 
 local function costLife(damage)
 	local target = damage.target
-	local result = true
-	if damage:get_currentdamage() >= target:get('生命') then
-		result = target:eventDispatch('单位-即将死亡', target,damage)
-	end
 	target:add('生命', - damage:get_currentdamage())
-	if damage.target:get '生命' <= 0 and result ~= false then
-        damage.source:kill(target)
-    end
+	if target:get('生命') <= 0 then
+		local result = target:eventDispatch('单位-即将死亡', target,damage)
+		if result ~= false then		
+			damage.source:kill(target)
+		end
+	end
 end
 
 local function notifyEvent(damage)
@@ -203,8 +202,6 @@ ac.game:event('游戏-造成伤害', function(_,damage)
     if result == false or result2 == false then
 	    return false
     end
-    --错过即将造成伤害事件后，不可再修改伤害
-    damage.div_on = false
     --计算闪避，若闪避成功则直接跳过后续逻辑
     if avoid(damage) == false then
 	    return false
@@ -218,6 +215,8 @@ ac.game:event('游戏-造成伤害', function(_,damage)
 	if damage:get_currentdamage() < 0 then
 		damage:div_damage(0)
 	end
+	--错过即将造成伤害事件后，不可再修改伤害
+    damage.div_on = false
 	--实际伤害计算完毕，可返回return false阻止这次伤害
     local result = damage.target:eventDispatch('单位-即将扣除生命', damage.target, damage)
     if result == false then
