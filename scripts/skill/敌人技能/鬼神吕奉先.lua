@@ -460,9 +460,15 @@ function mt:onCastChannel()
 			    size = area/350,
 			    speed = 1.8/(wait),
 			    model = [[effect\calldown_4.mdx]],
-			    height = 20,
 			    time = wait,
 			    skipDeath = true,
+			}
+			ac.effect {
+			    target = target,
+			    size = 3,
+			    model = [[effect\vector_arrow by deckai.mdx]],
+			    height = 20,
+			    time = wait,
 			}
 		end
 		local distance = 0
