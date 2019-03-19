@@ -37,8 +37,8 @@ local monster_data = {
     nil,
     nil,
     nil,
-    {name = '副本-王植随从', point = ac.point(-2900, 4600), count = 100, kill_count = 60, max_count = 30},
-    {name = '副本-秦琪随从', point = ac.point(-3200, -100), count = 120, kill_count = 100, max_count = 20},
+    {name = '副本-王植随从', point = ac.point(-2900, 4600), count = 100, kill_count = 1, max_count = 30},
+    {name = '副本-秦琪随从', point = ac.point(-3200, -100), count = 120, kill_count = 1, max_count = 20},
 }
 --副本阶段数量
 local instance_count = 5
@@ -196,6 +196,7 @@ function mt:onAdd()
                                                         model = [[Abilities\Weapons\AvengerMissile\AvengerMissile.mdl]],
                                                         target = boss,
                                                         speed = 1500,
+                                                        middleHeight = math.random(500),
                                                         finishHeight = 150,
                                                     }
                                                 end
