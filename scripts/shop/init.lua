@@ -73,17 +73,21 @@ for name,_ in pairs(item) do
 			if player:get_shop_info(name) > 0 then
 				local skill = now_equip[itemtype]
 				if not skill or skill:getName() ~= name then
-					player:message('成功领取' .. name .. '！', 5)
+					if skill and skill:getName() ~= name then
+						player:message('|cffffff00替换|cffff00ff'..itemtype..'|cffffff00:|cffffaa00'..name..'|r', 5)
+					else
+						player:message('|cffffff00成功领取|cffff00ff'..itemtype..'|cffffff00:|cffffaa00'..name..'|r', 5)
+					end
 					if skill then
 						skill:remove()
 					end
 					now_equip[itemtype] = hero:addSkill(name,'技能',3)
 				else
-					player:message('您已经装备'.. name .. '，无法再次领取', 5)
+					player:message('|cffffff00您已经装备|cffffaa00'.. name ..'|r', 5)
 					return false
 				end
 			else
-				player:message('您未购买' .. name .. '', 5)
+				player:message('|cffffff00您未购买|cffffaa00' .. name .. '|r', 5)
 				return false
 			end
 		end
