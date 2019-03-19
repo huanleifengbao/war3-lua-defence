@@ -6,6 +6,7 @@ shop:setItem('交换木材', 10, 'W')
 shop:setItem('基地无敌', 5, 'A')
 shop:setItem('暂停刷怪', 6, 'S')
 shop:setItem('基地升级', 7, 'D')
+shop:setItem('你知道吗-1', 8, 'F')
 shop:setItem('副本-虎牢关大战', 1, 'Z')
 shop:setItem('副本-大战黄巾贼', 2, 'X')
 shop:setItem('副本-过五关斩六将', 3, 'C')
@@ -89,15 +90,6 @@ shop:setItem('九级锻造石', 1, 'Z')
 shop:setItem('十级锻造石', 2, 'X')
 shop:setItem('终极锻造石', 3, 'C')
 shop:setItem('商城作弊怪', 4, 'V')
-local mt = ac.item['商城作弊怪']
-function mt:onCanAdd(hero)
-	local player = hero:getOwner()
-	player:add_shop_info('新手礼包',1)
-	player:add_shop_info('荣光不败之翼',1)
-	player:add_shop_info('原初的符文',1)
-	player:add_shop_info('土豪玩家',1)
-	player:add_shop_info('时为朦胧的雪花之翼',1)
-end
 
 --作弊:方便测试随便写
 local shop = ac.player(16):createShop('商店', ac.point(7444, -11129), 270)

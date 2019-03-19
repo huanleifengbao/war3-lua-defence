@@ -37,8 +37,8 @@ local monster_data = {
     nil,
     nil,
     nil,
-    {name = '副本-王植随从', point = ac.point(-2900, 4600), count = 100, kill_count = 60, max_count = 30},
-    {name = '副本-秦琪随从', point = ac.point(-3200, -100), count = 120, kill_count = 100, max_count = 20},
+    {name = '副本-王植随从', point = ac.point(-2900, 4600), kill_count = 60, max_count = 30},
+    {name = '副本-秦琪随从', point = ac.point(-3200, -100), kill_count = 90, max_count = 20},
 }
 --副本阶段数量
 local instance_count = 5
@@ -150,26 +150,27 @@ function mt:onAdd()
             local monster_timer = nil
             local monster_count = 0
             function monster_start()
-                local count = monster_data[instance_lv].count
+                local boss_awake = false
                 local kill_count = monster_data[instance_lv].kill_count
                 monster_timer = ac.loop(0.3, function()
                     if monster_count < monster_data[instance_lv].max_count then
-                        if count > 0 then
-                            count = count - 1
-                            monster_count = monster_count + 1
-                            local p1 = hero_mark[math.random(#hero_mark)]:getPoint()
-                            local p2 = ac.point(monster_data[instance_lv].point[1] + math.random(-1500,1500),monster_data[instance_lv].point[2] + math.random(-1500,1500))
-                            local monster = sg.creeps_player:createUnit(monster_data[instance_lv].name, p2, math.random(360))
-                            monster:attack(p1)
-                            table.insert(monster_mark, monster)
-                            monster:event('单位-死亡', function (trg)
-                                monster_count = monster_count - 1
-                                if kill_count > 0 then
-                                    kill_count = kill_count - 1
-                                else
+                        monster_count = monster_count + 1
+                        local p1 = hero_mark[math.random(#hero_mark)]:getPoint()
+                        local p2 = ac.point(monster_data[instance_lv].point[1] + math.random(-1500,1500),monster_data[instance_lv].point[2] + math.random(-1500,1500))
+                        local monster = sg.creeps_player:createUnit(monster_data[instance_lv].name, p2, math.random(360))
+                        monster:attack(p1)
+                        table.insert(monster_mark, monster)
+                        monster:event('单位-死亡', function (trg)
+                            monster_count = monster_count - 1
+                            if kill_count > 0 then
+                                kill_count = kill_count - 1
+                            else
+                                if boss_awake == false then
+                                    boss_awake = true
                                     for _, boss in ipairs(boss_mark) do
                                         boss:removeRestriction '隐藏'
                                         if boss:getName() == '副本-王植' then
+                                            print('bibi')
                                             local p = boss:getPoint()
                                             ac.effect {
                                                 target = p,
@@ -196,6 +197,7 @@ function mt:onAdd()
                                                         model = [[Abilities\Weapons\AvengerMissile\AvengerMissile.mdl]],
                                                         target = boss,
                                                         speed = 1500,
+                                                        middleHeight = math.random(500),
                                                         finishHeight = 150,
                                                     }
                                                 end
@@ -211,12 +213,9 @@ function mt:onAdd()
                                     end
                                     monster_end()
                                 end
-                                trg:remove()
-                            end)
-                        else
-                            monster_timer:remove()
-                            monster_timer = nil
-                        end
+                            end
+                            trg:remove()
+                        end)
                     end
                 end)
                 for _, boss in ipairs(boss_mark) do
@@ -324,6 +323,7 @@ function mt:onAdd()
                     hero:tp(p2, true)
                     player:message('第|cffff7500'..instance_lv..'|r关', 8)
                 end
+                boss_mark = {}
                 for i = 1, #instance_data[instance_lv] do
                     boss_count = boss_count + 1
                     --创建boss
