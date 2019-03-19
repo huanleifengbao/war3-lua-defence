@@ -3,16 +3,19 @@ local mt = ac.item['经验之书']
 
 function mt:onAdd()
     local item = self
+    --作用目标是玩家英雄
     local unit = item:getOwner()
     local i_player = unit:getOwner()
+    local hero = i_player:getHero()
+    local p = hero:getPoint()
 
     local exp = item.exp
     local msg_height = 60
-    unit:addExp(exp, true)
+    hero:addExp(exp, true)
     local msg = '|cff757575+'..math.floor(exp)..'exp|n'
     ac.textTag()
         : text(msg, 0.022)
-        : at(unit:getPoint(), msg_height)
+        : at(p, msg_height)
         : speed(0.025, 90)
         : life(1.5, 0.8)
         : show(function (player)
@@ -24,16 +27,19 @@ local mt = ac.item['作弊等级']
 
 function mt:onAdd()
     local item = self
+    --作用目标是玩家英雄
     local unit = item:getOwner()
     local i_player = unit:getOwner()
+    local hero = i_player:getHero()
+    local p = hero:getPoint()
 
     local lv = item.lv
     local msg_height = 60
-    unit:level(unit:level() + lv, true)
+    hero:level(hero:level() + lv, true)
     local msg = '|cff00ddeeLevel Up'..math.floor(lv)..'|n'
     ac.textTag()
         : text(msg, 0.022)
-        : at(unit:getPoint(), msg_height)
+        : at(p, msg_height)
         : speed(0.025, 90)
         : life(1.5, 0.8)
         : show(function (player)
