@@ -22,6 +22,30 @@ function mt:onRemove()
 	u:removeRestriction '硬直'
 end
 
+local mt = ac.buff['冰冻']
+mt.coverGlobal = 1
+mt.show = 1
+mt.icon = [[ReplaceableTextures\CommandButtons\BTNFreezingBreath.blp]]
+mt.title = '冰冻'
+mt.description = '该单位被冰冻了，所以不能移动，攻击和施放魔法。'
+
+function mt:onAdd()
+	local u = self:getOwner()
+	self.eff = u:particle([[Abilities\Spells\Undead\FreezingBreath\FreezingBreathTargetArt.mdl]],'origin')
+	u:addRestriction '硬直'
+	u:stop()
+end
+
+function mt:onCover(new)
+    return new.time > self:remaining()
+end
+
+function mt:onRemove()
+	local u = self:getOwner()
+	self.eff()
+	u:removeRestriction '硬直'
+end
+
 local mt = ac.buff['无敌']
 mt.coverGlobal = 1
 mt.show = 1

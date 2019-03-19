@@ -10,8 +10,8 @@ local home = ac.point(7044, -8792)
 --副本初始怪物
 local instance_data = {
     {name = '副本-张宝', point = ac.point(-2000, 8150), facing = 270},
-    {name = '副本-张角', point = ac.point(-4100, 10280), facing = 270},
-    {name = '副本-张梁', point = ac.point(-2000, 10280), facing = 270},
+    {name = '副本-张梁', point = ac.point(-4100, 10280), facing = 270},
+    {name = '副本-张角', point = ac.point(-2000, 10280), facing = 270},
 }
 
 function mt:onCanAdd(unit)
@@ -176,6 +176,7 @@ function mt:onAdd()
             for i = 1, #instance_data do
                 boss_count = boss_count + 1
                 local boss = sg.creeps_player:createUnit(instance_data[i].name, instance_data[i].point, instance_data[i].facing)
+                sg.add_ai_skill(boss)
                 table.insert(boss_mark, boss)
                 boss:event('单位-死亡', function (trg, _, killer)
                     trg:remove()

@@ -363,7 +363,6 @@ function mt:onAdd()
 		--self.trg:remove()
 		return false
 	end)
-	sg.add_ai_skill(hero)
 end
 
 local mt = ac.buff['始动']
