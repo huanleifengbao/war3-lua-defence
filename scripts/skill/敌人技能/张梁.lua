@@ -57,13 +57,14 @@ function mt:onCastShot()
 	local point = hero:getPoint()
 	local area = self.area
 	local x,y = point:getXY()
-	local start = ac.point(x - 1400,y + 1400)
+	local start = ac.point(x - 1000,y + 1000)
 	local skill = self
 	local damage = self.damage * sg.get_allatr(hero)
 	if self.lie == true then
-		start = ac.point(x - 1200,y + 1200)
+		start = ac.point(x - 800,y + 800)
 	end	
 	local hit = {}
+	local distance = self.distance
 	for i = 0,5 do
 		for j = 0,1 do
 			local angle = 270 * j
@@ -74,8 +75,8 @@ function mt:onCastShot()
 				start = p,
 				model = [[effect\getsugabluenew.mdx]],
 				angle = direct,
-				distance = self.distance,
-				speed = self.distance/0.5,
+				distance = distance,
+				speed = distance/0.5,
 				hitArea = area/2,
 				hitType = '敌方'
 			}
