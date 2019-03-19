@@ -14,8 +14,7 @@ end
 local function get_skill(hero,name)
 	local index = has_skill[name]
 	if sg.isintable(index,hero) then
-		hero:getOwner():message('你已经拥有' .. name .. '了，无法再次拥有', 5)
-		return false
+		return false,'你已经拥有' .. name .. '了，无法再次拥有'
 	else
 		hero:addSkill(name,'技能',3)
 		table.insert(index,hero)
@@ -69,8 +68,7 @@ function mt:onCanAdd(hero)
 	    	draw(hero)
     	end
 	else
-		player:message('抽奖券不足', 5)
-		return false
+		return false,'抽奖券不足'
 	end
 end
 

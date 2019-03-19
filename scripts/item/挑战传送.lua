@@ -35,8 +35,7 @@ for i = 1, #tbl do
         if unit:userData('专属等级') and unit:userData('专属等级') >= tbl[i][3] then
             return unit:tp(tbl[i][2])
         else
-            player:message('|cffffff00你没有资格挑战该boss,|cffff7500专属装备|cffffff00至少需要|cffff7500Lv'..tbl[i][3]..'|r', 10)
-            return false
+            return false,'|cffffff00你没有资格挑战该boss,|cffff7500专属装备|cffffff00至少需要|cffff7500Lv'..tbl[i][3]..'|r'
         end
     end
 end
@@ -159,8 +158,7 @@ for _, tbl_name in pairs(tbl) do
             exercise_target[id] = name
             player:message('|cffffff00选择练功目标:|cffff7500'..name..'|r', 10)
         else
-            player:message('|cffffff00当前练功目标已是:|cffff7500'..name..'|r', 10)
-            return false
+            return false,'|cffffff00当前练功目标已是:|cffff7500'..name..'|r'
         end
     end
 end
@@ -254,29 +252,41 @@ for _, tbl_name in pairs(tbl) do
         local id = player:id()
         local name = self:getName()
         local data = awake_data[name]
-        local mark = true
+        local error_mark = true
+        local error_tips = ''
         if data.lv > unit:level() then
-            player:message('|cffffff00等级不足|cffff7500 '..data.lv..' |cffffff00无法挑战|r', 10)
-            mark = false
+            if error_mark == true then
+                error_mark = false
+            else
+                error_tips = error_tips..'\n'
+            end
+            error_tips = error_tips..'|cffffff00等级不足|cffff7500 '..data.lv..' |cffffff00无法挑战|r'
         end
         if data.awake > unit:get('觉醒等级') then
-            player:message('|cffffff00觉醒程度不足|cffff7500 '..data.awake..'阶 |cffffff00无法挑战|r', 10)
-            mark = false
+            if error_mark == true then
+                error_mark = false
+            else
+                error_tips = error_tips..'\n'
+            end
+            error_tips = error_tips..'|cffffff00觉醒程度不足|cffff7500 '..data.awake..'阶 |cffffff00无法挑战|r'
         end
         if data.awake < unit:get('觉醒等级') then
-            player:message('|cffffff00这家伙已经是个手下败将了|r', 10)
-            mark = false
+            if error_mark == true then
+                error_mark = false
+            else
+                error_tips = error_tips..'\n'
+            end
+            error_tips = error_tips..'|cffffff00这家伙已经是个手下败将了|r'
         end
-        if mark == false then
-            return false
+        if error_mark == false then
+            return false, error_tips
         end
         if not awake_boss[id] then
             local hero = player:getHero()
             awake(hero, id, awake_data[name])
             player:message('|cffffff00挑战:|cffff7500'..awake_data[name].name..'|r', 10)
         else
-            player:message('|cffffff00当前已有挑战目标,你必须|cff00ff00胜利|cffffff00或者|cffff0000放弃|r', 10)
-            return false
+            return false,'|cffffff00当前已有挑战目标,你必须|cff00ff00胜利|cffffff00或者|cffff0000放弃|r'
         end
     end
 end
@@ -295,12 +305,10 @@ function mt:onAdd()
             boss:userData('暂停挑战', nil)
             player:message('|cffffff00继续挑战!|r')
         else
-            player:message('|cffffff00boss并不处于暂停状态|r')
-            return false
+            return false,'|cffffff00boss并不处于暂停状态|r'
         end
     else
-        player:message('|cffffff00当前没有挑战任何boss|r')
-        return false
+        return false,'|cffffff00当前没有挑战任何boss|r'
     end
 end
 
@@ -323,8 +331,7 @@ function mt:onAdd()
         boss:remove()
         player:message('|cffff0000已放弃|r')
     else
-        player:message('|cffffff00当前没有挑战任何boss|r')
-        return false
+        return false,'|cffffff00当前没有挑战任何boss|r'
     end
 end
 

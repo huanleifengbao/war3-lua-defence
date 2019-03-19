@@ -83,12 +83,10 @@ for name,_ in pairs(item) do
 					end
 					now_equip[itemtype] = hero:addSkill(name,'技能',3)
 				else
-					player:message('|cffffff00您已经装备|cffffaa00'.. name ..'|r', 5)
-					return false
+					return false,'|cffffff00您已经装备|cffffaa00'.. name ..'|r'
 				end
 			else
-				player:message('|cffffff00您未购买|cffffaa00' .. name .. '|r', 5)
-				return false
+				return false,'|cffffff00您未购买|cffffaa00' .. name .. '|r'
 			end
 		end
 	end
