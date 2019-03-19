@@ -1,4 +1,4 @@
-local mt = ac.skill['荣光不败的白亚之翼']
+local mt = ac.skill['荣光不败之翼']
 
 function mt:onAdd()
 	local hero = self:getOwner()

@@ -145,7 +145,7 @@ shop:setItem('兑换玄铁-4', 8, 'F')
 local shop = shop_list['商城道具']
 shop:setBuyRange(1000000)
 shop:setItem('新手礼包', 9, 'Q')
-shop:setItem('荣光不败的白亚之翼', 10, 'W')
+shop:setItem('荣光不败之翼', 10, 'W')
 shop:setItem('原初的符文', 11, 'E')
 shop:setItem('土豪玩家', 12, 'R')
 shop:setItem('时为朦胧的雪花之翼', 5, 'A')
