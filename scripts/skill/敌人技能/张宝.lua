@@ -3,7 +3,7 @@ local mt = ac.skill['张宝-急冻凝结']
 function mt:onCastStart()
 	local hero = self:getOwner()
 	sg.animation(hero,'spell channel',true)
-	local time = self.castStartTime
+	local time = self.castStartTime + self.castChannelTime
 	local point = hero:getPoint()
 	self.eff = {}
 	self.eff[#self.eff + 1] = sg.load_bar({target = point,time = time})
@@ -27,7 +27,7 @@ function mt:onCastStart()
 		    target = point,
 		    size = 3,
 		    model = [[Objects\InventoryItems\QuestionMark\QuestionMark.mdl]],
-		    height = 450,
+		    height = 300,
 		    time = time,
 		}
 	end
@@ -106,8 +106,7 @@ function mt:onCastShot()
 		end
 		ac.effect {
 		    target = point,
-		    size = range/300,
-		    height = 20,
+		    size = range/200,
 		    speed = 2,
 		    model = [[effect\icestomp.mdx]],
 		    time = 3,

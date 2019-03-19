@@ -284,3 +284,25 @@ function mt:onRemove()
 	local u = self:getOwner()
 	u:add('减伤',self.add)
 end
+
+local mt = ac.buff['击飞']
+mt.coverGlobal = 1
+mt.coverType = 1
+
+function mt:onAdd()
+	local u = self:getOwner()
+	u:addRestriction '硬直'
+	u:moverLine
+	{
+		mover = u,
+		distance = 1,
+		angle = 0,
+		speed = 1/self.time,
+		middleHeight = self.height,
+	}
+end
+
+function mt:onRemove()
+	local u = self:getOwner()
+	u:removeRestriction '硬直'
+end
