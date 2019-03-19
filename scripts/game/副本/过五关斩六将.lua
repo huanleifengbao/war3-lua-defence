@@ -34,7 +34,7 @@ local instance_data = {
 }
 --打boss前的额外怪物
 local monster_data = {
-    {name = '副本-秦琪随从', point = ac.point(-3200, -100), count = 120, kill_count = 100, max_count = 20},
+    nil,
     nil,
     nil,
     {name = '副本-王植随从', point = ac.point(-2900, 4600), count = 100, kill_count = 60, max_count = 30},
@@ -167,6 +167,48 @@ function mt:onAdd()
                                 if kill_count > 0 then
                                     kill_count = kill_count - 1
                                 else
+                                    for _, boss in ipairs(boss_mark) do
+                                        boss:removeRestriction '隐藏'
+                                        if boss:getName() == '副本-王植' then
+                                            local p = boss:getPoint()
+                                            ac.effect {
+                                                target = p,
+                                                model = [[Abilities\Spells\Orc\WarStomp\WarStompCaster.mdl]],
+                                                size = 2,
+                                                time = 0,
+                                            }
+                                            local size = 1
+                                            ac.timer(0.2, 7, function()
+                                                ac.effect {
+                                                    target = p,
+                                                    model = [[Abilities\Spells\Other\Doom\DoomDeath.mdl]],
+                                                    size = size,
+                                                    time = 0,
+                                                }
+                                                size = size * 1.2 + 0.5
+                                            end)
+                                        end
+                                        if boss:getName() == '副本-秦琪' then
+                                            for _, u in ipairs(monster_mark) do
+                                                if u:isAlive() then
+                                                    u:moverTarget
+                                                    {
+                                                        model = [[Abilities\Weapons\AvengerMissile\AvengerMissile.mdl]],
+                                                        target = boss,
+                                                        speed = 1500,
+                                                        finishHeight = 150,
+                                                    }
+                                                end
+                                            end
+                                            ac.effect {
+                                                target = boss:getPoint(),
+                                                model = [[Abilities\Spells\Undead\DeathCoil\DeathCoilSpecialArt.mdl]],
+                                                speed = 1,
+                                                size = 3,
+                                                time = 1,
+                                            }
+                                        end
+                                    end
                                     monster_end()
                                 end
                                 trg:remove()
@@ -177,6 +219,9 @@ function mt:onAdd()
                         end
                     end
                 end)
+                for _, boss in ipairs(boss_mark) do
+                    boss:addRestriction '隐藏'
+                end
             end
             --清空小怪
             function monster_end()
@@ -411,6 +456,15 @@ ac.game:event('单位-创建', function (_, u)
     if u:getName() == '副本-秦琪随从' then
         u:addRestriction '硬直'
         u:animation('spell')
+        u:moverLine
+        {
+            mover = u,
+            angle = 0,
+            speed = 0.7,
+            distance = 1,
+            startHeight = -300,
+            finishHeight = 0,
+        }
         ac.effect {
             target = u:getPoint(),
 			model = [[Abilities\Spells\Undead\RaiseSkeletonWarrior\RaiseSkeleton.mdl]],
