@@ -180,6 +180,21 @@ function mt:onAdd()
     hero:kill(hero)
 end
 
+local mt = ac.item['商城作弊怪']
+
+function mt:onAdd()
+    local item = self
+    local unit = item:getOwner()
+    local player = unit:getOwner()
+
+	player:add_shop_info('新手礼包',1)
+	player:add_shop_info('荣光不败的白亚之翼',1)
+	player:add_shop_info('原初的符文',1)
+	player:add_shop_info('土豪玩家',1)
+	player:add_shop_info('时为朦胧的雪花之翼',1)
+    player:message('哇噢商城的|cffffdd00氪金|r道具都是我的啦!', 5)
+end
+
 local mt = ac.skill['治疗药水-小']
 
 function mt:onCastShot()
@@ -192,6 +207,7 @@ function mt:onCastShot()
     local heal = skill.heal
     local heal_rate = skill.heal_rate * hero:get('生命上限') / 100
     heal = heal + heal_rate
+    heal = math.min(hero:get('生命上限') - hero:get('生命'), heal)
     hero:add('生命', heal)
     hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin', 0)
     local msg = '|cff00ff00+'..math.floor(heal)..'|n'
@@ -225,6 +241,7 @@ function mt:onCastShot()
     local heal = skill.heal
     local heal_rate = skill.heal_rate * hero:get('生命上限') / 100
     heal = heal + heal_rate
+    heal = math.min(hero:get('生命上限') - hero:get('生命'), heal)
     hero:add('生命', heal)
     hero:particle([[Abilities\Spells\Undead\VampiricAura\VampiricAuraTarget.mdl]], 'origin', 0)
     local msg = '|cff00ff00+'..math.floor(heal)..'|n'
