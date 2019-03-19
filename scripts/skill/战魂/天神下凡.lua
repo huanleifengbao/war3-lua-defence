@@ -10,14 +10,21 @@ function mt:onAdd()
     		sg.add_allatr(hero,self.atr)
 		end
     	sg.recovery(hero,self.rec)
-    	if sg.get_random(self.kill) then
+		if sg.get_random(self.kill) then
+			local p = target:getPoint()
 			ac.effect {
-			    target = target:getPoint(),
+			    target = p,
 			    model = [[effect\Blood Explosion.mdx]],
 			    size = 1.5,
 			    angle = math.random(360),
 			    time = 1,
 			}
+            local msg = '|cffff0000即|cffaa25ff死|r'
+            ac.textTag()
+                : text(msg, 0.025)
+                : at(p, 100)
+                : speed(0.02, 90)
+                : life(2, 1)
 			hero:kill(target)
 		end
     	if sg.get_random(self.odds2) then
