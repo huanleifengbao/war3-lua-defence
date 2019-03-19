@@ -19,8 +19,10 @@ local item = {
 	['荣光不败的白亚之翼'] = 1,
 	['原初的符文'] = 3,
 	['土豪玩家'] = 2,
+	['时为朦胧的雪花之翼'] = 4,
 }
 local shop_info = {}
+local equip = {}
 for i = 1,sg.max_player do
 	local player = ac.player(i)
 	player.get_status = function(self,key)
@@ -33,8 +35,7 @@ for i = 1,sg.max_player do
 		return jass.HaveStoredInteger(get_table(player), '状态', key)
 	end
 	player.has_item = function(self,key)
-		--return jass.HaveStoredInteger(get_table(player), '道具', key)
-		return true
+		return jass.HaveStoredInteger(get_table(player), '道具', key)
 	end
 	shop_info[player] = {}
 	local info = shop_info[player]
@@ -57,9 +58,39 @@ for i = 1,sg.max_player do
 			player:add_shop_info(key,1)
 		end
 	end
+	equip[player] = {}
+end
+
+--领取装备类物品逻辑
+for name,_ in pairs(item) do
+	local mt = ac.item[name]
+	local itemtype = mt.itemtype
+	if itemtype then
+		function mt:onCanAdd(u)
+			local player = u:getOwner()
+			local hero = player:getHero()
+			local now_equip = equip[player]		
+			if player:get_shop_info(name) > 0 then
+				local skill = now_equip[itemtype]
+				if not skill or skill:getName() ~= name then
+					player:message('成功领取' .. name .. '！', 5)
+					if skill then
+						skill:remove()
+					end
+					now_equip[itemtype] = hero:addSkill(name,'技能',3)
+				else
+					player:message('您已经装备'.. name .. '，无法再次领取', 5)
+					return false
+				end
+			else
+				player:message('您未购买' .. name .. '', 5)
+				return false
+			end
+		end
+	end
 end
 
 require 'shop.新手礼包'
-require 'shop.荣光不败的白亚之翼'
-require 'shop.原初的符文'
-require 'shop.土豪玩家'
+require 'shop.翅膀'
+require 'shop.光环'
+require 'shop.称号'
