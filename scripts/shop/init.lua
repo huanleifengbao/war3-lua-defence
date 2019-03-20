@@ -19,6 +19,7 @@ local item = {
 	['荣光不败之翼'] = 92248,
 	['原初的符文'] = 3,
 	['土豪玩家'] = 2,
+	['锻造礼包'] = 92252,
 	['时为朦胧的雪花之翼'] = 0,
 }
 local shop_info = {}
@@ -92,7 +93,7 @@ for name,_ in pairs(item) do
 	end
 end
 
-require 'shop.新手礼包'
+require 'shop.礼包'
 require 'shop.翅膀'
 require 'shop.光环'
 require 'shop.称号'

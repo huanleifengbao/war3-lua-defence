@@ -286,10 +286,13 @@ ac.game:event('单位-创建', function (_, unit)
 		return false
 	end
 	--创建物品
-	unit.create_item = function(self,item_name)
+	unit.create_item = function(self,item_name,slot)
 		local free = sg.get_free_slot(unit)
 		if #free > 0 then
-	        return unit:createItem(item_name,free[1])
+			if not slot or isintable(free,slot) == false then
+				slot = free[1]
+			end
+	        return unit:createItem(item_name,slot)
 	    else
 	        return unit:getPoint():createItem(item_name)
 	    end

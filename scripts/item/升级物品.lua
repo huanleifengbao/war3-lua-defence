@@ -101,9 +101,9 @@ for _, tbl_name in pairs(tbl) do
                 if not self.lvup_rate then
                     lvup_rate = lvup_rate - 1000
                 end
-                local ex_buff = unit:findBuff('锻造礼包')
+                local ex_buff = unit:findBuff('锻造成功率上升')
                 if ex_buff then
-                    lvup_rate = lvup_rate + 20
+                    lvup_rate = lvup_rate + ex_buff.odds
                 end
                 local ex_item = unit:findItem('作弊锻造强运券')
                 if ex_item then
