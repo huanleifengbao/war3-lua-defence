@@ -113,6 +113,7 @@ function mt:onCastShot()
 		if item then
 			item:give(hero,slot)
 			item:show()
+			bag[now_bag][slot] = nil
 		end
 	end
 	hero:getOwner():message('当前背包：' .. now_page[hero] .. '/' .. max_page,3)
