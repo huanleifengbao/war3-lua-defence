@@ -32,7 +32,7 @@ function mt:onAdd()
 		    : isEnemy(hero)
 		    : ipairs()
 		do
-			local damage = self.damage * sg.get_allatr(hero)
+			local damage = self.damage * hero:get('攻击')
 			hero:damage
 			{
 			    target = u,
@@ -499,7 +499,7 @@ function mt:onCastChannel()
 					    : ofNot '建筑'
 					    : ipairs()
 					do
-						local damage = self.damage * sg.get_allatr(hero)
+						local damage = self.damage * hero:get('攻击')
 						hero:damage
 						{
 						    target = u,
