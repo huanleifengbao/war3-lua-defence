@@ -17,6 +17,7 @@ for _, tbl_name in pairs(tbl) do
                 item:remove()
                 local item2 = hero:createItem(item_name, item_slot)
                 player:message('|cffff7500'..self.lvup_type..'|cffffff00已升级|r', 10)
+                hero:particle([[Abilities\Spells\Items\AIlm\AIlmTarget.mdl]], 'origin', 0)
 
                 --专属特殊处理
                 if tbl_name == '专属升级' then
@@ -100,34 +101,33 @@ for _, tbl_name in pairs(tbl) do
                 if ex_buff then
                     lvup_rate = lvup_rate + ex_buff.odds
                 end
-                local ex_item = hero:findItem('作弊锻造失败券')
-                if ex_item then
+                local ex_item = hero:findAllItem('作弊锻造失败券')
+                if ex_item > 0 then
                     lvup_rate = lvup_rate - 1000
                 end
-                local ex_item = hero:findItem('作弊锻造强运券')
-                if ex_item then
+                local ex_item = hero:findAllItem('作弊锻造强运券')
+                if ex_item > 0 then
                     lvup_rate = lvup_rate + 1000
                 end
                 if sg.get_random(lvup_rate) then
                     item:remove()
                     hero:createItem(item_name, item_slot)
                     player:message('|cffff7500'..self.lvup_type..'|cffffff00进阶|cff00ff00成功|r', 10)
+                    hero:particle([[Abilities\Spells\Items\AIlm\AIlmTarget.mdl]], 'origin', 0)
                 else
                     --哦吼完蛋!
+                    hero:particle([[Abilities\Spells\Demon\DarkPortal\DarkPortalTarget.mdl]], 'origin', 0)
                     item_name = item.boom_item
                     if item_name then
-                        local ex_item = hero:findItem('锻造保护券')
-                        if ex_item then
-                            if ex_item:stack() > 1 then
-                                ex_item:stack(ex_item:stack() - 1)
-                            else
-                                ex_item:remove()
-                            end
+                        local ex_item = hero:findAllItem('锻造保护券')
+                        if ex_item > 0 then
+                            hero:removeItem('锻造保护券', 1)
                             player:message('|cffff7500'..self.lvup_type..'|cffffff00进阶|cffff0000失败|cffffff00,但是|cffffbbdd锻造保护券|cffffff00防止了装备降级|r', 10)
                         else
                             item:remove()
                             hero:createItem(item_name, item_slot)
                             player:message('|cffff7500'..self.lvup_type..'|cffffff00进阶|cffff0000失败|cffffff00,装备|cffff0000降级|cffffff00了|r', 10)
+                            hero:particle([[Objects\Spawnmodels\NightElf\NEDeathMedium\NEDeath.mdl]], 'origin', 0)
                         end
                     else
                         player:message('|cffff7500'..self.lvup_type..'|cffffff00进阶|cffff0000失败|r', 10)
