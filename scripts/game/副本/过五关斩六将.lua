@@ -170,7 +170,6 @@ function mt:onAdd()
                                     for _, boss in ipairs(boss_mark) do
                                         boss:removeRestriction '隐藏'
                                         if boss:getName() == '副本-王植' then
-                                            print('bibi')
                                             local p = boss:getPoint()
                                             ac.effect {
                                                 target = p,
