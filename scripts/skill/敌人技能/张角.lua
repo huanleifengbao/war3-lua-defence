@@ -52,7 +52,6 @@ function mt:onCastShot()
 	local hero = self:getOwner()
 	local point = hero:getPoint()
 	local area = self.area
-	local damage = self.damage * sg.get_allatr(hero)
 	hero:speed(1)
 	sg.animation(hero,'attack spell')
 	for i = 1,self.direct do
@@ -73,7 +72,8 @@ function mt:onCastShot()
 			    : isEnemy(hero)
 			    : ofNot '建筑'
 			    : ipairs()
-			do		
+			do
+				local damage = self.damage * hero:get('攻击')
 				hero:damage
 				{
 				    target = u,
@@ -174,7 +174,7 @@ function mt:onCastChannel()
 			end
 		end
 		for u,_ in pairs(do_damage) do
-			local damage = self.damage * sg.get_allatr(hero)
+			local damage = self.damage * hero:get('攻击')
 			hero:damage
 			{
 			    target = u,
