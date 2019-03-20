@@ -110,6 +110,9 @@ local boss_data = {
 		return sg.get_boss_id(n)
 	end,
 	attribute = {	--进攻怪物属性公式
+		['生命'] = function(n)
+			return 10^n * 500000
+		end,
 		['力量'] = function(n)
 			return 10^n * 10000
 		end,
@@ -120,7 +123,7 @@ local boss_data = {
 			return 10^n * 10000
 		end,
 		['魔抗'] = function(n)
-			return n * 15
+			return 15 + n * 20
 		end,
 		['移动速度'] = function(n)
 			return 500
@@ -204,6 +207,7 @@ local function create_enemy(wave)
 	end
 end
 
+local timerdialog = {}
 local function create_wave()
 	wave = wave + 1
 	create_enemy(wave)
@@ -215,8 +219,8 @@ local function create_wave()
 			create_wave()
 		end
 	end)
-	if wave <= max_wave then
-		sg.timerdialog(str,sg.wave_timer)
+	if wave < max_wave then
+		timerdialog = sg.timerdialog(str,sg.wave_timer)
 	end
 end
 
@@ -228,6 +232,22 @@ local function game_start()
 	end)
 	sg.timerdialog('第1波',sg.wave_timer)
 end
+
+ac.game:event('地图-选择波数',function(_,num)
+	if num > data.max_wave then
+		num = data.max_wave
+	elseif num < 1 then
+		num = 1
+	end
+	wave = num - 1
+	local str = '第' .. num .. '波'
+	for _,t in pairs(timerdialog) do
+		if t then
+			t:setTitle(str)
+		end
+	end
+	sg.message('当前波数已修改为' .. str)
+end)
 
 ac.game:event('地图-选择难度', function (_, num)
 	sg.difficult = num
@@ -242,4 +262,12 @@ ac.game:event('地图-进入无尽模式', function (_, data)
 	end
 	wave = 0
 	game_start()
+end)
+
+--作弊
+ac.game:event('玩家-聊天', function (_, _, str)
+	if string.find(str,'-波数 ',1,5) then
+		local gsu =  sg.split(str,'-波数 ')
+		ac.game:eventNotify('地图-选择波数', tonumber(gsu[1]))
+	end
 end)

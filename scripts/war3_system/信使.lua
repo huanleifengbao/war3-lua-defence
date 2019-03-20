@@ -78,6 +78,18 @@ function mt:onAdd()
 	self.max_page = page
 	now_page[hero] = 1
 	self.bag = bag
+	hero:getOwner():getHero().getBagItem = function(self)
+		local tbl = {}
+		for item in hero:eachItem() do
+			table.insert(tbl,item)
+		end
+		for _,box in pairs(bag) do
+			for _,item in pairs(box) do
+				table.insert(tbl,item)
+			end
+		end
+		return tbl
+	end
 end
 
 function mt:onCastShot()
@@ -98,8 +110,10 @@ function mt:onCastShot()
 	end
 	now_bag = now_page[hero]
 	for slot,item in pairs(bag[now_bag]) do
-		item:give(hero,slot)
-		item:show()
+		if item then
+			item:give(hero,slot)
+			item:show()
+		end
 	end
 	hero:getOwner():message('当前背包：' .. now_page[hero] .. '/' .. max_page,3)
 end

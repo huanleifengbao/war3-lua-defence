@@ -209,6 +209,26 @@ function mt:onRemove()
 	self.trg:remove()
 end
 
+local mt = ac.buff['魔化']
+mt.coverGlobal = 1
+mt.show = 1
+mt.icon = [[ReplaceableTextures\CommandButtons\BTNOrbOfDeath.blp]]
+mt.title = '魔化'
+mt.description = '该单位的普通攻击造成魔法伤害。'
+
+function mt:onAdd()
+	local u = self:getOwner()
+	self.trg = u:event('单位-即将造成伤害', function(_,_,damage)
+		if damage:isCommonAttack() == true then
+			damage:set_type '魔法'
+		end
+	end)
+end
+
+function mt:onRemove()
+	self.trg:remove()
+end
+
 local mt = ac.buff['诱捕']
 mt.coverGlobal = 1
 mt.show = 1

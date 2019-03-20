@@ -8,14 +8,24 @@ function sg.isintable(tbl,val)
 	return false
 end
 
+--分割字符串
+function sg.split(str, p)
+	local rt = {}
+	string.gsub(str, '[^' .. p .. ']+', function (w) table.insert(rt, w) end)
+	return rt
+end
+
 --全体玩家计时器窗口
 function sg.timerdialog(title,timer,player)
 	if not player then
+		local tbl = {}
 		for i = 1,sg.max_player do
-			ac.player(i):timerDialog(title,timer)
+			local t = ac.player(i):timerDialog(title,timer)
+			table.insert(tbl,t)
 		end
+		return tbl
 	else
-		player:timerDialog(title,timer)
+		return player:timerDialog(title,timer)
 	end
 end
 
