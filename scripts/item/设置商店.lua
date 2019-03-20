@@ -39,10 +39,12 @@ local shop = shop_list['药水商店']
 shop:setBuyRange(1000000)
 shop:setItem('治疗药水-小', 9, 'Q')
 shop:setItem('治疗药水-大', 10, 'W')
-shop:setItem('经验之书', 5, 'A')
+shop:setItem('孙子兵法', 5, 'A')
 shop:setItem('作弊等级', 6, 'S')
 shop:setItem('作弊属性', 7, 'D')
+shop:setItem('经验之书', 8, 'F')
 shop:setItem('作弊自杀', 1, 'Z')
+shop:setItem('作弊清怪', 2, 'X')
 
 --新手装备
 local shop = shop_list['新手装备']

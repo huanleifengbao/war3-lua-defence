@@ -180,6 +180,20 @@ function mt:onAdd()
     hero:kill(hero)
 end
 
+local mt = ac.item['作弊清怪']
+
+function mt:onAdd()
+    local item = self
+    --作用目标是玩家英雄
+    local unit = item:getOwner()
+    local i_player = unit:getOwner()
+    local hero = i_player:getHero()
+
+    for _, u in pairs(sg.all_enemy) do
+        hero:kill(u)
+    end
+end
+
 local mt = ac.item['商城作弊怪']
 
 function mt:onAdd()
