@@ -8,18 +8,20 @@ for _, tbl_name in pairs(tbl) do
 
     function mt:onCanAdd(unit)
         local player = unit:getOwner()
-        for item in unit:eachItem() do
+        local hero = player:getHero()
+
+        for item in hero:eachItem() do
             if item.lvup_type and item.lvup_type == self:getName() and item.new_item then
                 local item_name = item.new_item
                 local item_slot = item:getSlot()
                 item:remove()
-                local item2 = unit:createItem(item_name, item_slot)
+                local item2 = hero:createItem(item_name, item_slot)
                 player:message('|cffff7500'..self.lvup_type..'|cffffff00已升级|r', 10)
 
                 --专属特殊处理
                 if tbl_name == '专属升级' then
-                    unit:userData('专属等级', unit:userData('专属等级') + 1)
-                    unit:userData('专属', item2)
+                    hero:userData('专属等级', hero:userData('专属等级') + 1)
+                    hero:userData('专属', item2)
                 end
                 return true
             end
@@ -36,7 +38,9 @@ for _, tbl_name in pairs(tbl) do
 
     function mt:onCanAdd(unit)
         local player = unit:getOwner()
-        for item in unit:eachItem() do
+        local hero = player:getHero()
+
+        for item in hero:eachItem() do
             if item.lvup_type and item.lvup_type == self:getName() and item.new_item then
                 local data = item.stuff
                 if data then
@@ -51,16 +55,17 @@ for _, tbl_name in pairs(tbl) do
                             if data[i][2] then
                                 stuff_count = data[i][2]
                             end
-                            cost_item[i] = unit:findItem(stuff_name)
+                            local count = hero:findAllItem(stuff_name)
+                            cost_item[i] = stuff_name
                             cost_count[i] = stuff_count
-                            if cost_item[i] then
-                                if math.max(cost_item[i]:stack(), 1) < stuff_count then
+                            if count > 0 then
+                                if count < stuff_count then
                                     if error_mark == true then
                                         error_mark = false
                                     else
                                         error_tips = error_tips..'\n'
                                     end
-                                    local int = stuff_count - cost_item[i]:stack()
+                                    local int = stuff_count - count
                                     error_tips = error_tips..'|cffff7500'..stuff_name..'|cffffff00数量不足'..'|cffff7500'..stuff_count..'|cffffff00个(还差|cffff7500'..int..'|cffffff00个)|r'
                                 end
                             else
@@ -81,43 +86,37 @@ for _, tbl_name in pairs(tbl) do
                         return false, error_tips
                     end
                     for i = 1, #cost_item do
-                        if cost_item[i] then
-                            if cost_item[i]:stack() > cost_count[i] then
-                                cost_item[i]:stack(cost_item[i]:stack() - cost_count[i])
-                            else
-                                cost_item[i]:remove()
-                            end
-                        end
+                        hero:removeItem(cost_item[i], cost_count[i])
                     end
                 end
                 local item_name = item.new_item
                 local item_slot = item:getSlot()
                 --装备甚至会boom
                 local lvup_rate = self.lvup_rate
-                local ex_item = unit:findItem('作弊锻造失败券')
-                if ex_item then
-                    lvup_rate = 0
+                if not lvup_rate then
+                    lvup_rate = 100
                 end
-                if not self.lvup_rate then
-                    lvup_rate = lvup_rate - 1000
-                end
-                local ex_buff = unit:findBuff('锻造成功率上升')
+                local ex_buff = hero:findBuff('锻造成功率上升')
                 if ex_buff then
                     lvup_rate = lvup_rate + ex_buff.odds
                 end
-                local ex_item = unit:findItem('作弊锻造强运券')
+                local ex_item = hero:findItem('作弊锻造失败券')
+                if ex_item then
+                    lvup_rate = lvup_rate - 1000
+                end
+                local ex_item = hero:findItem('作弊锻造强运券')
                 if ex_item then
                     lvup_rate = lvup_rate + 1000
                 end
                 if sg.get_random(lvup_rate) then
                     item:remove()
-                    unit:createItem(item_name, item_slot)
+                    hero:createItem(item_name, item_slot)
                     player:message('|cffff7500'..self.lvup_type..'|cffffff00进阶|cff00ff00成功|r', 10)
                 else
                     --哦吼完蛋!
                     item_name = item.boom_item
                     if item_name then
-                        local ex_item = unit:findItem('锻造保护券')
+                        local ex_item = hero:findItem('锻造保护券')
                         if ex_item then
                             if ex_item:stack() > 1 then
                                 ex_item:stack(ex_item:stack() - 1)
@@ -127,7 +126,7 @@ for _, tbl_name in pairs(tbl) do
                             player:message('|cffff7500'..self.lvup_type..'|cffffff00进阶|cffff0000失败|cffffff00,但是|cffffbbdd锻造保护券|cffffff00防止了装备降级|r', 10)
                         else
                             item:remove()
-                            unit:createItem(item_name, item_slot)
+                            hero:createItem(item_name, item_slot)
                             player:message('|cffff7500'..self.lvup_type..'|cffffff00进阶|cffff0000失败|cffffff00,装备|cffff0000降级|cffffff00了|r', 10)
                         end
                     else
@@ -150,6 +149,8 @@ for _, tbl_name in pairs(tbl) do
     function mt:onCanAdd(unit)
         local item = self
         local player = unit:getOwner()
+        local hero = player:getHero()
+
         local data = self.stuff
         local cost_item = {}
         local cost_count = {}
@@ -162,16 +163,17 @@ for _, tbl_name in pairs(tbl) do
                 if data[i][2] then
                     stuff_count = data[i][2]
                 end
-                cost_item[i] = unit:findItem(stuff_name)
+                local count = hero:findAllItem(stuff_name)
+                cost_item[i] = stuff_name
                 cost_count[i] = stuff_count
-                if cost_item[i] then
-                    if math.max(cost_item[i]:stack(), 1) < stuff_count then
+                if count > 0 then
+                    if count < stuff_count then
                         if error_mark == true then
                             error_mark = false
                         else
                             error_tips = error_tips..'\n'
                         end
-                        local int = stuff_count - cost_item[i]:stack()
+                        local int = stuff_count - count
                         error_tips = error_tips..'|cffff7500'..stuff_name..'|cffffff00数量不足'..'|cffff7500'..stuff_count..'|cffffff00个(还差|cffff7500'..int..'|cffffff00个)|r'
                     end
                 else
@@ -193,15 +195,9 @@ for _, tbl_name in pairs(tbl) do
         end
         local item_name = item.new_item
         for i = 1, #cost_item do
-            if cost_item[i] then
-                if cost_item[i]:stack() > cost_count[i] then
-                    cost_item[i]:stack(cost_item[i]:stack() - cost_count[i])
-                else
-                    cost_item[i]:remove()
-                end
-            end
+            hero:removeItem(cost_item[i], cost_count[i])
         end
-        sg.createItem(unit,item_name)
+        sg.createItem(hero,item_name)
         player:message('|cffffff00已获得|cffff7500'..item_name..'|r', 10)
         return true
     end
