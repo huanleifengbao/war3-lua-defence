@@ -99,7 +99,7 @@ for _, tbl_name in pairs(tbl) do
                     lvup_rate = 0
                 end
                 if not self.lvup_rate then
-                    lvup_rate = 100
+                    lvup_rate = lvup_rate - 1000
                 end
                 local ex_buff = unit:findBuff('锻造礼包')
                 if ex_buff then
@@ -107,7 +107,7 @@ for _, tbl_name in pairs(tbl) do
                 end
                 local ex_item = unit:findItem('作弊锻造强运券')
                 if ex_item then
-                    lvup_rate = 100
+                    lvup_rate = lvup_rate + 1000
                 end
                 if sg.get_random(lvup_rate) then
                     item:remove()
