@@ -212,7 +212,7 @@ end
 local mt = ac.buff['魔化']
 mt.coverGlobal = 1
 mt.show = 1
-mt.icon = [[ReplaceableTextures\CommandButtons\BTNOrbOfDeath.blp]]
+mt.icon = [[ReplaceableTextures\CommandButtons\BTNFeedBack.blp]]
 mt.title = '魔化'
 mt.description = '该单位的普通攻击造成魔法伤害。'
 

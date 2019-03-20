@@ -307,6 +307,41 @@ ac.game:event('单位-创建', function (_, unit)
 	        return unit:getPoint():createItem(item_name)
 	    end
     end
+    --寻找物品（包括信使）
+    unit.findAllItem = function(self,item_name)
+    	local tbl = {}
+    	local stack = 0
+	    for it in unit:eachItem() do
+			if it:getName() == item_name then
+				stack = stack + math.max(1,it:stack())
+				table.insert(tbl,it)
+			end
+		end
+	    for _,it in pairs(unit:getBagItem()) do
+			if it:getName() == item_name then
+				stack = stack + math.max(1,it:stack())
+		    	table.insert(tbl,it)
+			end
+    	end
+    	return stack,tbl
+	end
+	--删除物品
+	unit.removeItem = function(self,name,count)
+		local _,tbl = unit:findAllItem(name)
+		if not count then 			
+			count = 99999
+		end
+		for _,item in pairs(tbl) do
+			local stack = math.max(1,item:stack())
+			if count >= stack then
+				item:remove()
+			else
+				item:stack(stack - count)
+				break
+			end
+			count = count - stack
+		end
+	end
 end)
 
 --创建物品不蒸发
