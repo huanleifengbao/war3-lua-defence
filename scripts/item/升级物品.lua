@@ -28,7 +28,7 @@ for _, tbl_name in pairs(tbl) do
     end
 end
 
---带合成条件的
+--有主装备,并且需要合成材料,还可能失败
 local tbl = {'装备进阶-1','装备进阶-2','装备进阶-3','装备进阶-4','装备进阶-5','装备进阶-6','装备进阶-7','装备进阶-8','装备进阶-9','装备进阶-10','终极合成'}
 
 for _, tbl_name in pairs(tbl) do
@@ -54,7 +54,7 @@ for _, tbl_name in pairs(tbl) do
                             cost_item[i] = unit:findItem(stuff_name)
                             cost_count[i] = stuff_count
                             if cost_item[i] then
-                                if cost_item[i]:stack() < stuff_count then
+                                if math.max(cost_item[i]:stack(), 1) < stuff_count then
                                     if error_mark == true then
                                         error_mark = false
                                     else
@@ -92,9 +92,44 @@ for _, tbl_name in pairs(tbl) do
                 end
                 local item_name = item.new_item
                 local item_slot = item:getSlot()
-                item:remove()
-                unit:createItem(item_name, item_slot)
-                player:message('|cffff7500'..self.lvup_type..'|cffffff00已升级|r', 10)
+                --装备甚至会boom
+                local lvup_rate = self.lvup_rate
+                local ex_item = unit:findItem('作弊锻造失败券')
+                if ex_item then
+                    lvup_rate = 0
+                end
+                if not self.lvup_rate then
+                    lvup_rate = 100
+                end
+                local ex_item = unit:findItem('作弊锻造强运券')
+                if ex_item then
+                    lvup_rate = 100
+                end
+                if sg.get_random(lvup_rate) then
+                    item:remove()
+                    unit:createItem(item_name, item_slot)
+                    player:message('|cffff7500'..self.lvup_type..'|cffffff00进阶|cff00ff00成功|r', 10)
+                else
+                    --哦吼完蛋!
+                    item_name = item.boom_item
+                    if item_name then
+                        local ex_item = unit:findItem('锻造保护券')
+                        if ex_item then
+                            if ex_item:stack() > 1 then
+                                ex_item:stack(ex_item:stack() - 1)
+                            else
+                                ex_item:remove()
+                            end
+                            player:message('|cffff7500'..self.lvup_type..'|cffffff00进阶|cffff0000失败|cffffff00,但是|cffffbbdd锻造保护券|cffffff00防止了装备降级|r', 10)
+                        else
+                            item:remove()
+                            unit:createItem(item_name, item_slot)
+                            player:message('|cffff7500'..self.lvup_type..'|cffffff00进阶|cffff0000失败|cffffff00,装备|cffff0000降级|cffffff00了|r', 10)
+                        end
+                    else
+                        player:message('|cffff7500'..self.lvup_type..'|cffffff00进阶|cffff0000失败|r', 10)
+                    end
+                end
                 return true
             end
         end
@@ -126,7 +161,7 @@ for _, tbl_name in pairs(tbl) do
                 cost_item[i] = unit:findItem(stuff_name)
                 cost_count[i] = stuff_count
                 if cost_item[i] then
-                    if cost_item[i]:stack() < stuff_count then
+                    if math.max(cost_item[i]:stack(), 1) < stuff_count then
                         if error_mark == true then
                             error_mark = false
                         else

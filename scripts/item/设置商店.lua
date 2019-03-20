@@ -89,7 +89,7 @@ shop:setItem('八级锻造石', 8, 'F')
 shop:setItem('九级锻造石', 1, 'Z')
 shop:setItem('十级锻造石', 2, 'X')
 shop:setItem('终极锻造石', 3, 'C')
-shop:setItem('商城作弊怪', 4, 'V')
+shop:setItem('锻造保护券', 4, 'V')
 
 --作弊:方便测试随便写
 local shop = ac.player(16):createShop('商店', ac.point(7444, -11129), 270)
@@ -103,7 +103,8 @@ shop:setItem('玄铁', 7, 'D')
 shop:setItem('百年玄铁', 8, 'F')
 shop:setItem('千年玄铁', 1, 'Z')
 shop:setItem('九幽玄铁', 2, 'X')
-
+shop:setItem('作弊锻造强运券', 3, 'C')
+shop:setItem('作弊锻造失败券', 4, 'V')
 
 --装备进阶
 local shop = shop_list['装备进阶']
@@ -149,6 +150,7 @@ shop:setItem('荣光不败之翼', 10, 'W')
 shop:setItem('原初的符文', 11, 'E')
 shop:setItem('土豪玩家', 12, 'R')
 shop:setItem('时为朦胧的雪花之翼', 5, 'A')
+shop:setItem('商城作弊怪', 4, 'V')
 
 --练功
 local point = {
