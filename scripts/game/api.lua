@@ -285,7 +285,21 @@ ac.game:event('单位-创建', function (_, unit)
 		end
 		return false
 	end
+	--创建物品
+	unit.create_item = function(self,item_name)
+		local free = sg.get_free_slot(unit)
+		if #free > 0 then
+	        return unit:createItem(item_name,free[1])
+	    else
+	        return unit:getPoint():createItem(item_name)
+	    end
+    end
 end)
+
+--创建物品不蒸发
+function sg.createItem(unit,item_name)
+	return unit:create_item(item_name)
+end
 
 --设置镜头区域
 function sg.camera(data)
