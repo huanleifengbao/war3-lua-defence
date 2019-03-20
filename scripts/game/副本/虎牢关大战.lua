@@ -182,6 +182,8 @@ function mt:onAdd()
                 end)
                 local p2 = target_point - {360 / #mark * k, 120}
 				u:tp(p2, true)
+                u:set('生命', u:get('生命上限'))
+                u:set('魔法', u:get('魔法上限'))
                 u:addRestriction '硬直'
                 local int = 5
                 ac.timer(1, 6, function()
@@ -212,8 +214,15 @@ function mt:onAdd()
                             local back_time = 10
                             local back_msg = '即将返回'
                             local back_timer = ac.wait(back_time, function()
-                                for _, hero in ipairs(hero_mark) do
-                                    hero:tp(home, true)
+                                for k, hero in ipairs(hero_mark) do
+                                    local p2 = home - {360 / #hero_mark * k, 120}
+                                    hero:tp(p2, true)
+                                    local buff = hero:findBuff('假死')
+                                    if buff then
+                                        buff:remove()
+                                    end
+                                    hero:set('生命', hero:get('生命上限'))
+                                    hero:set('魔法', hero:get('魔法上限'))
                                     hero:removeRestriction '无敌'
                                 end
                                 instance_end()

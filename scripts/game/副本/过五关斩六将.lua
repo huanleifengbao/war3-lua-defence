@@ -265,42 +265,16 @@ function mt:onAdd()
             --遍历进入副本的英雄
             for k, u in ipairs(mark) do
                 local player = u:getOwner()
-                local id = player:id()
                 player:timerDialog(msg2, timer2)
                 player:message('已进入副本,时间限制|cffff7500'..time2..'|r秒请注意', 8)
                 player:message('|cff00ff00攻略所有关卡|r才会胜利,|cffff0000团灭或超时|r副本挑战就失败了', 8)
                 player:message('另外副本中可是|cffff7500禁止传送|r并且|cffff7500无法复活|r的哟', 8)
                 hero_mark[k] = u
-                hero_count = hero_count + 1
-                local trg1, trg2
-                trg1 = u:event('单位-即将死亡', function ()
-                    trg1:remove()
-                    trg2:remove()
-                    hero_count = hero_count - 1
-                    if hero_count <= 0 then
-                        ace()
-                    else
-                        --没团灭的死者会假死
-                        u:addBuff '假死'{}
-                        for i = 1,sg.max_player do
-                            ac.player(i):message(sg.player_colour[id]..u:getName()..'|r被杀了!剩余英雄:|cffff7500'..hero_count..'|r', 5)
-                        end
-                        return false
-                    end
-                end)
-                trg2 = u:event('单位-死亡', function ()
-                    trg1:remove()
-                    trg2:remove()
-                    hero_count = hero_count - 1
-                    if hero_count <= 0 then
-                        ace()
-                    end
-                end)
                 u:addRestriction '硬直'
                 local int = 5
                 ac.timer(1, 6, function()
                     if int == 5 then
-                        player:message('目标:通过|cffff7550所有关卡|r', 8)
+                        player:message('目标:通过|cffff7550所有关卡|r,每次通关都能全体复活', 8)
                     end
                     if int <= 3 and int >= 1 then
                         player:message('开始倒计时:|cffff7500'..int..'|r', 1)
@@ -315,11 +289,49 @@ function mt:onAdd()
             local next_lv
             function next_lv()
                 instance_lv = instance_lv + 1
+                hero_count = #hero_mark
                 --传送英雄
                 for k, hero in ipairs(hero_mark) do
                     local player = hero:getOwner()
+                    local id = player:id()
                     local p2 = target_point[instance_lv] - {360 / #hero_mark * k, 120}
                     hero:tp(p2, true)
+                    local buff = hero:findBuff('假死')
+                    if buff then
+                        buff:remove()
+                        player:message('阵亡英雄已|cffffff00复活|r', 8)
+                        ac.effect {
+                            target = p2,
+                            model = [[Abilities\Spells\Human\Resurrect\ResurrectTarget.mdl]],
+                            time = 0,
+                        }
+                    end
+                    local trg1, trg2
+                    trg1 = hero:event('单位-即将死亡', function ()
+                        trg1:remove()
+                        trg2:remove()
+                        hero_count = hero_count - 1
+                        if hero_count <= 0 then
+                            ace()
+                        else
+                            --没团灭的死者会假死
+                            hero:addBuff '假死'{}
+                            for i = 1,sg.max_player do
+                                ac.player(i):message(sg.player_colour[id]..hero:getName()..'|r被杀了!剩余英雄:|cffff7500'..hero_count..'|r', 5)
+                            end
+                            return false
+                        end
+                    end)
+                    trg2 = hero:event('单位-死亡', function ()
+                        trg1:remove()
+                        trg2:remove()
+                        hero_count = hero_count - 1
+                        if hero_count <= 0 then
+                            ace()
+                        end
+                    end)
+                    hero:set('生命', hero:get('生命上限'))
+                    hero:set('魔法', hero:get('魔法上限'))
                     player:message('第|cffff7500'..instance_lv..'|r关', 8)
                 end
                 boss_mark = {}
@@ -340,8 +352,15 @@ function mt:onAdd()
                                     local back_time = 10
                                     local back_msg = '即将返回'
                                     local back_timer = ac.wait(back_time, function()
-                                        for _, hero in ipairs(hero_mark) do
-                                            hero:tp(home, true)
+                                        for k, hero in ipairs(hero_mark) do
+                                            local p2 = home - {360 / #hero_mark * k, 120}
+                                            hero:tp(p2, true)
+                                            local buff = hero:findBuff('假死')
+                                            if buff then
+                                                buff:remove()
+                                            end
+                                            hero:set('生命', hero:get('生命上限'))
+                                            hero:set('魔法', hero:get('魔法上限'))
                                             hero:removeRestriction '无敌'
                                         end
                                         instance_end()
