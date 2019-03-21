@@ -299,7 +299,7 @@ ac.game:event('单位-创建', function (_, unit)
 	unit.create_item = function(self,item_name,slot)
 		local free = sg.get_free_slot(unit)
 		if #free > 0 then
-			if not slot or isintable(free,slot) == false then
+			if not slot or sg.isintable(free,slot) == false then
 				slot = free[1]
 			end
 	        return unit:createItem(item_name,slot)
