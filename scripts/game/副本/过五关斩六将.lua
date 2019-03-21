@@ -4,10 +4,10 @@ local mt = ac.item['副本-过五关斩六将']
 --飞机位置
 local start_point = ac.point(6050, -9300)
 --副本位置
-local target_point = {
-    ac.point(-7600, 10150),
-    ac.point(-6800, -1250),
+local target_point = {   
     ac.point(-7300, 7400),
+    ac.point(-6800, -1250),
+    ac.point(-7600, 10150),
     ac.point(-3000, 4100),
     ac.point(-4000, -1150),
 }
@@ -16,14 +16,14 @@ local home = ac.point(7044, -8792)
 --副本初始怪物
 local instance_data = {
     {
-        {name = '副本-孔秀', point = ac.point(-7777, 11350), facing = 270},
+        {name = '副本-孔秀', point = ac.point(-7300, 8700), facing = 270},
     },
     {
         {name = '副本-韩福', point = ac.point(-6800, 2600), facing = 270},
         {name = '副本-孟坦', point = ac.point(-6725, 5625), facing = 270},
     },
     {
-        {name = '副本-卞喜', point = ac.point(-7300, 8700), facing = 270},
+        {name = '副本-卞喜', point = ac.point(-7777, 11350), facing = 270},
     },
     {
         {name = '副本-王植', point = ac.point(-3000, 5100), facing = 270},
