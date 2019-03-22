@@ -60,6 +60,9 @@ for i = 1,sg.max_player do
                     hero:userData('威望技能', skill)
                     local skill = hero:addSkill('0阶觉醒', '技能', 6)
                     hero:userData('觉醒技能', skill)
+                    hero:addSkill('战魂魔法书', '技能', 7)
+                    hero:userData('战魂技能', {})
+                    hero:userData('坐骑技能', {})
                     local item_name = Aghanim[name]
                     if item_name then
                         local item = hero:createItem(item_name..'-1')

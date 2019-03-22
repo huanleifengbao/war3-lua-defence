@@ -2,8 +2,8 @@ local mt = ac.skill['恐怖利刃-魔化']
 
 function mt:onAdd()
 	local hero = self:getOwner()
-	self.trg = hero:event('单位-受到伤害',function(_,_,damage)
-		local cool = false
+	local cool = false
+	self.trg = hero:event('单位-受到伤害',function(_,_,damage)		
 		if cool == false and hero:get('生命') <= hero:get('生命上限') * self.casthp/100 then
 			hero:cast(self:getName(),hero:getPoint())
 			cool = true
@@ -29,6 +29,8 @@ function mt:onCastFinish()
 	hero:addBuff '恐怖利刃-魔化'
 	{
 		time = 0,
+		range = hero:get('攻击范围'),
+		skill = self,
 	}
 	self.trg:remove()
 end
@@ -42,12 +44,26 @@ function mt:onAdd()
 	{
 		time = 0,
 	}
+	hero:set('攻击范围',self.skill.range)
+	self.trg = hero:event('单位-攻击出手', function (_, _, target, damage, mover)
+    	local mover = hero:moverTarget
+		{
+			model = [[Abilities\Spells\Undead\FreezingBreath\FreezingBreathMissile.mdl]],
+			target = target,
+			speed = 900,
+			startHeight = 200,
+			finishHeight = 60,
+			maxDistance = 3000,
+		}
+	end)
 end
 
 function mt:onRemove()
 	local hero = self:getOwner()
 	jass.AddUnitAnimationProperties(hero._handle, 'alternate', false)
 	self.buff:remove()
+	hero:set('攻击范围',self.range)
+	self.trg:remove()
 end
 
 local mt = ac.skill['恐怖利刃-魂断']

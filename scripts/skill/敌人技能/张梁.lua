@@ -59,7 +59,7 @@ function mt:onCastShot()
 	local x,y = point:getXY()
 	local start = ac.point(x - 1000,y + 1000)
 	local skill = self
-	local damage = self.damage * sg.get_allatr(hero)
+	local damage = self.damage * hero:get('攻击')
 	if self.lie == true then
 		start = ac.point(x - 800,y + 800)
 	end	

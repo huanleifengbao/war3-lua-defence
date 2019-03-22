@@ -70,7 +70,7 @@ end
 
 function mt:do_damage(u)
 	local hero = self:getOwner()
-	local damage = self.damage * sg.get_allatr(hero)
+	local damage = self.damage * hero:get('攻击')
 	hero:damage
 	{
 	    target = u,
