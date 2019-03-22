@@ -9,6 +9,7 @@ require 'war3_system.掉落道具'
 require 'war3_system.快捷按钮'
 require 'war3_system.信使'
 require 'war3_system.技能共享冷却'
+require 'war3_system.魔法书'
 
 sg.max_player = 6
 for i = 1, sg.max_player do
