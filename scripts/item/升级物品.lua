@@ -3,7 +3,7 @@
 --需要被升级的物品提供lvup_type,它将升级成new_item
 local tbl = {'武器升级','衣服升级','鞋子升级','饰品升级','专属升级'}
 
-for _, tbl_name in pairs(tbl) do
+for _, tbl_name in ipairs(tbl) do
 	local mt = ac.item[tbl_name]
 
     function mt:onCanAdd(unit)
@@ -34,7 +34,7 @@ end
 --有主装备,并且需要合成材料,还可能失败
 local tbl = {'装备进阶-1','装备进阶-2','装备进阶-3','装备进阶-4','装备进阶-5','装备进阶-6','装备进阶-7','装备进阶-8','装备进阶-9','装备进阶-10','终极合成'}
 
-for _, tbl_name in pairs(tbl) do
+for _, tbl_name in ipairs(tbl) do
 	local mt = ac.item[tbl_name]
 
     function mt:onCanAdd(unit)
@@ -143,7 +143,7 @@ end
 --合成
 local tbl = {'兑换玄铁-1','兑换玄铁-2','兑换玄铁-3','兑换玄铁-4'}
 
-for _, tbl_name in pairs(tbl) do
+for _, tbl_name in ipairs(tbl) do
 	local mt = ac.item[tbl_name]
 
     function mt:onCanAdd(unit)

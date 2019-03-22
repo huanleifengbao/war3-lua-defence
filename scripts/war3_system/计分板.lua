@@ -205,8 +205,8 @@ ac.wait(0, function()
         --称号
         if unit:get('威望等级') < #title_level and unit:userData('杀敌数') >= title_level[unit:get('威望等级') + 1] then
             unit:add('威望等级', 1)
-            board[id+1][4]:icon(title_icon[unit:get('威望等级')])
-            board[id+1][4]:text(title[unit:get('威望等级')])
+            board[id+1][5]:icon(title_icon[unit:get('威望等级')])
+            board[id+1][5]:text(title[unit:get('威望等级')])
             for i = 1,sg.max_player do
                 ac.player(i):message('|cffffff00'..unit:getName()..'威望提升,称号变成了'..title[unit:get('威望等级')]..'|r', 10)
             end
@@ -232,13 +232,13 @@ ac.wait(0, function()
     local game_mod_str = '难度选择中...'
     ac.game:event('地图-选择难度', function (_, num)
         if num == 1 then
-            game_mod_str = '|cff00ff00Easy|r'
+            game_mod_str = '|cff00ff00简单|r'
         elseif num == 2 then
-            game_mod_str = '|cffffff00Normal|r'
+            game_mod_str = '|cffffff00普通|r'
         elseif num == 3 then
-            game_mod_str = '|cffff0000Hard|r'
+            game_mod_str = '|cffff0000困难|r'
         elseif num == 4 then
-            game_mod_str = '|cffff00ffLunatic|r'
+            game_mod_str = '|cffff00ff噩梦|r'
         end
         for i = 1,sg.max_player do
             local player = ac.player(i)

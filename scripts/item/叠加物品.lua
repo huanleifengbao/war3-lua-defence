@@ -2,7 +2,7 @@
 local tbl = {'治疗药水-小','治疗药水-大','一级锻造石','二级锻造石','三级锻造石','四级锻造石','五级锻造石','六级锻造石','七级锻造石','八级锻造石','九级锻造石','十级锻造石','终极锻造石','锻造保护券'
 }
 
-for _, tbl_name in pairs(tbl) do
+for _, tbl_name in ipairs(tbl) do
 	local mt = ac.item[tbl_name]
 
     --即使是满格也能购买可叠加的物品

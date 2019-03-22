@@ -21,6 +21,7 @@ local function closebox(hero)
             skill:show()
         end
         hero:iconLevel('技能', 0)
+        box_skill:remove()
     end
 end
 

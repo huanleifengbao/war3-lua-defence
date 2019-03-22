@@ -12,10 +12,10 @@ ac.wait(0, function()
             end
             local dialog = player:dialog{
                 '选择难度',
-                {'1', 'Q', '|cff00ff00Easy(Q)|r'},
-                {'2', 'W', '|cffffff00Normal(W)|r'},
-                {'3', 'E', '|cffff0000Hard(E)|r'},
-                {'4', 'R', '|cffff00ffLunatic(R)|r'},
+                {'1', 'Q', '|cff00ff00简单(Q)|r'},
+                {'2', 'W', '|cffffff00普通(W)|r'},
+                {'3', 'E', '|cffff0000困难(E)|r'},
+                {'4', 'R', '|cffff00ff噩梦(R)|r'},
             }
             function dialog:onClick(name)
 	            sg.difficult = tonumber(name)

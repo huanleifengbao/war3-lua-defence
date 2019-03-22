@@ -70,7 +70,7 @@ local exercise_monster = {
     ['刷木1'] = {name = '木材怪1', count = 20, cd = 1, gold = 0, lumber = 50, exp = 3000},
     ['刷木2'] = {name = '木材怪2', count = 20, cd = 1, gold = 0, lumber = 150, exp = 3000},
     ['刷木3'] = {name = '木材怪3', count = 20, cd = 1, gold = 0, lumber = 500, exp = 3000},
-    ['刷经验1'] = {name = '经验宝宝1', count = 20, cd = 1, gold = 0, lumber = 0, exp = 3000},
+    ['刷经验1'] = {name = '经验宝宝1', count = 20, cd = 1, gold = 100, lumber = 0, exp = 3000},
     ['作弊刷怪'] = {name = '经验宝宝1', count = 100, cd = 0.1, gold = 0, lumber = 0, exp = 3000},
 }
 
@@ -144,7 +144,7 @@ end
 
 local tbl = {'刷钱1','刷钱2','刷木1','刷木2','刷木3','刷经验1','作弊刷怪'}
 
-for _, tbl_name in pairs(tbl) do
+for _, tbl_name in ipairs(tbl) do
 	local mt = ac.item[tbl_name]
 
     function mt:onCanAdd(unit)
@@ -244,7 +244,7 @@ end
 
 local tbl = {'挑战觉醒boss-1','挑战觉醒boss-2','挑战觉醒boss-3','挑战觉醒boss-4','挑战觉醒boss-5','挑战觉醒boss-6','挑战觉醒boss-7','挑战觉醒boss-8','挑战觉醒boss-9','挑战觉醒boss-10'}
 
-for _, tbl_name in pairs(tbl) do
+for _, tbl_name in ipairs(tbl) do
 	local mt = ac.item[tbl_name]
 
     function mt:onCanAdd(unit)

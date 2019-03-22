@@ -23,28 +23,32 @@ function mt:onAdd()
         end)
 end
 
-local mt = ac.item['作弊等级']
+local tbl = {'作弊等级','孙子兵法'}
 
-function mt:onAdd()
-    local item = self
-    --作用目标是玩家英雄
-    local unit = item:getOwner()
-    local i_player = unit:getOwner()
-    local hero = i_player:getHero()
-    local p = hero:getPoint()
+for _, tbl_name in ipairs(tbl) do
+	local mt = ac.item[tbl_name]
 
-    local lv = item.lv
-    local msg_height = 60
-    hero:level(hero:level() + lv, true)
-    local msg = '|cff00ddeeLevel Up'..math.floor(lv)..'|n'
-    ac.textTag()
-        : text(msg, 0.022)
-        : at(p, msg_height)
-        : speed(0.025, 90)
-        : life(1.5, 0.8)
-        : show(function (player)
-            return player == i_player
-        end)
+    function mt:onAdd()
+        local item = self
+        --作用目标是玩家英雄
+        local unit = item:getOwner()
+        local i_player = unit:getOwner()
+        local hero = i_player:getHero()
+        local p = hero:getPoint()
+
+        local lv = item.lv
+        local msg_height = 60
+        hero:level(hero:level() + lv, true)
+        local msg = '|cff00ddeeLevel Up'..math.floor(lv)..'|n'
+        ac.textTag()
+            : text(msg, 0.022)
+            : at(p, msg_height)
+            : speed(0.025, 90)
+            : life(1.5, 0.8)
+            : show(function (player)
+                return player == i_player
+            end)
+    end
 end
 
 local mt = ac.item['作弊金钱']
@@ -94,7 +98,7 @@ end
 
 local tbl = {'副本奖励1','副本奖励2','副本奖励3'}
 
-for _, tbl_name in pairs(tbl) do
+for _, tbl_name in ipairs(tbl) do
 	local mt = ac.item[tbl_name]
 
     function mt:onAdd()
