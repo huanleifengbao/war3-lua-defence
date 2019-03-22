@@ -244,6 +244,7 @@ ac.wait(0, function()
             local player = ac.player(i)
             local id = player:id()
             player:message(sg.player_colour[id]..player:name()..'|r难度选择为:'..game_mod_str, 10)
+            player:message('|cffffcc00双击|r一名英雄来扮演Ta')
         end
         game_mod_str = '|cffffcc00当前难度: |r'..game_mod_str
     end)
