@@ -43,7 +43,7 @@ function mt:onCastShot()
 	local skill = self
 	function mover:onRemove()
 		hero:speed(1)
-		for _,eff in pairs(skill.eff) do
+		for _,eff in ipairs(skill.eff) do
 			eff()
 		end
 	end
@@ -93,7 +93,7 @@ function mt:onCastStop()
 	if self.load then
 		self.load:remove()
 	end
-	for _,eff in pairs(self.eff) do
+	for _,eff in ipairs(self.eff) do
 		eff()
 	end
 end
@@ -134,7 +134,7 @@ function mt:onCastChannel()
 	    height = 250,
 	    model = [[Abilities\Spells\Human\Invisibility\InvisibilityTarget.mdl]],
 	    time = 1,
-	}	
+	}
 	self.target_point = self:getTarget():getPoint()
 	ac.effect {
 	    target = self.target_point,

@@ -71,7 +71,7 @@ function mt:onCastShot()
 end
 
 function mt:onCastStop()
-	for _,eff in pairs(self.eff) do
+	for _,eff in ipairs(self.eff) do
 		if eff then
 			eff:remove()
 		end
@@ -369,7 +369,7 @@ end
 
 function mt:onCastStop()
 	self.is_stop = true
-	for _,eff in pairs(self.eff) do
+	for _,eff in ipairs(self.eff) do
 		if eff then
 			eff:remove()
 		end

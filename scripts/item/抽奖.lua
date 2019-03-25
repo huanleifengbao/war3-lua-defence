@@ -1,7 +1,7 @@
 --创建权重表
 local prize = {}
 local has_skill = {}
-for name,skill in pairs(ac.skill) do
+for name,skill in ipairs(ac.skill) do
 	if skill.lottery then
 		has_skill[name] = {}
 		for i = 1,math.ceil(skill.lottery[1] * 10) do
@@ -16,10 +16,10 @@ local function get_skill(hero,name)
 	if sg.isintable(index,hero) then
 		return false,'你已经拥有' .. name .. '了，无法再次拥有'
 	else
-		local icon_int = ac.table.skill[name].icon_int		
+		local icon_int = ac.table.skill[name].icon_int
 		if not icon_int then
 			icon_int = 12
-			error(name,'这个战魂没填格子位置')
+			print(name,'这个战魂没填格子位置')
 		end
 		local tbl = hero:userData('战魂技能')
 		local skill = hero:addSkill(name,'技能', icon_int)
@@ -39,7 +39,7 @@ function sg.get_sow(hero,name)
 		else
 			hero:getPoint():createItem(name)
 		end
-	end	
+	end
 end
 
 --抽奖
@@ -55,7 +55,7 @@ local function draw(hero)
 end
 
 local tbl = {'抽奖','十连抽奖'}
-for _,name in pairs(tbl) do
+for _,name in ipairs(tbl) do
 	local mt = ac.item[name]
 
 	function mt:onCanAdd(hero)

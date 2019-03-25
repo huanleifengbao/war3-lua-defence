@@ -1,6 +1,6 @@
 local tbl = {'通用被动','常胜将军','合众统合','旷世奇才','乱世枭雄','三国无双'}
 
-for _,skill_name in pairs(tbl) do
+for _,skill_name in ipairs(tbl) do
 	local mt = ac.skill[skill_name]
 
 	function mt:onAdd()
@@ -11,7 +11,7 @@ for _,skill_name in pairs(tbl) do
 			['抗性'] = self.mdf,
 			['闪避'] = self.avo,
 	    }
-		for name,count in pairs(self.attr) do
+		for name,count in ipairs(self.attr) do
 			hero:add(name,count)
 		end
 	    local count = 0
@@ -81,7 +81,7 @@ for _,skill_name in pairs(tbl) do
 
 	function mt:onRemove()
 		local hero = self:getOwner()
-		for name,count in pairs(self.attr) do
+		for name,count in ipairs(self.attr) do
 			hero:add(name,-count)
 		end
 	    self.trg:remove()

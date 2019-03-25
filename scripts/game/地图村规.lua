@@ -46,13 +46,13 @@ ac.game:event('单位-创建', function (_, unit)
 	local player = unit:getOwner()
 	if player == sg.creeps_player or player == sg.enemy_player then
 		local num = dif_tbl[sg.difficult]
-		for _,name in pairs(atr) do
+		for _,name in ipairs(atr) do
 			add_atr(unit,name,unit:get(name))
 		end
 		ac.wait(0,function()			
 			unit:set('生命上限',unit:get('生命上限') * num)
 			unit:set('攻击',unit:get('攻击') * num)
-			for _,name in pairs(atr) do
+			for _,name in ipairs(atr) do
 				unit:set(name,unit:get(name) * num)
 			end
 		end)

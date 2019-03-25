@@ -35,7 +35,7 @@ base:event('单位-死亡', function (trg, unit)
 end)
 
 local tbl = {'交换金币','交换木材'}
-for _,name in pairs(tbl) do
+for _,name in ipairs(tbl) do
 	local mt = ac.item[name]
 
 	function mt:onCanAdd(hero)

@@ -3,7 +3,7 @@ for i = 1,7 do
 	table.insert(tbl,i .. '级威望')
 end
 
-for _,skill_name in pairs(tbl) do
+for _,skill_name in ipairs(tbl) do
 	local mt = ac.skill[skill_name]
 
 	function mt:onAdd()

@@ -346,7 +346,7 @@ function mt:onCastShot()
 											    time = 1,
 											}
 											u:remove()
-											--本体回来挨打										
+											--本体回来挨打
 											ac.wait(skill.birthtime,function()
 												hero:blink(npc_point)
 												local color = 0
@@ -399,7 +399,7 @@ function mt:onCastStop()
 			self.npc[i]:remove()
 		end
 	end
-	for _,timer in pairs(self.timer) do
+	for _,timer in ipairs(self.timer) do
 		if timer then
 			timer:remove()
 		end

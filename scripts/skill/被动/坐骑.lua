@@ -1,6 +1,6 @@
 local tbl = {'飞雷','的卢','赤兔'}
 
-for _,skill_name in pairs(tbl) do
+for _,skill_name in ipairs(tbl) do
 	local mt = ac.skill[skill_name]
 
 	function mt:onAdd()
