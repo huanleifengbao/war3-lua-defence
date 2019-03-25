@@ -1,4 +1,5 @@
-local mt = ac.skill['天神下凡']
+local skill_name = '天神下凡'
+local mt = ac.skill[skill_name]
 
 function mt:onEnable()
 	self.open = true
@@ -57,7 +58,7 @@ function mt:onEnable()
 end
 
 function mt:onDisable()
-	local msg = '|cffffcc00  未解锁|n|n'
+	local msg = '|cffffcc00 未解锁|n|n'
 	self:setOption('description', msg..ac.table.skill[skill_name].description)
 	if self.open then
 		self.open = false

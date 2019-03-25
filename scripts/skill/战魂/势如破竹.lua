@@ -1,4 +1,5 @@
-local mt = ac.skill['势如破竹']
+local skill_name = '势如破竹'
+local mt = ac.skill[skill_name]
 
 function mt:onEnable()
 	self.open = true
@@ -18,7 +19,7 @@ function mt:onEnable()
 end
 
 function mt:onDisable()
-	local msg = '|cffffcc00  未解锁|n|n'
+	local msg = '|cffffcc00 未解锁|n|n'
 	self:setOption('description', msg..ac.table.skill[skill_name].description)
 	if self.open then
 		self.open = false
