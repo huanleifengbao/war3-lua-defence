@@ -20,8 +20,8 @@ sg.player_colour = {
 }
 jass = require 'jass.common'
 require 'game'
-require 'skill'
 require 'war3_system'
+require 'skill'
 require 'item'
 require 'buff'
 require 'shop'

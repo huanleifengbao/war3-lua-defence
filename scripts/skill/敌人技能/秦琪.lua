@@ -22,6 +22,7 @@ end
 function mt:onCastShot()
 	local hero = self:getOwner()
 	local point = hero:getPoint()
+	local target = self:getTarget()
 	local count = self.count
 	local skill = self
 	for i = 1,count do
@@ -61,13 +62,25 @@ function mt:onCastShot()
 		local pulse = 0.15
 		local index = 1
 		local add = 0
-		local timer = ac.loop(0.05,function()
-			add = add + index * self.angle/(pulse/0.05)
+
+		local sx_mark = false
+		if i % 2 == 0 then
+			ac.wait(1.2, function()
+				a = point / target + math.random(-30, 30)
+				sx_mark = true
+				mover:setOption('distance',mover.distance + mover.mover:getPoint() * target)
+			end)
+		end
+		local timer = ac.loop(0.04,function()
+			add = add + index * self.angle/(pulse/0.04)
 			if math.abs(add) >= self.angle then
 				index = -index
 			end
 			mover:setOption('angle',a + add)
 			mover:setAngle(a + add)
+			if sx_mark == true then
+				a = a + math.random(-5, 5)
+			end
 		end)
 		function mover:onRemove()
 			timer:remove()

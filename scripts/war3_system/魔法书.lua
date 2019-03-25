@@ -32,7 +32,6 @@ function mt:onCastShot()
         box_skill = hero:addSkill('战魂魔法书-关闭', '技能', 4)
         local tbl = hero:userData('战魂技能')
         for _, skill in ipairs(tbl) do
-            print(skill,'show')
             skill:show()
         end
         hero:iconLevel('技能', 50)
@@ -44,7 +43,6 @@ local function closebox(hero)
     if box_skill then
         local tbl = hero:userData('战魂技能')
         for _, skill in ipairs(tbl) do
-            print(skill,'hide')
             skill:hide()
         end
         hero:iconLevel('技能', 0)

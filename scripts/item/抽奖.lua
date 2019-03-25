@@ -13,7 +13,6 @@ end
 --获取战魂
 local function get_skill(hero,name)
 	local skill = hero:findSkill(name)
-	print(skill,skill:isEnable())
 	if skill then
 		if skill:isEnable() then
 			return false,'你已经拥有' .. name .. '了，无法再次拥有'
