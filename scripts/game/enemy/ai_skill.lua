@@ -1,11 +1,14 @@
 local ai_groups  = {}
+local unit_groups = {}
 local actions = {}
 local pulse = 1
 
 local timer = ac.loop(pulse,function()
-	for u,_ in pairs(ai_groups) do
+	for i = #unit_groups,1,-1 do
+		local u = unit_groups[i]
 		if not u:isAlive() then
-			ai_groups[u] = nil
+			ai_groups[u].trg:remove()
+			table.remove(unit_groups,i)
 		else
 			for _,action in ipairs(actions) do
 				if action(u) ~= true then
@@ -24,6 +27,7 @@ function sg.add_ai_skill(u)
 			table.insert(ai_groups[u],skill)
 		end
 	end
+	table.insert(unit_groups,u)
 end
 
 local function add_action(f)

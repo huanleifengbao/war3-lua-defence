@@ -1,12 +1,14 @@
 local ai_groups  = {}
+local unit_groups = {}
 local actions = {}
 local pulse = 0.5
 
 local timer = ac.loop(pulse,function()
-	for u,_ in pairs(ai_groups) do
+	for i = #unit_groups,1,-1 do
+		local u = unit_groups[i]
 		if not u:isAlive() then
 			ai_groups[u].trg:remove()
-			ai_groups[u] = nil
+			table.remove(unit_groups,i)
 		else
 			for _,action in ipairs(actions) do
 				if action(u) ~= true then
@@ -15,6 +17,18 @@ local timer = ac.loop(pulse,function()
 			end
 		end
 	end
+	--for u,_ in pairs(ai_groups) do
+	--	if not u:isAlive() then
+	--		ai_groups[u].trg:remove()
+	--		ai_groups[u] = nil
+	--	else
+	--		for _,action in ipairs(actions) do
+	--			if action(u) ~= true then
+	--				break
+	--			end
+	--		end
+	--	end
+	--end
 end)
 
 --命令单位攻击移动到指定点
@@ -77,6 +91,7 @@ function sg.add_ai(u)
 	end)
 	ai_groups[u].trg = trg
 	ai_groups[u].timer = timer
+	table.insert(unit_groups,u)
 	attack_move(u)
 end
 

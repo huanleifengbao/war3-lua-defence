@@ -18,7 +18,7 @@ local function get_skill(hero,name)
 		if skill:isEnable() then
 			return false,'你已经拥有' .. name .. '了，无法再次拥有'
 		else
-			skill:enable
+			skill:enable()
 		end
 	else
 		print(name,'有个战魂初始没加到魔法书里')
