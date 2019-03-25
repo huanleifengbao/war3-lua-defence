@@ -1,4 +1,4 @@
-local base = sg.ally_player:createUnit('基地',ac.point(7040,-9344),315)
+local base = sg.ally_player:createUnit('基地',ac.point(7040,-9344),270)
 sg.base = base
 base:event('单位-死亡', function (trg, unit)
     trg:remove()
