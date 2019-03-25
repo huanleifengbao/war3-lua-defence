@@ -22,7 +22,7 @@ local shop_list = {
 	['野外挑战'] = {p = ac.point(9144, -10529),n = [[shop\yewaitiaozhan.mdx]]},
 }
 
-for name,data in ipairs(shop_list) do
+for name,data in pairs(shop_list) do
 	local p = data.p
 	local n = data.n
 	shop_list[name] = ac.player(16):createShop(name,p,270)

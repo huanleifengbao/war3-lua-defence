@@ -1,7 +1,7 @@
 --创建权重表
 local prize = {}
 local has_skill = {}
-for name,skill in ipairs(ac.skill) do
+for name,skill in pairs(ac.skill) do
 	if skill.lottery then
 		has_skill[name] = {}
 		for i = 1,math.ceil(skill.lottery[1] * 10) do
@@ -12,7 +12,19 @@ end
 
 --获取战魂
 local function get_skill(hero,name)
-	local index = has_skill[name]
+	local skill = hero:findSkill(name)
+	print(skill,skill:isEnable())
+	if skill then
+		if skill:isEnable() then
+			return false,'你已经拥有' .. name .. '了，无法再次拥有'
+		else
+			skill:enable
+		end
+	else
+		print(name,'有个战魂初始没加到魔法书里')
+	end
+
+	--[[local index = has_skill[name]
 	if sg.isintable(index,hero) then
 		return false,'你已经拥有' .. name .. '了，无法再次拥有'
 	else
@@ -27,7 +39,7 @@ local function get_skill(hero,name)
 		tbl[skill] = skill
 		table.insert(index,hero)
 		return true
-	end
+	end]]
 end
 
 --抽中战魂

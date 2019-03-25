@@ -54,15 +54,16 @@ for i = 1,sg.max_player do
                     local start_p = ac.point(7044, -8792)
                     hero:blink(start_p)
                     hero:bagSize(6)
+                    hero:addSkill('@命令', '技能', 12)
                     hero:addSkill('通用被动', '技能', 2)
                     hero:addSkill('传送', '技能', 4)
                     local skill = hero:addSkill('1级威望', '技能', 5)
                     hero:userData('威望技能', skill)
                     local skill = hero:addSkill('0阶觉醒', '技能', 6)
                     hero:userData('觉醒技能', skill)
-                    hero:addSkill('战魂魔法书', '技能', 7)
                     hero:userData('战魂技能', {})
                     hero:userData('坐骑技能', {})
+                    hero:addSkill('战魂魔法书', '技能', 7)
                     local item_name = Aghanim[name]
                     if item_name then
                         local item = hero:createItem(item_name..'-1')
