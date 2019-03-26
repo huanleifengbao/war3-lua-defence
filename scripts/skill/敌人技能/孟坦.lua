@@ -84,6 +84,10 @@ function mt:onCastShot()
                     damage_type = skill.damage_type,
                     skill = skill,
                 }
+                u:addBuff '眩晕'
+                {
+                    time = skill.stun,
+                }
             end
         end
         function mover:onRemove()
@@ -144,8 +148,8 @@ function mt:onCastShot()
         angle = angle,
         distance = 10000,
         speed = 80,
-        startHeight = 850,
-        finishHeight = 850,
+        startHeight = 500,
+        finishHeight = 500,
     }
     local int = 10
     local timer1
@@ -201,7 +205,7 @@ function mt:onCastShot()
             }
             u:addBuff '眩晕'
             {
-                time = 0.5,
+                time = skill.stun,
             }
 		end
         if int == 0 then
@@ -210,4 +214,99 @@ function mt:onCastShot()
             timer2:remove()
         end
     end)
+end
+
+local mt = ac.skill['孟坦-雷神之怒']
+
+function mt:onCastStart()
+	local hero = self:getOwner()
+	sg.animation(hero,'spell throw',true)
+	local time = self.castStartTime
+	local point = hero:getPoint()
+	self.load = sg.load_bar({target = point,time = time})
+	ac.effect {
+	    target = point,
+	    size = 4,
+	    model = [[Abilities\Spells\Orc\Purge\PurgeBuffTarget.mdl]],
+	    time = 5,
+    }
+    self.timer = ac.loop(0.3, function()
+        local p1 = hero:getPoint()
+        local p2 = p1 - {math.random(360), math.random(1000)}
+        local lnt = ac.lightning {
+            source = hero,
+            target = p2,
+            model = 'CHIM',
+            targetHeight = 2000,
+        }
+        ac.wait(1, function()
+            lnt:remove()
+        end)
+        ac.effect {
+            target = p1,
+            size = 4,
+            model = [[Abilities\Spells\Orc\Purge\PurgeBuffTarget.mdl]],
+            time = 0.5,
+        }
+    end)
+	hero:setFacing(point/self:getTarget(),0.1)
+end
+
+function mt:onCastChannel()
+	local hero = self:getOwner()
+	--sg.animationI(hero,7)
+end
+
+function mt:onCastShot()
+	local hero = self:getOwner()
+	local point = hero:getPoint()
+    local area = self.area
+    local skill = self
+    local damage = skill.damage * hero:get('攻击')
+
+    for _, u in ac.selector()
+        : inRange(point, area)
+        : isEnemy(hero)
+        : ofNot '建筑'
+        : ipairs()
+    do
+        local p = u:getPoint()
+        local lnt = ac.lightning {
+            source = p,
+            target = p,
+            model = 'CHIM',
+            sourceHeight = 2000,
+            targetHeight = 0,
+        }
+        ac.wait(1, function()
+            lnt:remove()
+        end)
+        ac.effect {
+            target = p,
+            model = [[Abilities\Weapons\FarseerMissile\FarseerMissile.mdl]],
+            size = 3,
+            height = 50,
+            time = 0,
+        }
+        hero:damage
+        {
+            target = u,
+            damage = damage,
+            damage_type = skill.damage_type,
+            skill = skill,
+        }
+        u:addBuff '眩晕'
+        {
+            time = skill.stun,
+        }
+    end
+end
+
+function mt:onCastStop()
+	if self.load then
+		self.load:remove()
+    end
+    if self.timer then
+        self.timer:remove()
+    end
 end
