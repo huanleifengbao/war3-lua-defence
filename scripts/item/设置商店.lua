@@ -10,6 +10,30 @@ shop:setItem('你知道吗-1', 8, 'F')
 shop:setItem('副本-虎牢关大战', 1, 'Z')
 shop:setItem('副本-大战黄巾贼', 2, 'X')
 shop:setItem('副本-过五关斩六将', 3, 'C')
+shop:setItem('作弊副本', 4, 'V')
+
+--这3个副本需要开局禁用
+local tbl = {'副本-虎牢关大战','副本-大战黄巾贼','副本-过五关斩六将'}
+
+for _,skill_name in ipairs(tbl) do
+	local skill = shop:getItem(skill_name)
+    skill:disable()
+    if skill.disable_time then
+        ac.game:event('地图-选择难度', function ()
+            ac.wait(skill.disable_time, function()
+                if not skill:isEnable() then
+                    skill:enable()
+                end
+            end)
+        end)
+    end
+
+    function skill:onEnable()
+        for i = 1,sg.max_player do
+            ac.player(i):message('|cffffff00'..skill_name..'|r已可挑战', 10)
+        end
+	end
+end
 
 local shop_list = {
 	['商城道具'] = {p = ac.point(4944, -10529),n = [[shop\shangchengdaoju.mdx]]},

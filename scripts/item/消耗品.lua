@@ -214,6 +214,25 @@ function mt:onAdd()
     player:message('哇噢商城的|cffffdd00氪金|r道具都是我的啦!', 5)
 end
 
+local mt = ac.item['作弊副本']
+
+function mt:onAdd()
+    local item = self
+    local unit = item:getOwner()
+    local player = unit:getOwner()
+
+    local shop = sg.base:createShop()
+    local tbl = {'副本-虎牢关大战','副本-大战黄巾贼','副本-过五关斩六将'}
+
+    for _,skill_name in ipairs(tbl) do
+        local skill = shop:getItem(skill_name)
+        if not skill:isEnable() then
+            skill:enable()
+        end
+    end
+    player:message('8说了,副本|cffffdd00解锁了|r,葱鸭', 5)
+end
+
 local mt = ac.skill['治疗药水-小']
 
 function mt:onCastShot()

@@ -37,7 +37,7 @@ ac.game:event('单位-死亡', function (_, dead, killer)
         end
         if exp > 0 then
             killer:addExp(exp, true)
-            local msg = '|cff757575+'..math.floor(exp)..'exp|n'
+            --[[local msg = '|cff757575+'..math.floor(exp)..'exp|n'
             ac.textTag()
                 : text(msg, 0.022)
                 : at(dead:getPoint(), msg_height)
@@ -45,7 +45,7 @@ ac.game:event('单位-死亡', function (_, dead, killer)
                 : life(1.5, 0.8)
                 : show(function (player)
                     return player == player_killer
-                end)
+                end)]]
         end
     end
 end)

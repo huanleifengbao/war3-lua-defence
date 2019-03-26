@@ -230,9 +230,9 @@ function mt:onCastStart()
 	    model = [[Abilities\Spells\Orc\Purge\PurgeBuffTarget.mdl]],
 	    time = 5,
     }
-    self.timer = ac.loop(0.3, function()
+    self.timer = ac.loop(0.2, function()
         local p1 = hero:getPoint()
-        local p2 = p1 - {math.random(360), math.random(1000)}
+        local p2 = p1 - {math.random(360), math.random(1500)}
         local lnt = ac.lightning {
             source = hero,
             target = p2,
@@ -264,42 +264,85 @@ function mt:onCastShot()
     local skill = self
     local damage = skill.damage * hero:get('攻击')
 
-    for _, u in ac.selector()
-        : inRange(point, area)
-        : isEnemy(hero)
-        : ofNot '建筑'
-        : ipairs()
-    do
-        local p = u:getPoint()
-        local lnt = ac.lightning {
-            source = p,
-            target = p,
-            model = 'CHIM',
-            sourceHeight = 2000,
-            targetHeight = 0,
-        }
-        ac.wait(1, function()
-            lnt:remove()
-        end)
+    --放烟花
+    local size = 4
+    ac.timer(0.15, 6, function()
         ac.effect {
-            target = p,
-            model = [[Abilities\Weapons\FarseerMissile\FarseerMissile.mdl]],
-            size = 3,
+            target = point,
+            model = [[Abilities\Spells\Human\Thunderclap\ThunderClapCaster.mdl]],
+            size = size,
+            speed = 2,
             height = 50,
             time = 0,
         }
-        hero:damage
-        {
-            target = u,
-            damage = damage,
-            damage_type = skill.damage_type,
-            skill = skill,
+        ac.effect {
+            target = point,
+            model = [[Abilities\Weapons\FarseerMissile\FarseerMissile.mdl]],
+            size = size,
+            speed = 2,
+            height = 50,
+            time = 0,
         }
-        u:addBuff '眩晕'
-        {
-            time = skill.stun,
+        size = size * 1.2 + 1
+    end)
+    for i = 1, 12 do
+        local p2 = point - {360 / 12 * i, 500}
+        ac.effect {
+            target = p2,
+            model = [[Abilities\Spells\Other\Monsoon\MonsoonBoltTarget.mdl]],
+            size = 2.5,
+            time = 0,
         }
     end
+    for i = 1, 18 do
+        local p2 = point - {360 / 18 * i, 800}
+        ac.effect {
+            target = p2,
+            model = [[Abilities\Spells\Other\Monsoon\MonsoonBoltTarget.mdl]],
+            size = 2.5,
+            time = 0,
+        }
+    end
+
+    --伤害判定
+    ac.wait(0.3, function()
+        for _, u in ac.selector()
+            : inRange(point, area)
+            : isEnemy(hero)
+            : ofNot '建筑'
+            : ipairs()
+        do
+            local p = u:getPoint()
+            local lnt = ac.lightning {
+                source = p,
+                target = p,
+                model = 'CHIM',
+                sourceHeight = 2000,
+                targetHeight = 0,
+            }
+            ac.wait(1, function()
+                lnt:remove()
+            end)
+            ac.effect {
+                target = p,
+                model = [[Abilities\Weapons\ChimaeraLightningMissile\ChimaeraLightningMissile.mdl]],
+                size = 3,
+                height = 50,
+                time = 0,
+            }
+            hero:damage
+            {
+                target = u,
+                damage = damage,
+                damage_type = skill.damage_type,
+                skill = skill,
+            }
+            u:addBuff '眩晕'
+            {
+                time = skill.stun,
+            }
+        end
+    end)
 end
 
 function mt:onCastStop()

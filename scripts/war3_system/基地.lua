@@ -1,4 +1,8 @@
 local base = sg.ally_player:createUnit('基地',ac.point(7040,-9344),270)
+--基地每秒回血
+ac.loop(0.5, function()
+	base:add('生命',base:get('生命上限') * 0.0025)
+end)
 sg.base = base
 base:event('单位-死亡', function (trg, unit)
     trg:remove()
