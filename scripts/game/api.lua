@@ -54,17 +54,19 @@ end
 --播放单位动画
 function sg.animation(unit,name,loop)
 	local handle = unit._handle
-	if type(name) == 'number' then
-		jass.SetUnitAnimationByIndex(handle,name)
-	else
-		jass.SetUnitAnimation(handle,name)
-	end
-	if loop ~= true then
-		if not loop then
-			loop = 'stand'
+	ac.wait(0,function()
+		if type(name) == 'number' then
+			jass.SetUnitAnimationByIndex(handle,name)
+		else
+			jass.SetUnitAnimation(handle,name)
 		end
-		jass.QueueUnitAnimation(handle,loop)
-	end
+		if loop ~= true then
+			if not loop then
+				loop = 'stand'
+			end
+			jass.QueueUnitAnimation(handle,loop)
+		end
+	end)
 end
 
 --播放单位动画(序号)

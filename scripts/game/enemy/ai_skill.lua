@@ -46,7 +46,13 @@ end
 --寻找周围敌人放技能
 local function check_skill(u)
 	for _,skill in pairs(ai_groups[u]) do
-		if skill:getCd() == 0 then
+		local casthp = skill.casthp
+		if not casthp then
+			casthp = 1
+		else
+			casthp = casthp/100
+		end
+		if skill:getCd() == 0 and u:get '生命上限'/u:get '生命' <= casthp then
 			local target
 			for _,t in ac.selector()
 			    : inRange(u:getPoint(),skill.range)
