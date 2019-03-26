@@ -274,7 +274,7 @@ ac.game:event('单位-创建', function (_, unit)
 	--传送
 	unit.tp = function(self,target,boolean)
 		local player = unit:getOwner()
-		if boolean == true or (unit:isAlive() and not unit:hasRestriction '硬直' and sg.game_mod ~= '副本') then
+		if boolean == true or (unit:isAlive() and not unit:hasRestriction '晕眩' and sg.game_mod ~= '副本') then
 			ac.effect {
 			    target = unit:getPoint(),
 			    model = [[Abilities\Spells\Human\MassTeleport\MassTeleportCaster.mdl]],

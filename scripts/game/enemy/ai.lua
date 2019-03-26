@@ -101,7 +101,7 @@ end
 
 --被控制时，暂时不执行逻辑，并在控制结束后继续移动
 local function check_stun(u)
-	if u:hasRestriction '硬直' then
+	if u:hasRestriction '晕眩' or u:hasRestriction '硬直' then
 		ai_groups[u].stun = true
 		return false
 	else

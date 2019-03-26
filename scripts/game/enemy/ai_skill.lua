@@ -36,7 +36,7 @@ end
 
 --被控制时，暂时不执行逻辑
 local function check_stun(u)
-	if u:hasRestriction '硬直' then
+	if u:hasRestriction '晕眩' or u:hasRestriction '硬直' then
 		return false
 	else
 		return true

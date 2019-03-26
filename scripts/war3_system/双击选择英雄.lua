@@ -55,7 +55,6 @@ for i = 1,sg.max_player do
                     hero:blink(start_p)
                     hero:bagSize(6)
                     hero:addSkill('@命令', '技能', 12)
-                    hero:addSkill('通用被动', '技能', 2)
                     hero:addSkill('传送', '技能', 4)
                     local skill = hero:addSkill('1级威望', '技能', 5)
                     hero:userData('威望技能', skill)

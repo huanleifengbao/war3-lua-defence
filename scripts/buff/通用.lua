@@ -8,7 +8,7 @@ mt.description = '该单位被击晕了，所以不能移动，攻击和施放�
 function mt:onAdd()
 	local u = self:getOwner()
 	self.eff = u:particle([[Abilities\Spells\Human\Thunderclap\ThunderclapTarget.mdl]],'overhead')
-	u:addRestriction '硬直'
+	u:addRestriction '晕眩'
 	u:stop()
 end
 
@@ -19,7 +19,7 @@ end
 function mt:onRemove()
 	local u = self:getOwner()
 	self.eff()
-	u:removeRestriction '硬直'
+	u:removeRestriction '晕眩'
 end
 
 local mt = ac.buff['冰冻']
@@ -32,7 +32,7 @@ mt.description = '该单位被冰冻了，所以不能移动，攻击和施放�
 function mt:onAdd()
 	local u = self:getOwner()
 	self.eff = u:particle([[Abilities\Spells\Undead\FreezingBreath\FreezingBreathTargetArt.mdl]],'origin')
-	u:addRestriction '硬直'
+	u:addRestriction '晕眩'
 	u:stop()
 end
 
@@ -43,7 +43,7 @@ end
 function mt:onRemove()
 	local u = self:getOwner()
 	self.eff()
-	u:removeRestriction '硬直'
+	u:removeRestriction '晕眩'
 end
 
 local mt = ac.buff['无敌']
@@ -99,7 +99,7 @@ mt.description = '该被石化了，无法行动，生命恢复速度降低，�
 
 function mt:onAdd()
 	local u = self:getOwner()
-	u:addRestriction '硬直'
+	u:addRestriction '晕眩'
 	u:speed(0)
 	u:add('减伤',25)
 	self.rec = u:get('生命恢复')
@@ -113,7 +113,7 @@ end
 
 function mt:onRemove()
 	local u = self:getOwner()
-	u:removeRestriction '硬直'
+	u:removeRestriction '晕眩'
 	u:speed(1)
 	u:add('减伤',-25)
 	u:add('生命恢复',self.rec)
@@ -126,7 +126,7 @@ mt.show = 0
 
 function mt:onAdd()
 	local u = self:getOwner()
-	u:addRestriction '硬直'
+	u:addRestriction '晕眩'
 	u:addRestriction '无敌'
 	u:addRestriction '幽灵'
     u:speed(0)
@@ -139,7 +139,7 @@ end
 
 function mt:onRemove()
 	local u = self:getOwner()
-	u:removeRestriction '硬直'
+	u:removeRestriction '晕眩'
     u:removeRestriction '无敌'
 	u:removeRestriction '幽灵'
     u:speed(1)
@@ -155,7 +155,7 @@ mt.description = '你死了,祈祷队友获胜吧...'
 
 function mt:onAdd()
 	local u = self:getOwner()
-	u:addRestriction '硬直'
+	u:addRestriction '晕眩'
 	u:addRestriction '无敌'
 	u:addRestriction '幽灵'
 	u:animation('death')
@@ -169,7 +169,7 @@ end
 
 function mt:onRemove()
 	local u = self:getOwner()
-	u:removeRestriction '硬直'
+	u:removeRestriction '晕眩'
 	u:removeRestriction '无敌'
 	u:removeRestriction '幽灵'
 	if u:isAlive() then
@@ -265,10 +265,10 @@ mt.stun = 1
 function mt:torpor()
 	local u = self:getOwner()
 	u:particle([[Abilities\Spells\Orc\Purge\PurgeBuffTarget.mdl]],'origin',1.2)
-	u:addRestriction '硬直'
+	u:addRestriction '晕眩'
 	u:stop()
 	ac.wait(self.stun,function()
-		u:removeRestriction '硬直'
+		u:removeRestriction '晕眩'
 	end)
 end
 
@@ -311,7 +311,7 @@ mt.coverType = 1
 
 function mt:onAdd()
 	local u = self:getOwner()
-	u:addRestriction '硬直'
+	u:addRestriction '晕眩'
 	u:moverLine
 	{
 		mover = u,
@@ -324,5 +324,5 @@ end
 
 function mt:onRemove()
 	local u = self:getOwner()
-	u:removeRestriction '硬直'
+	u:removeRestriction '晕眩'
 end

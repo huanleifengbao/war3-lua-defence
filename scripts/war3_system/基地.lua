@@ -117,6 +117,10 @@ function mt:onAdd()
 	local id = i_player:id()
 	local hero = i_player:getHero()
 
+    hero:add('力量', self.attribute['力量'])
+    hero:add('敏捷', self.attribute['敏捷'])
+    hero:add('智力', self.attribute['智力'])
+
 	level = level + 1
 	base:add('生命上限',self.hp)
 	base:add('护甲',self.amr)
