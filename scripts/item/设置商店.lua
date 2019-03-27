@@ -237,4 +237,9 @@ for i = 1, #point do
     shop:setItem('挑战觉醒boss-10', 2, 'X')
     shop:setItem('继续-觉醒boss', 3, 'C')
     shop:setItem('放弃-觉醒boss', 4, 'V')
+    local tbl = {'继续-觉醒boss','放弃-觉醒boss'}
+    for _,skill_name in ipairs(tbl) do
+        local skill = shop:getItem(skill_name)
+        skill:disable()
+    end
 end

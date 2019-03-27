@@ -207,7 +207,7 @@ local awake_point = {
 awake_point_ex = {90, 600}
 
 --召唤boss
-local function awake(unit, id, data)
+local function awake(unit, id, data, item)
     local p = awake_point[id]
     awake_boss[id] = sg.creeps_player:createUnit(data.name, p - awake_point_ex, 270)
     --冻结boss,可以按继续再打
@@ -234,7 +234,9 @@ local function awake(unit, id, data)
         rect:remove()
         if killer ~= awake_boss[id] then
             if data.awake + 1 > unit:get('觉醒等级') then
+                unit:particle([[Abilities\Spells\Items\AIam\AIamTarget.mdl]], 'origin', 0)
                 unit:set('觉醒等级', data.awake + 1)
+                item:disable()
                 ac.game:eventNotify('地图-觉醒等级变化', unit)
             end
         end
@@ -247,7 +249,7 @@ local tbl = {'挑战觉醒boss-1','挑战觉醒boss-2','挑战觉醒boss-3','挑
 for _, tbl_name in ipairs(tbl) do
 	local mt = ac.item[tbl_name]
 
-    function mt:onCanAdd(unit)
+    function mt:onCanBuy(unit, shop)
         local player = unit:getOwner()
         local id = player:id()
         local name = self:getName()
@@ -283,7 +285,14 @@ for _, tbl_name in ipairs(tbl) do
         end
         if not awake_boss[id] then
             local hero = player:getHero()
-            awake(hero, id, awake_data[name])
+            local item = shop:getItem(tbl_name)
+            awake(hero, id, awake_data[name], item)
+            --启用继续和放弃按钮
+            local tbl = {'继续-觉醒boss','放弃-觉醒boss'}
+            for _,skill_name in ipairs(tbl) do
+                local skill = shop:getItem(skill_name)
+                skill:enable()
+            end
             player:message('|cffffff00挑战:|cffff7500'..awake_data[name].name..'|r', 10)
         else
             return false,'|cffffff00当前已有挑战目标,你必须|cff00ff00胜利|cffffff00或者|cffff0000放弃|r'
@@ -293,8 +302,7 @@ end
 
 local mt = ac.item['继续-觉醒boss']
 
-function mt:onAdd()
-    local unit = self:getOwner()
+function mt:onCanBuy(unit, shop)
     local player = unit:getOwner()
     local id = player:id()
     local boss = awake_boss[id]
@@ -304,6 +312,12 @@ function mt:onAdd()
             buff:remove()
             boss:userData('暂停挑战', nil)
             player:message('|cffffff00继续挑战!|r')
+            --禁用按钮
+            local tbl = {'继续-觉醒boss','放弃-觉醒boss'}
+            for _,skill_name in ipairs(tbl) do
+                local skill = shop:getItem(skill_name)
+                skill:disable()
+            end
         else
             return false,'|cffffff00boss并不处于暂停状态|r'
         end
@@ -314,8 +328,7 @@ end
 
 local mt = ac.item['放弃-觉醒boss']
 
-function mt:onAdd()
-    local unit = self:getOwner()
+function mt:onCanBuy(unit, shop)
     local player = unit:getOwner()
     local id = player:id()
     local boss = awake_boss[id]
@@ -330,6 +343,12 @@ function mt:onAdd()
         boss:kill(boss)
         boss:remove()
         player:message('|cffff0000已放弃|r')
+        --禁用按钮
+        local tbl = {'继续-觉醒boss','放弃-觉醒boss'}
+        for _,skill_name in ipairs(tbl) do
+            local skill = shop:getItem(skill_name)
+            skill:disable()
+        end
     else
         return false,'|cffffff00当前没有挑战任何boss|r'
     end
