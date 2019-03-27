@@ -49,10 +49,9 @@ for i = 1,sg.max_player do
                 local name = unit:getName()
                 for _ = 1, 1 do
                     sg.player_count = sg.player_count + 1
-                    local hero = player:createUnit(name, ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])
-                    player:addHero(hero)
                     local start_p = ac.point(7044, -8792)
-                    hero:blink(start_p)
+                    local hero = player:createUnit(name, start_p, hero_tbl[i][4])
+                    player:addHero(hero)
                     hero:bagSize(6)
                     hero:addSkill('@命令', '技能', 12)
                     hero:addSkill('传送', '技能', 4)

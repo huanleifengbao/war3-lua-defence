@@ -59,7 +59,7 @@ local data = {
 	id = function(n)
 		return sg.get_enemy_id(n)
 	end,
-	start_time = 120,	--前置等待时间
+	start_time = 10,	--前置等待时间
 	time_out = 80,	--每波间隔时间
 	count = 15,	--每条路怪物数量
 	boss = 10,	--每多少波出一次boss
@@ -160,10 +160,15 @@ local ex_data = {
 
 local function init_unit(u)
 	sg.add_ai(u)
-	sg.all_enemy[u] = u
+	table.insert(sg.all_enemy,u)
 	u:set('生命',u:get'生命上限')
 	u:event('单位-死亡', function(_, _, _)
-		sg.all_enemy[u] = nil
+		for i = 1,#sg.all_enemy do
+			if sg.all_enemy[i] == u then
+				table.remove(sg.all_enemy,i)
+				break
+			end
+		end
 	end)
 end
 
@@ -271,3 +276,7 @@ ac.game:event('玩家-聊天', function (_, _, str)
 		ac.game:eventNotify('地图-选择波数', tonumber(gsu[1]))
 	end
 end)
+
+function sg.get_wave()
+	return wave
+end

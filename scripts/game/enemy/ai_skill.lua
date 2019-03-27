@@ -7,7 +7,6 @@ local timer = ac.loop(pulse,function()
 	for i = #unit_groups,1,-1 do
 		local u = unit_groups[i]
 		if not u:isAlive() then
-			ai_groups[u].trg:remove()
 			table.remove(unit_groups,i)
 		else
 			for _,action in ipairs(actions) do
@@ -52,7 +51,7 @@ local function check_skill(u)
 		else
 			casthp = casthp/100
 		end
-		if skill:getCd() == 0 and u:get '生命上限'/u:get '生命' <= casthp then
+		if skill:getCd() == 0 and u:get '生命'/u:get '生命上限' <= casthp then
 			local target
 			for _,t in ac.selector()
 			    : inRange(u:getPoint(),skill.range)
