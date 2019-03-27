@@ -103,6 +103,10 @@ function mt:onCastStop()
 	end
 end
 
+function mt:onCastBreak()
+    self:onCastStop()
+end
+
 local mt = ac.skill['孟坦-雷云']
 
 function mt:onCastStart()
@@ -214,6 +218,16 @@ function mt:onCastShot()
             timer2:remove()
         end
     end)
+end
+
+function mt:onCastStop()
+	if self.load then
+		self.load:remove()
+	end
+end
+
+function mt:onCastBreak()
+    self:onCastStop()
 end
 
 local mt = ac.skill['孟坦-雷神之怒']
@@ -352,4 +366,8 @@ function mt:onCastStop()
     if self.timer then
         self.timer:remove()
     end
+end
+
+function mt:onCastBreak()
+    self:onCastStop()
 end

@@ -6,10 +6,12 @@ require 'war3_system.计分板'
 require 'war3_system.基地'
 require 'war3_system.可刷新野外boss'
 require 'war3_system.掉落道具'
+require 'war3_system.掉落经验'
 require 'war3_system.快捷按钮'
 require 'war3_system.信使'
 require 'war3_system.技能共享冷却'
 require 'war3_system.魔法书'
+require 'war3_system.自动金钱转木'
 
 sg.max_player = 6
 for i = 1, sg.max_player do
