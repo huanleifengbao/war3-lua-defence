@@ -173,6 +173,20 @@ ac.wait(0, function()
         board[id+1][7]:text(math.floor(unit:get('战魂数量')))
     end)
 
+    --坐骑数量变化
+    ac.game:event('地图-获得坐骑', function (_, unit)
+        local player = unit:getOwner()
+        local id = player:id()
+        unit:add('坐骑数量', 1)
+        board[id+1][8]:text(math.floor(unit:get('坐骑数量')))
+    end)
+    ac.game:event('地图-失去坐骑', function (_, unit)
+        local player = unit:getOwner()
+        local id = player:id()
+        unit:add('坐骑数量', -1)
+        board[id+1][8]:text(math.floor(unit:get('坐骑数量')))
+    end)
+
     --等级
     --[[ac.game:event('地图-选择英雄', function (_, unit, player)
         unit:event('单位-升级', function (trg, unit)
