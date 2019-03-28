@@ -241,6 +241,7 @@ local mt = ac.skill['孟坦-雷神之怒']
 
 function mt:onCastStart()
 	local hero = self:getOwner()
+	local point = hero:getPoint()
 	sg.animation(hero,'spell slam')
 	hero:setFacing(point/self:getTarget(),0.1)
 end
