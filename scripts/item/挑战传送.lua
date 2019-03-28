@@ -65,13 +65,13 @@ for i = 1, sg.max_player do
 end
 
 local exercise_monster = {
-    ['刷钱1'] = {name = '金币怪1', count = 20, cd = 1, gold = 500, lumber = 0, exp = 3000},
-    ['刷钱2'] = {name = '金币怪2', count = 20, cd = 1, gold = 10000, lumber = 0, exp = 3000},
-    ['刷木1'] = {name = '木材怪1', count = 20, cd = 1, gold = 0, lumber = 50, exp = 3000},
-    ['刷木2'] = {name = '木材怪2', count = 20, cd = 1, gold = 0, lumber = 150, exp = 3000},
-    ['刷木3'] = {name = '木材怪3', count = 20, cd = 1, gold = 0, lumber = 500, exp = 3000},
-    ['刷经验1'] = {name = '经验宝宝1', count = 20, cd = 1, gold = 100, lumber = 0, exp = 3000},
-    ['作弊刷怪'] = {name = '经验宝宝1', count = 100, cd = 0.1, gold = 0, lumber = 0, exp = 3000},
+    ['刷钱1'] = {name = '金币怪1', count = 20, cd = 1, gold = 500, lumber = 0},
+    ['刷钱2'] = {name = '金币怪2', count = 20, cd = 1, gold = 10000, lumber = 0},
+    ['刷木1'] = {name = '木材怪1', count = 20, cd = 1, gold = 0, lumber = 50},
+    ['刷木2'] = {name = '木材怪2', count = 20, cd = 1, gold = 0, lumber = 150},
+    ['刷木3'] = {name = '木材怪3', count = 20, cd = 1, gold = 0, lumber = 500},
+    ['刷经验1'] = {name = '经验宝宝1', count = 20, cd = 1, gold = 100, lumber = 0},
+    ['作弊刷怪'] = {name = '经验宝宝1', count = 100, cd = 0.1, gold = 0, lumber = 0},
 }
 
 local exercise_point = {
@@ -89,7 +89,6 @@ local function exercise(unit, id, data)
         local u = sg.creeps_player:createUnit(data.name, p, 270)
         u:set('死亡金钱', data.gold)
         u:set('死亡木材', data.lumber)
-        u:set('死亡经验', data.exp)
         table.insert(exercise_mark[id], u)
         exercise_count[id] = exercise_count[id] + 1
         u:event('单位-死亡', function (trg, _)

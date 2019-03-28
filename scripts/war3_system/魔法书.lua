@@ -65,3 +65,65 @@ for i = 1,sg.max_player do
         end
     end)
 end
+
+local mt = ac.skill['坐骑魔法书']
+
+local box = {
+    {name = '飞雷', icon_int = 9},
+    {name = '的卢', icon_int = 10},
+    {name = '赤兔', icon_int = 11},
+}
+
+function mt:onAdd()
+    local hero = self:getOwner()
+    for i = 1, #box do
+        local name = box[i].name
+        local icon_int = box[i].icon_int
+		local tbl = hero:userData('坐骑技能')
+		local skill = hero:addSkill(name,'技能', icon_int)
+		skill:hide()
+		skill:disable()
+		table.insert(tbl, skill)
+    end
+end
+
+function mt:onCastShot()
+    local hero = self:getOwner()
+    local box_skill = hero:findSkill('坐骑魔法书-关闭')
+    if not box_skill then
+        box_skill = hero:addSkill('坐骑魔法书-关闭', '技能', 4)
+        local tbl = hero:userData('坐骑技能')
+        for _, skill in ipairs(tbl) do
+            skill:show()
+        end
+        hero:iconLevel('技能', 50)
+    end
+end
+
+local function closebox(hero)
+    local box_skill = hero:findSkill('坐骑魔法书-关闭')
+    if box_skill then
+        local tbl = hero:userData('坐骑技能')
+        for _, skill in ipairs(tbl) do
+            skill:hide()
+        end
+        hero:iconLevel('技能', 0)
+        box_skill:remove()
+    end
+end
+
+local mt = ac.skill['坐骑魔法书-关闭']
+
+function mt:onCastShot()
+    local hero = self:getOwner()
+    closebox(hero)
+end
+
+for i = 1,sg.max_player do
+    local player = ac.player(i)
+    player:event('玩家-取消选中', function (_, _, hero)
+        if hero == player:getHero() then
+            closebox(hero)
+        end
+    end)
+end

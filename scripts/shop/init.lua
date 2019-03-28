@@ -82,7 +82,7 @@ for name,_ in pairs(item) do
 					if skill then
 						skill:remove()
 					end
-					now_equip[itemtype] = hero:addSkill(name,'技能',3)
+					now_equip[itemtype] = hero:addSkill(name,'隐藏',3)
 				else
 					return false,'|cffffff00您已经装备|cffffaa00'.. name ..'|r'
 				end
