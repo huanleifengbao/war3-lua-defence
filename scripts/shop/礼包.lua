@@ -1,44 +1,16 @@
-local has = {}
-
-local name = '新手礼包'
-has[name] = {}
-local mt = ac.item[name]
-
-function mt:onCanAdd(u)
-	local player = u:getOwner()
-	local hero = player:getHero()
-	local index = player:get_shop_info(name)
-	if index < 0 or has[name][player] == true then
-		return false,'|cffffff00您已经领取过|cffffaa00'.. name ..',|cffffff00无法再次领取|r'
-	elseif index > 0 then
-		has[name][player] = true
-		player:set_shop_info(name,-1)
-		player:message('|cffffff00成功领取|cffffaa00'..name..'|r', 5)
+--逻辑都写这
+local list = {
+	['新手礼包'] = function(item,player)
+		local hero = player:getHero()
 		--木头
-		player:add('木材', self.lumber)
+		player:add('木材', item.lumber)
 		--战魂
-		sg.get_sow(hero,self.sow)
+		sg.get_sow(hero,item.sow)
 		--抽奖券
-		player:add_shop_info('抽奖券',self.draw)
-	else
-		return false,'|cffffff00您未购买|cffffaa00'..name..'|r'
-	end
-end
-
-local name = '锻造礼包'
-has[name] = {}
-local mt = ac.item[name]
-
-function mt:onCanAdd(u)
-	local player = u:getOwner()
-	local hero = player:getHero()
-	local index = player:get_shop_info(name)
-	if index < 0 or has[name][player] == true then
-		return false,'|cffffff00您已经领取过|cffffaa00'.. name ..',|cffffff00无法再次领取|r'
-	elseif index > 0 then
-		has[name][player] = true
-		player:set_shop_info(name,-1)
-		player:message('|cffffff00成功领取|cffffaa00'..name..'|r', 5)
+		player:add_shop_info('抽奖券',item.draw)
+	end,
+	['锻造礼包'] = function(item,player)
+		local hero = player:getHero()
 		--成功率
 		hero:addBuff '锻造成功率上升'
 		{
@@ -47,9 +19,35 @@ function mt:onCanAdd(u)
 		}
 		--强化券
 		local item = hero:create_item('锻造保护券')
-		item:stack(self.ticket)
-	else
-		return false,'|cffffff00您未购买|cffffaa00'..name..'|r'
+		print(item.ticket)
+		item:stack(item.ticket)
+	end,
+	['天神下凡'] = function(item,player)
+		local hero = player:getHero()
+		--战魂
+		sg.get_sow(hero,item.sow)
+	end,
+}
+
+local has = {}
+for name,_ in pairs(list) do
+	has[name] = {}
+	local mt = ac.item[name]
+
+	function mt:onCanAdd(u)
+		local player = u:getOwner()
+		local hero = player:getHero()
+		local index = player:get_shop_info(name)
+		if index < 0 or has[name][player] == true then
+			return false,'|cffffff00您已经领取过|cffffaa00'.. name ..',|cffffff00无法再次领取|r'
+		elseif index > 0 then
+			has[name][player] = true
+			player:set_shop_info(name,-1)
+			player:message('|cffffff00成功领取|cffffaa00'..name..'|r', 5)
+			list[name](self,player)
+		else
+			return false,'|cffffff00您未购买|cffffaa00'..name..'|r'
+		end
 	end
 end
 

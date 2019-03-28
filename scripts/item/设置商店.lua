@@ -176,7 +176,8 @@ shop:setItem('荣光不败之翼', 10, 'W')
 shop:setItem('原初的符文', 11, 'E')
 shop:setItem('土豪玩家', 12, 'R')
 shop:setItem('锻造礼包', 5, 'A')
-shop:setItem('时为朦胧的雪花之翼', 6, 'S')
+shop:setItem('天神下凡', 6, 'S')
+shop:setItem('时为朦胧的雪花之翼', 3, 'C')
 shop:setItem('商城作弊怪', 4, 'V')
 
 --练功
