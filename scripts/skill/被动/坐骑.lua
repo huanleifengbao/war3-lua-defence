@@ -3,7 +3,9 @@ local tbl = {'飞雷','的卢','赤兔'}
 for _,skill_name in ipairs(tbl) do
 	local mt = ac.skill[skill_name]
 
-	function mt:onAdd()
+	function mt:onEnable()
+		self.open = true
+		self:setOption('description', ac.table.skill[skill_name].description)
 	    local hero = self:getOwner()
 	    hero:add('战力',self.dam)
 		hero:add('抗性',self.mdf)
@@ -15,7 +17,14 @@ for _,skill_name in ipairs(tbl) do
 		ac.game:eventNotify('地图-获得坐骑', hero:getOwner())
 	end
 
-	function mt:onRemove()
+	function mt:onDisable()
+		local msg = '|cffffcc00 未解锁|n|n|r'
+		self:setOption('description', msg..ac.table.skill[skill_name].description)
+		if self.open then
+			self.open = false
+		else
+			return
+		end
 		local hero = self:getOwner()
 		hero:add('战力',-self.dam)
 		hero:add('抗性',-self.mdf)
