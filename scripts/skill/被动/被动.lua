@@ -11,7 +11,7 @@ for _,skill_name in ipairs(tbl) do
 			['抗性'] = self.mdf,
 			['闪避'] = self.avo,
 	    }
-		for name,count in ipairs(self.attr) do
+		for name,count in pairs(self.attr) do
 			hero:add(name,count)
 		end
 	    local count = 0
