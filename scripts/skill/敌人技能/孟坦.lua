@@ -3,7 +3,6 @@ local mt = ac.skill['孟坦-折线雷矢']
 
 function mt:onCastStart()
 	local hero = self:getOwner()
-	sg.animation(hero,'spell throw',true)
 	local time = self.castStartTime
 	local point = hero:getPoint()
 	self.load = sg.load_bar({target = point,time = time})
@@ -23,6 +22,7 @@ end
 
 function mt:onCastShot()
 	local hero = self:getOwner()
+	sg.animation(hero,'spell throw')
 	local point = hero:getPoint()
 	local target = self:getTarget()
 	local angle = point / target
@@ -111,7 +111,6 @@ local mt = ac.skill['孟坦-雷云']
 
 function mt:onCastStart()
 	local hero = self:getOwner()
-	sg.animation(hero,'spell throw',true)
 	local time = self.castStartTime
 	local point = hero:getPoint()
 	local target = self:getTarget()
@@ -122,17 +121,18 @@ function mt:onCastStart()
 	    model = [[Abilities\Spells\Orc\Purge\PurgeBuffTarget.mdl]],
 	    time = 2,
 	}
-    ac.effect {
-	    target = target,
-        model = [[Abilities\Spells\Human\CloudOfFog\CloudOfFog.mdl]],
-        height = 700,
-        time = 0.5,
-	}
+ --   ac.effect {
+	--    target = target,
+ --       model = [[Abilities\Spells\Human\CloudOfFog\CloudOfFog.mdl]],
+ --       height = 700,
+ --       time = 0.5,
+	--}
 	hero:setFacing(point/self:getTarget(),0.1)
 end
 
 function mt:onCastChannel()
 	local hero = self:getOwner()
+	sg.animation(hero,'spell')
 	--sg.animationI(hero,7)
 end
 
@@ -148,12 +148,15 @@ function mt:onCastShot()
     local mover = hero:moverLine
     {
         start = target,
-        model = [[Abilities\Spells\Other\Drain\ManaDrainTarget.mdl]],
+        --model = [[Abilities\Spells\Other\Drain\ManaDrainTarget.mdl]],
+        model = [[effect\Cumulonimbus.mdx]],
         angle = angle,
         distance = 10000,
         speed = 80,
-        startHeight = 500,
-        finishHeight = 500,
+        --startHeight = 500,
+        --finishHeight = 500,
+        startHeight = 30,
+        finishHeight = 30,
     }
     local int = 10
     local timer1
@@ -165,12 +168,12 @@ function mt:onCastShot()
     timer1 = ac.loop(2.5, function()
         int = int - 1
         local p = mover.mover:getPoint()
-        ac.effect {
-            target = p,
-            model = [[Abilities\Spells\Human\CloudOfFog\CloudOfFog.mdl]],
-            height = 700,
-            time = 0.5,
-        }
+        --ac.effect {
+        --    target = p,
+        --    model = [[Abilities\Spells\Human\CloudOfFog\CloudOfFog.mdl]],
+        --    height = 700,
+        --    time = 0.5,
+        --}
         ac.effect {
             target = p,
             model = [[Abilities\Weapons\FarseerMissile\FarseerMissile.mdl]],
@@ -178,22 +181,26 @@ function mt:onCastShot()
             height = 50,
             time = 0,
         }
-        ac.effect {
-            target = p,
-            model = [[Abilities\Spells\Other\Monsoon\MonsoonBoltTarget.mdl]],
-            size = 1.8,
-            time = 0,
-        }
-        local lnt = ac.lightning {
-            source = p,
-            target = p,
-            model = 'CHIM',
-            sourceHeight = 2000,
-            targetHeight = 0,
-        }
-        ac.wait(1, function()
-            lnt:remove()
-        end)
+        for _ = 1,2 do
+	        ac.effect {
+	            target = p,
+	            model = [[Abilities\Spells\Other\Monsoon\MonsoonBoltTarget.mdl]],
+	            size = 1.8,
+	            zScale = 0.5,
+	            angle = math.random(360),
+	            time = 0,
+	        }
+        end
+        --local lnt = ac.lightning {
+        --    source = p,
+        --    target = p,
+        --    model = 'CHIM',
+        --    sourceHeight = 400,
+        --    targetHeight = 0,
+        --}
+        --ac.wait(1, function()
+        --    lnt:remove()
+        --end)
 		for _, u in ac.selector()
 		    : inRange(p,area)
 		    : isEnemy(hero)
@@ -234,8 +241,14 @@ local mt = ac.skill['孟坦-雷神之怒']
 
 function mt:onCastStart()
 	local hero = self:getOwner()
-	sg.animation(hero,'spell throw',true)
-	local time = self.castStartTime
+	sg.animation(hero,'spell slam')
+	hero:setFacing(point/self:getTarget(),0.1)
+end
+
+function mt:onCastChannel()
+	local hero = self:getOwner()
+	hero:speed(0)
+	local time = self.castChannelTime
 	local point = hero:getPoint()
 	self.load = sg.load_bar({target = point,time = time})
 	ac.effect {
@@ -263,12 +276,6 @@ function mt:onCastStart()
             time = 0.5,
         }
     end)
-	hero:setFacing(point/self:getTarget(),0.1)
-end
-
-function mt:onCastChannel()
-	local hero = self:getOwner()
-	--sg.animationI(hero,7)
 end
 
 function mt:onCastShot()
@@ -277,7 +284,8 @@ function mt:onCastShot()
     local area = self.area
     local skill = self
     local damage = skill.damage * hero:get('攻击')
-
+	hero:speed(1)
+	sg.animation(hero,'spell throw')
     --放烟花
     local size = 4
     ac.timer(0.15, 6, function()
@@ -360,6 +368,8 @@ function mt:onCastShot()
 end
 
 function mt:onCastStop()
+	local hero = self:getOwner()
+	hero:speed(1)
 	if self.load then
 		self.load:remove()
     end

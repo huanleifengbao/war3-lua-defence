@@ -26,7 +26,7 @@ local instance_data = {
         {name = '副本-卞喜', point = ac.point(-7777, 11350), facing = 270},
     },
     {
-        {name = '副本-王植', point = ac.point(-3000, 5100), facing = 270},
+        {name = '副本-王植', point = ac.point(-3050, 4650), facing = 270},
     },
     {
         {name = '副本-秦琪', point = ac.point(-1950, 1125), facing = 270},

@@ -407,7 +407,7 @@ function mt:onCastChannel()
 	local hero = self:getOwner()
 	hero:addBuff '无敌'
 	{
-		time = 0,
+		time = 11,
 	}
 	hero:addRestriction '硬直'
 	sg.animation(hero,'death')
