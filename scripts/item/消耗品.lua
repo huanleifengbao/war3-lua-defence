@@ -198,6 +198,18 @@ function mt:onAdd()
     end
 end
 
+local mt = ac.item['作弊WTF']
+
+function mt:onAdd()
+    local item = self
+    --作用目标是玩家英雄
+    local unit = item:getOwner()
+    local i_player = unit:getOwner()
+    local hero = i_player:getHero()
+
+    hero:set('冷却缩减', 100)
+end
+
 local mt = ac.item['商城作弊怪']
 
 function mt:onAdd()

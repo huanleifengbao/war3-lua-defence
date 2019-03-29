@@ -25,6 +25,24 @@ function mt:onCastShot()
 	local target = self:getTarget()
 	local count = self.count
 	local skill = self
+
+	--天黑
+	for a = -8, 8 do
+		local p2 = point - {point / target + 15 * a + math.random(36), math.random(300, 1000)}
+		local h = 1
+		ac.timer(0.06, 1, function()
+			ac.effect {
+				target = p2,
+				model = [[Doodads\LordaeronSummer\Props\SmokeSmudge\SmokeSmudge2.mdl]],
+				size = 30,
+				speed = 0.5,
+				height = 15 * h,
+				time = math.random(25, 45) / 10,
+			}
+			h = h + 1
+		end)
+	end
+
 	for i = 1,count do
 		local a = 360/count * i
 		local mover = hero:moverLine
@@ -36,8 +54,8 @@ function mt:onCastShot()
 			distance = self.distance,
 			hitType = '敌方',
 			hitArea = self.area,
-			startHeight = 50,
-			finishHeight = 50,
+			startHeight = 80,
+			finishHeight = 80,
 		}
 		function mover:onHit(u)
 			if not u:isType '建筑' then
@@ -120,4 +138,112 @@ function mt:onRemove()
 	    skill = skill,
 	}
 	self.eff()
+end
+
+local mt = ac.skill['秦琪-影压']
+
+function mt:onCastStart()
+	local hero = self:getOwner()
+	local point = hero:getPoint()
+	sg.animation(hero,'spell slam')
+	hero:setFacing(point/self:getTarget(),0.1)
+end
+
+function mt:onCastChannel()
+	local hero = self:getOwner()
+	hero:speed(0)
+	local time = self.castChannelTime
+	local point = hero:getPoint()
+	self.load = sg.load_bar({target = point,time = time})
+	local target = self:getTarget()
+	local point = target:getPoint()
+	self.rd_target = point - {target:getFacing() + math.random(-30, 30), math.random(150, 300)}
+	ac.effect {
+	    target = self.rd_target,
+	    model = [[Abilities\Spells\Undead\DarkRitual\DarkRitualTarget.mdl]],
+		size = 2.2,
+		zScale = 0.3,
+		speed = 2,
+	    time = 0,
+    }
+end
+
+function mt:onCastShot()
+	local hero = self:getOwner()
+    local area = self.area
+    local skill = self
+    local damage = skill.damage * hero:get('攻击')
+	hero:speed(1)
+	sg.animation(hero,'spell throw')
+
+	local function cast(point)
+		--放烟花
+		local size = 4
+		ac.timer(0.05, 5, function()
+			ac.effect {
+				target = point,
+				model = [[Abilities\Spells\Undead\OrbOfDeath\OrbOfDeathMissile.mdl]],
+				size = size,
+				time = 0,
+			}
+		end)
+		for i = 1, 20 do
+			local p2 = point - {360 / 20 * i, area - 25}
+			ac.effect {
+				target = p2,
+				model = [[Abilities\Spells\Undead\OrbOfDeath\AnnihilationMissile.mdl]],
+				size = 0.6,
+				time = 0,
+			}
+		end
+
+		for _, u in ac.selector()
+			: inRange(point, area)
+			: isEnemy(hero)
+			: ofNot '建筑'
+			: ipairs()
+		do
+			hero:damage
+			{
+				target = u,
+				damage = damage,
+				damage_type = skill.damage_type,
+				skill = skill,
+			}
+		end
+	end
+
+	cast(self.rd_target)
+	local rd_angle = math.random(360)
+	ac.wait(0.5, function()
+		for i = 1, 3 do
+			local p2 = self.rd_target - {rd_angle + 360 / 3 * i, 450}
+			ac.effect {
+				target = p2,
+				model = [[Abilities\Spells\Undead\DarkRitual\DarkRitualTarget.mdl]],
+				size = 2.2,
+				zScale = 0.3,
+				speed = 2,
+				time = 0,
+			}
+			ac.wait(1, function()
+				cast(p2)
+			end)
+		end
+	end)
+end
+
+function mt:onCastStop()
+	local hero = self:getOwner()
+	hero:speed(1)
+	if self.load then
+		self.load:remove()
+    end
+    if self.timer then
+        self.timer:remove()
+    end
+end
+
+function mt:onCastBreak()
+    self:onCastStop()
 end

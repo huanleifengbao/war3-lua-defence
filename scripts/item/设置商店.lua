@@ -69,6 +69,7 @@ shop:setItem('作弊属性', 7, 'D')
 shop:setItem('经验之书', 8, 'F')
 shop:setItem('作弊自杀', 1, 'Z')
 shop:setItem('作弊清怪', 2, 'X')
+shop:setItem('作弊WTF', 3, 'C')
 
 --新手装备
 local shop = shop_list['新手装备']
