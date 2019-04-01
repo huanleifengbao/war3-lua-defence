@@ -21,7 +21,9 @@ local item = {
 	['头号玩家'] = 92339,
 	['锻造礼包'] = 92252,
 	['天神下凡'] = 92323,
-	['时为朦胧的雪花之翼'] = 92325,
+	['时为朦胧的雪花之翼'] = 92325,	
+}
+local hero = {
 	['传奇三国-刘备'] = 92318,
 	['传奇三国-貂蝉'] = 92319,
 	['传奇三国-吕布'] = 92320,
@@ -65,14 +67,19 @@ for i = 1,sg.max_player do
 			player:add_shop_info(key,1)
 		end
 	end
+	for key,id in pairs(hero) do
+		if player:has_item(id) then
+			player:add_shop_info(key,1)
+		end
+	end
 	equip[player] = {}
 end
 
 --领取装备类物品逻辑
 for name,_ in pairs(item) do
-	local mt = ac.item[name]	
-	if mt and mt.itemtype then
-		local itemtype = mt.itemtype
+	local mt = ac.item[name]
+	local itemtype = mt.itemtype
+	if itemtype then
 		function mt:onCanAdd(u)
 			local player = u:getOwner()
 			local hero = player:getHero()
