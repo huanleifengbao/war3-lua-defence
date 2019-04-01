@@ -1,4 +1,4 @@
-local mt = ac.skill['土豪玩家']
+local mt = ac.skill['头号玩家']
 local has = {}
 function mt:onAdd()
 	local hero = self:getOwner()
