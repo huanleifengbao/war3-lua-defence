@@ -432,7 +432,7 @@ function mt:onCastFinish()
 	local hero = self:getOwner()
 	local point = self.target
 	ac.effect {
-        target = target,
+        target = point,
         model = [[Abilities\Spells\Human\MarkOfChaos\MarkOfChaosTarget.mdl]],
         size = 2,
         time = 0,
