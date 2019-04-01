@@ -1,4 +1,5 @@
 
+local mark = false
 ac.wait(0, function()
     sg.game_mod = '通常'
 	for i = 1,sg.max_player do
@@ -17,9 +18,28 @@ ac.wait(0, function()
                 {'3', 'E', '|cffff0000困难(E)|r'},
                 {'4', 'R', '|cffff00ff噩梦(R)|r'},
             }
+            local time = 20
+            player:message('请在|cffffcc00'..time..'|r内选择,超时将自动选择|cff00ff00简单|r难度', 10)
+            --超时没点默认简单
+            local timer = ac.wait(time, function()
+                if mark == true then
+                    return
+                end
+                mark = true
+                dialog:hide()
+                ac.game:eventNotify('地图-选择难度', 1)
+            end)
+            local msg = '选择难度'
+            player:timerDialog(msg, timer)
             function dialog:onClick(name)
-	            sg.difficult = tonumber(name)
-                ac.game:eventNotify('地图-选择难度', tonumber(name))
+                if mark == true then
+                    return
+                end
+                mark = true
+                timer:remove()
+                sg.difficult = tonumber(name)
+                --参数:对话框信息,选难度的玩家
+                ac.game:eventNotify('地图-选择难度', tonumber(name), player)
                 print('====难度选择完毕,游戏开始====')
             end
             break

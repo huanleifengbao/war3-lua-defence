@@ -102,7 +102,7 @@ ac.wait(0, function()
             board[i][6]:width(0.05)
             board[i][7]:width(0.02)
             board[i][8]:width(0.02)
-            board[i][9]:width(0.035)
+            board[i][9]:width(0.04)
             if i ~= 1 then
                 local player = ac.player(i-1)
                 if player and player:controller() == '用户' and player:gameState() == '在线' then
@@ -245,7 +245,8 @@ ac.wait(0, function()
 
     --显示游戏难度
     local game_mod_str = '难度选择中...'
-    ac.game:event('地图-选择难度', function (_, num)
+    ac.game:event('地图-选择难度', function (_, num, i_player)
+        local id = i_player:id()
         if num == 1 then
             game_mod_str = '|cff00ff00简单|r'
         elseif num == 2 then
@@ -257,8 +258,7 @@ ac.wait(0, function()
         end
         for i = 1,sg.max_player do
             local player = ac.player(i)
-            local id = player:id()
-            player:message(sg.player_colour[id]..player:name()..'|r难度选择为:'..game_mod_str, 10)
+            player:message(sg.player_colour[id]..i_player:name()..'|r难度选择为:'..game_mod_str, 10)
             player:message('|cffffcc00双击|r一名英雄来扮演Ta')
         end
         game_mod_str = '|cffffcc00当前难度: |r'..game_mod_str

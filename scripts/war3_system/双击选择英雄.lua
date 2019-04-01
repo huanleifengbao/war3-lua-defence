@@ -39,51 +39,53 @@ for i = 1, #hero_tbl do
     ac.player(16):createUnit(hero_tbl[i][1], ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])
 end
 
-for i = 1,sg.max_player do
-    ac.player(i):add('金币', 50000)
-    ac.player(i):event('玩家-选中单位', function (trg, player, unit)
-        if unit:getOwner():id() == 16 and not player:getHero() then
-            if pick_mark[i] == unit then
-                trg:remove()
-                --unit:setOwner(player, true)
-                local name = unit:getName()
-                for _ = 1, 1 do
-                    sg.player_count = sg.player_count + 1
-                    local start_p = ac.point(7044, -8792)
-                    local hero = player:createUnit(name, start_p, hero_tbl[i][4])
-                    player:addHero(hero)
-                    hero:bagSize(6)
-                    hero:addSkill('@命令', '技能', 12)
-                    hero:addSkill('传送', '技能', 4)
-                    local skill = hero:addSkill('1级威望', '技能', 5)
-                    hero:userData('威望技能', skill)
-                    local skill = hero:addSkill('0阶觉醒', '技能', 6)
-                    hero:userData('觉醒技能', skill)
-                    hero:userData('战魂技能', {})
-                    hero:userData('坐骑技能', {})
-                    hero:addSkill('战魂魔法书', '技能', 7)
-                    hero:addSkill('坐骑魔法书', '技能', 8)
-                    local item_name = Aghanim[name]
-                    if item_name then
-                        local item = hero:createItem(item_name..'-1')
-                        hero:userData('专属', item)
-                        hero:userData('专属名字', item:getName())
-                        hero:userData('专属等级', 1)
-                        hero:userData('专属挑战等级', 1)
+ac.game:event('地图-选择难度', function ()
+    for i = 1,sg.max_player do
+        ac.player(i):add('金币', 50000)
+        ac.player(i):event('玩家-选中单位', function (trg, player, unit)
+            if unit:getOwner():id() == 16 and not player:getHero() then
+                if pick_mark[i] == unit then
+                    trg:remove()
+                    --unit:setOwner(player, true)
+                    local name = unit:getName()
+                    for _ = 1, 1 do
+                        sg.player_count = sg.player_count + 1
+                        local start_p = ac.point(7044, -8792)
+                        local hero = player:createUnit(name, start_p, hero_tbl[i][4])
+                        player:addHero(hero)
+                        hero:bagSize(6)
+                        hero:addSkill('@命令', '技能', 12)
+                        hero:addSkill('传送', '技能', 4)
+                        local skill = hero:addSkill('1级威望', '技能', 5)
+                        hero:userData('威望技能', skill)
+                        local skill = hero:addSkill('0阶觉醒', '技能', 6)
+                        hero:userData('觉醒技能', skill)
+                        hero:userData('战魂技能', {})
+                        hero:userData('坐骑技能', {})
+                        hero:addSkill('战魂魔法书', '技能', 7)
+                        hero:addSkill('坐骑魔法书', '技能', 8)
+                        local item_name = Aghanim[name]
+                        if item_name then
+                            local item = hero:createItem(item_name..'-1')
+                            hero:userData('专属', item)
+                            hero:userData('专属名字', item:getName())
+                            hero:userData('专属等级', 1)
+                            hero:userData('专属挑战等级', 1)
+                        end
+                        player:moveCamera(start_p, 0.2)
+                        hero:userData('杀敌数', 0)
+                        ac.game:eventNotify('地图-选择英雄', hero, player)
                     end
-                    player:moveCamera(start_p, 0.2)
-                    hero:userData('杀敌数', 0)
-                    ac.game:eventNotify('地图-选择英雄', hero, player)
+                else
+                    pick_mark[i] = unit
+                    ac.wait(0.3, function()
+                        pick_mark[i] = false
+                    end)
                 end
-            else
-                pick_mark[i] = unit
-                ac.wait(0.3, function()
-                    pick_mark[i] = false
-                end)
             end
-        end
-    end)
-end
+        end)
+    end
+end)
 
 local point = ac.point(1300, -9100)
 local textTag_msg = '|cffff9900双击|cffffff00选择英雄|r'
