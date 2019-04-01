@@ -2,23 +2,28 @@ local pick_mark = {}
 
 --英雄,x,y,面向角度
 local hero_tbl = {
-    {'刘备', 773, -8622, 229},
     {'关羽', 1217, -8671, 44},
     {'张飞', 1682, -8615, 152},
     {'黄忠', 2140, -8665, 288},
     {'诸葛亮', 831, -8891, 109},
+    {'星彩', 1928, -8955, 50},
+    {'孙尚香', 1914, -8661, 230},
+    {'随机英雄', 1517, -8400, 270},
+}
+
+--高贵的传奇英雄(随机不到)
+local Legend_hero_tbl = {
+    {'刘备', 773, -8622, 229},
     {'吕布', 1131, -8928, 5},
+    {'貂蝉', 2180, -8944, 88},
     {'赵云', 1388, -8933, 91},
     {'司马懿', 1659, -8952, 213},
-    {'星彩', 1928, -8955, 50},
-    {'貂蝉', 2180, -8944, 88},
-    {'孙尚香', 1914, -8661, 230},
-    {'副本-孔秀', 1914, -8361, 230},
+    --[[{'副本-孔秀', 1914, -8361, 230},
     {'副本-韩福', 1914, -8061, 230},
     {'副本-孟坦', 1914, -7761, 230},
     {'副本-卞喜', 1914, -7461, 230},
     {'副本-王植', 1914, -7161, 230},
-    {'副本-秦琪', 1914, -6861, 230},
+    {'副本-秦琪', 1914, -6861, 230},]]
 }
 
 local Aghanim = {
@@ -35,8 +40,15 @@ local Aghanim = {
     ['孙尚香'] = '日月乾坤剑',
 }
 
+local hero_mark = {}
+local Legend_hero_mark = {}
 for i = 1, #hero_tbl do
-    ac.player(16):createUnit(hero_tbl[i][1], ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])
+    local unit = ac.player(16):createUnit(hero_tbl[i][1], ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])
+    table.insert(hero_mark, unit)
+end
+for i = 1, #Legend_hero_tbl do
+    local unit = ac.player(16):createUnit(Legend_hero_tbl[i][1], ac.point(Legend_hero_tbl[i][2], Legend_hero_tbl[i][3]), Legend_hero_tbl[i][4])
+    table.insert(Legend_hero_mark, unit)
 end
 
 sg.family = {}
@@ -47,6 +59,10 @@ ac.game:event('地图-选择难度', function ()
             if unit:getOwner():id() == 16 and not player:getHero() then
                 if pick_mark[i] == unit then
                     trg:remove()
+                    --特殊处理随机英雄
+                    if unit:getName() == '随机英雄' then
+                        unit = hero_mark[math.random(#hero_mark)]
+                    end
                     --unit:setOwner(player, true)
                     local name = unit:getName()
                     for _ = 1, 1 do
