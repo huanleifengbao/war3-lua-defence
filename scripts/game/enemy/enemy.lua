@@ -135,7 +135,12 @@ local boss_data = {
 }
 
 local ex_data = {
-	id = '波数1',
+	id = function(n)
+		if n > 40 then
+			n = n%40
+		end
+		return '波数' .. math.ceil(n)
+	end,
 	start_time = 30,
 	time_out = 15,
 	count = 15,
@@ -153,7 +158,7 @@ local ex_data = {
 			return 20 + n * 10
 		end,
 		['移动速度'] = function(n)
-			return 300
+			return 400
 		end,
 	},
 }
