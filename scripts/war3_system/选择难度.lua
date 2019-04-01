@@ -8,7 +8,7 @@ ac.wait(0, function()
             for i2 = 1,sg.max_player do
                 local msg_player = ac.player(i2)
                 local msg_id = msg_player:id()
-                msg_player:message(sg.player_colour[msg_id]..msg_player:name()..'|r正在选择难度', 10)
+                msg_player:message(sg.player_colour[i]..player:name()..'|r正在选择难度', 10)
             end
             local dialog = player:dialog{
                 '选择难度',
