@@ -425,6 +425,19 @@ function mt:onAdd()
             end
         end
     end
+    ac.game:event('地图-删除英雄', function (_, u)
+        for k, unit in ipairs(mark) do
+            if u == unit then
+                table.remove(mark, k)
+                break
+            end
+        end
+        textTag_msg = '|cffffcc00'..msg..'|n|cffffff00参与人数:'..#mark..'/'..sg.player_count..'|r'
+        textTag:text(textTag_msg, 0.04)
+        if #mark >= sg.player_count then
+            instance()
+        end
+    end)
 
     --进入副本的时限
     timer = ac.wait(time, function()

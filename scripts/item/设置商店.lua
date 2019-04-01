@@ -1,3 +1,4 @@
+-- console.enable --> 是否打开控制台,true就是能作弊,false就是不能作弊
 --基地
 local shop = sg.base:createShop()
 shop:setBuyRange(1000000)
@@ -10,7 +11,9 @@ shop:setItem('你知道吗-1', 8, 'F')
 shop:setItem('副本-虎牢关大战', 1, 'Z')
 shop:setItem('副本-大战黄巾贼', 2, 'X')
 shop:setItem('副本-过五关斩六将', 3, 'C')
-shop:setItem('作弊副本', 4, 'V')
+if console.enable == true then
+    shop:setItem('作弊副本', 4, 'V')
+end
 
 --这3个副本需要开局禁用
 local tbl = {'副本-虎牢关大战','副本-大战黄巾贼','副本-过五关斩六将'}
@@ -64,12 +67,14 @@ shop:setBuyRange(1000000)
 shop:setItem('治疗药水-小', 9, 'Q')
 shop:setItem('治疗药水-大', 10, 'W')
 shop:setItem('孙子兵法', 5, 'A')
-shop:setItem('作弊等级', 6, 'S')
-shop:setItem('作弊属性', 7, 'D')
-shop:setItem('经验之书', 8, 'F')
-shop:setItem('作弊自杀', 1, 'Z')
-shop:setItem('作弊清怪', 2, 'X')
-shop:setItem('作弊WTF', 3, 'C')
+if console.enable == true then
+    shop:setItem('作弊等级', 6, 'S')
+    shop:setItem('作弊属性', 7, 'D')
+    shop:setItem('经验之书', 8, 'F')
+    shop:setItem('作弊自杀', 1, 'Z')
+    shop:setItem('作弊清怪', 2, 'X')
+    shop:setItem('作弊WTF', 3, 'C')
+end
 
 --新手装备
 local shop = shop_list['新手装备']
@@ -82,10 +87,12 @@ shop:setItem('武器升级', 5, 'A')
 shop:setItem('衣服升级', 6, 'S')
 shop:setItem('鞋子升级', 7, 'D')
 shop:setItem('饰品升级', 8, 'F')
-shop:setItem('专属升级', 1, 'Z')
-shop:setItem('作弊武器', 2, 'X')
-shop:setItem('作弊防具', 3, 'C')
-shop:setItem('作弊金钱', 4, 'V')
+if console.enable == true then
+    shop:setItem('专属升级', 1, 'Z')
+    shop:setItem('作弊武器', 2, 'X')
+    shop:setItem('作弊防具', 3, 'C')
+    shop:setItem('作弊金钱', 4, 'V')
+end
 
 --进阶挑战
 local shop = shop_list['进阶挑战']
@@ -102,36 +109,38 @@ shop:setItem('挑战锻造石boss-9', 1, 'Z')
 shop:setItem('挑战锻造石boss-10', 2, 'X')
 shop:setItem('挑战锻造石boss-11', 3, 'C')
 
---作弊:出售锻造石
-local shop = ac.player(16):createShop('商店', ac.point(7444, -10829), 270)
-shop:setBuyRange(1000000)
-shop:setItem('一级锻造石', 9, 'Q')
-shop:setItem('二级锻造石', 10, 'W')
-shop:setItem('三级锻造石', 11, 'E')
-shop:setItem('四级锻造石', 12, 'R')
-shop:setItem('五级锻造石', 5, 'A')
-shop:setItem('六级锻造石', 6, 'S')
-shop:setItem('七级锻造石', 7, 'D')
-shop:setItem('八级锻造石', 8, 'F')
-shop:setItem('九级锻造石', 1, 'Z')
-shop:setItem('十级锻造石', 2, 'X')
-shop:setItem('终极锻造石', 3, 'C')
-shop:setItem('锻造保护券', 4, 'V')
+if console.enable == true then
+    --作弊:出售锻造石
+    local shop = ac.player(16):createShop('商店', ac.point(7444, -10829), 270)
+    shop:setBuyRange(1000000)
+    shop:setItem('一级锻造石', 9, 'Q')
+    shop:setItem('二级锻造石', 10, 'W')
+    shop:setItem('三级锻造石', 11, 'E')
+    shop:setItem('四级锻造石', 12, 'R')
+    shop:setItem('五级锻造石', 5, 'A')
+    shop:setItem('六级锻造石', 6, 'S')
+    shop:setItem('七级锻造石', 7, 'D')
+    shop:setItem('八级锻造石', 8, 'F')
+    shop:setItem('九级锻造石', 1, 'Z')
+    shop:setItem('十级锻造石', 2, 'X')
+    shop:setItem('终极锻造石', 3, 'C')
+    shop:setItem('锻造保护券', 4, 'V')
 
---作弊:方便测试随便写
-local shop = ac.player(16):createShop('商店', ac.point(7444, -11129), 270)
-shop:setBuyRange(1000000)
-shop:setItem('进阶武器-10', 9, 'Q')
-shop:setItem('进阶衣服-10', 10, 'W')
-shop:setItem('进阶鞋子-10', 11, 'E')
-shop:setItem('进阶饰品-10', 12, 'R')
-shop:setItem('终极神器', 5, 'A')
-shop:setItem('玄铁', 7, 'D')
-shop:setItem('百年玄铁', 8, 'F')
-shop:setItem('千年玄铁', 1, 'Z')
-shop:setItem('九幽玄铁', 2, 'X')
-shop:setItem('作弊锻造强运券', 3, 'C')
-shop:setItem('作弊锻造失败券', 4, 'V')
+    --作弊:方便测试随便写
+    local shop = ac.player(16):createShop('商店', ac.point(7444, -11129), 270)
+    shop:setBuyRange(1000000)
+    shop:setItem('进阶武器-10', 9, 'Q')
+    shop:setItem('进阶衣服-10', 10, 'W')
+    shop:setItem('进阶鞋子-10', 11, 'E')
+    shop:setItem('进阶饰品-10', 12, 'R')
+    shop:setItem('终极神器', 5, 'A')
+    shop:setItem('玄铁', 7, 'D')
+    shop:setItem('百年玄铁', 8, 'F')
+    shop:setItem('千年玄铁', 1, 'Z')
+    shop:setItem('九幽玄铁', 2, 'X')
+    shop:setItem('作弊锻造强运券', 3, 'C')
+    shop:setItem('作弊锻造失败券', 4, 'V')
+end
 
 --装备进阶
 local shop = shop_list['装备进阶']
@@ -179,7 +188,9 @@ shop:setItem('头号玩家', 12, 'R')
 shop:setItem('锻造礼包', 5, 'A')
 shop:setItem('天神下凡', 6, 'S')
 shop:setItem('时为朦胧的雪花之翼', 3, 'C')
-shop:setItem('商城作弊怪', 4, 'V')
+if console.enable == true then
+    shop:setItem('商城作弊怪', 4, 'V')
+end
 
 --练功
 local point = {
@@ -197,7 +208,9 @@ for i = 1, #point do
 	}
     shop:setBuyRange(1500)
     shop:setItem('刷经验1', 9, 'Q')
-    shop:setItem('作弊刷怪', 10, 'W')
+    if console.enable == true then
+        shop:setItem('作弊刷怪', 10, 'W')
+    end
     shop:setItem('刷钱1', 5, 'A')
     shop:setItem('刷钱2', 6, 'S')
     --shop:setItem('刷钱3', 7, 'D')

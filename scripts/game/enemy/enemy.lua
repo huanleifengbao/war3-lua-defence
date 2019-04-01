@@ -275,12 +275,14 @@ ac.game:event('地图-进入无尽模式', function (_, data)
 end)
 
 --作弊
-ac.game:event('玩家-聊天', function (_, _, str)
-	if string.find(str,'-波数 ',1,5) then
-		local gsu =  sg.split(str,'-波数 ')
-		ac.game:eventNotify('地图-选择波数', tonumber(gsu[1]))
-	end
-end)
+if console.enable == true then
+	ac.game:event('玩家-聊天', function (_, _, str)
+		if string.find(str,'-波数 ',1,5) then
+			local gsu =  sg.split(str,'-波数 ')
+			ac.game:eventNotify('地图-选择波数', tonumber(gsu[1]))
+		end
+	end)
+end
 
 function sg.get_wave()
 	return wave
