@@ -18,10 +18,15 @@ local item = {
 	['新手礼包'] = 92219,
 	['荣光不败之翼'] = 92248,
 	['原初的符文'] = 92324,
-	['土豪玩家'] = 92339,--头号玩家
+	['头号玩家'] = 92339,
 	['锻造礼包'] = 92252,
 	['天神下凡'] = 92323,
 	['时为朦胧的雪花之翼'] = 92325,
+	['传奇三国-刘备'] = 92318,
+	['传奇三国-貂蝉'] = 92319,
+	['传奇三国-吕布'] = 92320,
+	['传奇三国-赵云'] = 92321,
+	['传奇三国-司马懿'] = 92322,
 }
 local shop_info = {}
 local equip = {}
@@ -65,9 +70,9 @@ end
 
 --领取装备类物品逻辑
 for name,_ in pairs(item) do
-	local mt = ac.item[name]
-	local itemtype = mt.itemtype
-	if itemtype then
+	local mt = ac.item[name]	
+	if mt and mt.itemtype then
+		local itemtype = mt.itemtype
 		function mt:onCanAdd(u)
 			local player = u:getOwner()
 			local hero = player:getHero()
