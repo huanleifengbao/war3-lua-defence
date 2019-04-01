@@ -39,6 +39,7 @@ for i = 1, #hero_tbl do
     ac.player(16):createUnit(hero_tbl[i][1], ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])
 end
 
+sg.family = {}
 for i = 1,sg.max_player do
     ac.player(i):add('金币', 50000)
     ac.player(i):event('玩家-选中单位', function (trg, player, unit)
@@ -73,6 +74,7 @@ for i = 1,sg.max_player do
                     end
                     player:moveCamera(start_p, 0.2)
                     hero:userData('杀敌数', 0)
+                    sg.family[player] = {}
                     ac.game:eventNotify('地图-选择英雄', hero, player)
                 end
             else

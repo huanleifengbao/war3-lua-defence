@@ -2,6 +2,7 @@ ac.game:event('地图-选择英雄', function(_, hero, player)
     local u =  player:createUnit('信使', hero:getPoint(), 0)
 	u:addSkill('@命令', '技能', 12)
     u:bagSize(6)
+    table.insert(sg.family[player],u)
 end)
 
 local mt = ac.skill['物品传送']
