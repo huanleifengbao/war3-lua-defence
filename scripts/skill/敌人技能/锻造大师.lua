@@ -3,6 +3,9 @@ local mt = ac.skill['锻造大师-看破斩']
 function mt:onAdd()
 	local hero = self:getOwner()
 	sg.add_ai_skill(hero)
+	hero:event('单位-复活',function()
+		sg.add_ai_skill(hero)
+	end)
 end
 
 function mt:onCastStart()
