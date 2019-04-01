@@ -58,3 +58,9 @@ ac.game:event('单位-创建', function (_, unit)
 		end)
 	end
 end)
+
+ac.game:event('单位-发布命令',function(_, unit, ID, target)
+	if ID == '攻击' and target.type == 'unit' and not unit:isEnemy(target) then
+		unit:walk(target)
+	end
+end)
