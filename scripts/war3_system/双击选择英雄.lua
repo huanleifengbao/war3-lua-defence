@@ -83,7 +83,7 @@ ac.game:event('地图-选择难度', function ()
 	            if sg.isintable(Legend_hero_mark,unit) then
 		            local hero_name = '传奇三国' .. name
 		            if player:get_shop_info(hero_name) <= 0 then
-			            player:message('|cffffff00您未购买|cffff00ff'..hero_name..'|cffffff00:|cffffaa00'..hero_name..'|r', 5)
+			            player:message('|cffffff00您未购买|cffff00ff'..'英雄'..'|cffffff00:|cffffaa00'..hero_name..'|r', 5)
 			            return
 		            end
 	            end
