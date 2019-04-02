@@ -8,6 +8,9 @@ for i = 1,sg.max_player do
             player:message(sg.player_colour[i]..hero:getName()..'|cffff0000退出|r了游戏', 10)
             ac.game:eventNotify('地图-删除英雄', hero, player)
             hero:remove()
+            for _, unit in ipairs(sg.family[player]) do
+                unit:remove()
+            end
         end
     end)
 end
