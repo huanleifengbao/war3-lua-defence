@@ -42,6 +42,7 @@ function mt:shot(point,angle,pulse)
 			    target = u,
 			    damage = damage,
 			    damage_type = self.damage_type,
+			    attack = true,
 			    skill = self,
 			}
 			self.mark[u] = true

@@ -13,11 +13,3 @@ require 'war3_system.信使'
 require 'war3_system.技能共享冷却'
 require 'war3_system.魔法书'
 require 'war3_system.自动金钱转木'
-
-sg.max_player = 6
-for i = 1, sg.max_player do
-    ac.player(10):alliance(ac.player(i), '结盟', true)
-    ac.player(i):alliance(ac.player(10), '结盟', true)
-end
-sg.enemy_player:alliance(sg.creeps_player, '结盟', true)
-sg.creeps_player:alliance(sg.enemy_player, '结盟', true)

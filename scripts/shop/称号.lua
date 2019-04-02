@@ -4,7 +4,7 @@ function mt:onAdd()
 	local hero = self:getOwner()
 	local player = hero:getOwner()
 	--特效
-	self.eff = hero:particle([[effect\tuhaowanjia.mdx]],'overhead')
+	self.eff = hero:particle([[effect\bw_wanjiadebaba.mdx]],'overhead')
 	if not has[player] then
 		--木头
 		player:add('木材', self.lumber)

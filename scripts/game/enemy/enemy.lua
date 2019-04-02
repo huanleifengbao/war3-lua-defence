@@ -1,7 +1,4 @@
 local wave = 0	--当前波数
-sg.ally_player = ac.player(10)	--基地玩家
-sg.creeps_player = ac.player(11)	--野怪玩家
-sg.enemy_player = ac.player(12)	--刷怪玩家
 local player = sg.enemy_player
 local start_point = {	--出怪点，有几个点就出几路怪
 	ac.point(6050,3900),

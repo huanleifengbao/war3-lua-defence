@@ -7,8 +7,8 @@ function mt:onCastShot()
 		for _, u in ac.selector()
 		    : inRange(target,self.area)
 		    : isAlly(hero)
-		    : allowGod()
-		    : ofNot '中立'
+		    --: allowGod()
+		   	--: ofNot '中立'
 		    : filter(function (u)
 		        return hero ~= u
 		    end)

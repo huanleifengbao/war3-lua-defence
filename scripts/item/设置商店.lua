@@ -52,7 +52,7 @@ local shop_list = {
 for name,data in pairs(shop_list) do
 	local p = data.p
 	local n = data.n
-	shop_list[name] = ac.player(16):createShop(name,p,270)
+	shop_list[name] = sg.ally_player:createShop(name,p,270)
 	ac.effect {
 	    target = p,
 	    model = n,

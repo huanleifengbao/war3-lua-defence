@@ -25,5 +25,3 @@ require 'skill'
 require 'item'
 require 'buff'
 require 'shop'
-jass.FogEnable(false)
-jass.FogMaskEnable(false)
