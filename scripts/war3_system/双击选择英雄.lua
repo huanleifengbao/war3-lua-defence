@@ -1,5 +1,5 @@
 local pick_mark = {}
-
+local origin = ac.point(1460,-8770)
 --英雄,x,y,面向角度
 local hero_tbl = {
 	{'随机英雄', 1460, -8770, 270},
@@ -11,12 +11,21 @@ local hero_tbl = {
     {'孙尚香', 948, -8770, 270},	-- -512 +0
 }
 
+--场景特效
 ac.effect{
-	target = ac.point(1460,-8570),
+	target = origin,
 	model = [[effect\galaxy.mdx]],
 	size = 1,
-	height = 300,
 	speed = 2,
+	heitht = -500,
+}
+ac.effect{
+	target = origin,
+	model = [[effect\antimagiczone.mdx]],
+	xScale = 5,
+	yScale = 5,
+	zScale = 0.01,
+	heitht = -500,
 }
 
 --高贵的传奇英雄(随机不到)

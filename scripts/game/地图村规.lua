@@ -89,7 +89,7 @@ end
 local enemy = sg.enemy_player
 local creeps = sg.creeps_player
 --选人区
-local rect = ac.rect(-200,-11200,2800,-5500)
+local rect = ac.rect(-800,-11200,3400,-5500)
 off_fog(rect)
 --刷怪区
 rect = ac.rect(5000,-6000,9000,4200)
