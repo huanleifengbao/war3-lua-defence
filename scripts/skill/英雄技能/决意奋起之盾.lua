@@ -34,6 +34,7 @@ function mt:onCastShot()
 		    damage = damage,
 		    damage_type = skill.damage_type,
 		    skill = skill,
+		    attack = true,
 		}
 		local p = u:getPoint()
 		local a = hero:getPoint()/p

@@ -11,12 +11,17 @@ local function chose_hero(player)
 	end
 end
 
-local home = ac.point(7044, -8792)
+local home = {}
+for i = 1,sg.max_player do
+	home[i] = ac.point(7044, -8792) - {i * 360/sg.max_player,100}
+end
 
 ac.game:event('地图-选择英雄', function(_, hero, player)
-	local u = player:createUnit('快捷回城', ac.point(11000,-11000), 0)
+	local id = player:id()
+	local home = home[id]
+	local u = player:createUnit('快捷回城', home, 0)
 	table.insert(sg.family[player],u)
-    u = player:createUnit('快捷练功', ac.point(11000,-11000), 0) 
+    u = player:createUnit('快捷练功', home, 0) 
     table.insert(sg.family[player],u)
     player:event('玩家-选中单位', function (trg, player, unit)
         local name = unit:getName()
@@ -40,10 +45,10 @@ ac.game:event('玩家-聊天', function (_, player, str)
 	end
 	local target = player:getHero():getPoint()
 	if str == '++' then
-		height[player] = math.min(height[player] + 300,900)
-		player:moveCamera(target,0.2,height[player])
+		height[player] = math.min(height[player] + 300,1200)
+		player:setCamera('距离',height[player] + 1650,0.2)
 	elseif str == '--' then
 		height[player] = math.max(height[player] - 300,0)
-		player:moveCamera(target,0.2,height[player])
+		player:setCamera('距离',height[player] + 1650,0.2)
 	end
 end)

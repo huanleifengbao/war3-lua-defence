@@ -43,6 +43,7 @@ function mt:onCastShot()
 		    damage = damage,
 		    damage_type = skill.damage_type,
 		    skill = skill,
+		    attack = true,
 		}
 	end
 end

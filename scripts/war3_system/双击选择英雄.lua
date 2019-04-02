@@ -15,18 +15,18 @@ local hero_tbl = {
 ac.effect{
 	target = origin,
 	model = [[effect\galaxy.mdx]],
-	size = 1,
+	size = 5,
 	speed = 2,
 	heitht = -500,
 }
-ac.effect{
-	target = origin,
-	model = [[effect\antimagiczone.mdx]],
-	xScale = 5,
-	yScale = 5,
-	zScale = 0.01,
-	heitht = -500,
-}
+--ac.effect{
+--	target = origin,
+--	model = [[effect\antimagiczone.mdx]],
+--	xScale = 5,
+--	yScale = 5,
+--	zScale = 0.01,
+--	heitht = -500,
+--}
 
 --高贵的传奇英雄(随机不到)
 local Legend_hero_tbl = {
@@ -54,8 +54,11 @@ local Aghanim = {
 local hero_mark = {}
 local Legend_hero_mark = {}
 for i = 1, #hero_tbl do
-    local unit = ac.player(16):createUnit(hero_tbl[i][1], ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])
-    table.insert(hero_mark, unit)
+	local name = hero_tbl[i][1]
+    local unit = ac.player(16):createUnit(name, ac.point(hero_tbl[i][2], hero_tbl[i][3]), hero_tbl[i][4])
+    if name ~= '随机英雄' then
+    	table.insert(hero_mark, unit)
+	end
 	ac.effect{
 		target = unit:getPoint(),
 		model = [[buildings\other\CircleOfPower\CircleOfPower.mdl]],
@@ -74,25 +77,33 @@ end
 
 sg.family = {}
 ac.game:event('地图-选择难度', function ()
-    for i = 1,sg.max_player do
+    for i = 1,sg.max_player do    
         ac.player(i):add('金币', 50000)
         ac.player(i):event('玩家-选中单位', function (trg, player, unit)
             if unit:getOwner():id() == 16 and not player:getHero() then
-	            local name = unit:getName()
-	            --当你点击高贵的付费英雄时
-	            if sg.isintable(Legend_hero_mark,unit) then
-		            local hero_name = '传奇三国' .. name
-		            if player:get_shop_info(hero_name) <= 0 then
-			            player:message('|cffffff00您未购买|cffff00ff'..'英雄'..'|cffffff00:|cffffaa00'..hero_name..'|r', 5)
-			            return
-		            end
-	            end
                 if pick_mark[i] == unit then
+	               	local name = unit:getName()
+		            --当你点击高贵的付费英雄时
+		            if sg.isintable(Legend_hero_mark,unit) then
+			            local hero_name = '传奇三国' .. name
+			            if player:get_shop_info(hero_name) <= 0 then
+				            player:message('|cffffff00您未购买|cffff00ff'..'英雄'..'|cffffff00:|cffffaa00'..hero_name..'|r', 5)
+				            return
+			            end
+		            end
                     trg:remove()
                     --特殊处理随机英雄
                     if name == '随机英雄' then
                         unit = hero_mark[math.random(#hero_mark)]
+                        for i = 1,#hero_mark do
+	                        if unit == hero_mark[i] then
+								table.remove(hero_mark,i)
+								break
+	                        end
+                        end
+                        name = unit:getName()
                     end
+                    unit:remove()
                     --unit:setOwner(player, true)                  
                     for _ = 1, 1 do
                         sg.player_count = sg.player_count + 1
