@@ -59,7 +59,7 @@ local data = {
 	id = function(n)
 		return sg.get_enemy_id(n)
 	end,
-	start_time = 10,	--前置等待时间
+	start_time = 120,	--前置等待时间
 	time_out = 80,	--每波间隔时间
 	count = 15,	--每条路怪物数量
 	boss = 10,	--每多少波出一次boss
