@@ -1,3 +1,14 @@
+sg.ally_player = ac.player(10)	--基地玩家
+sg.creeps_player = ac.player(11)	--野怪玩家
+sg.enemy_player = ac.player(12)	--刷怪玩家
+sg.max_player = 6
+for i = 1, sg.max_player do
+    ac.player(10):alliance(ac.player(i), '结盟', true)
+    ac.player(i):alliance(ac.player(10), '结盟', true)
+end
+sg.enemy_player:alliance(sg.creeps_player, '结盟', true)
+sg.creeps_player:alliance(sg.enemy_player, '结盟', true)
+
 --增加三维并增加对应属性
 local function add_atr(hero,name,count)
 	if name == '力量' then
@@ -64,3 +75,47 @@ ac.game:event('单位-发布命令',function(_, unit, ID, target)
 		unit:walk(target)
 	end
 end)
+
+--可见度
+ac.game:fog(false)
+ac.game:mask(true)
+
+local function off_fog(rect)
+	for i = 1,sg.max_player do
+		ac.player(i):setFog('可见',rect)
+	end
+end
+
+local enemy = sg.enemy_player
+local creeps = sg.creeps_player
+--选人区
+local rect = ac.rect(-200,-11200,2800,-5500)
+off_fog(rect)
+--刷怪区
+rect = ac.rect(5000,-6000,9000,4200)
+off_fog(rect)
+enemy:setFog('可见',rect)
+--基地
+rect = ac.rect(3700,-11200,10500,-6000)
+off_fog(rect)
+enemy:setFog('可见',rect)
+--练功房
+rect = ac.rect(4300,4700,11000,11700)
+off_fog(rect)
+creeps:setFog('可见',rect)
+--专属升级区
+rect = ac.rect(9700,-4625,11100,4400)
+off_fog(rect)
+creeps:setFog('可见',rect)
+--觉醒挑战
+rect = ac.rect(-7600,-5150,5000,-1900)
+off_fog(rect)
+creeps:setFog('可见',rect)
+--锻造石
+rect = ac.rect(-350,-1900,3000,11500)
+off_fog(rect)
+creeps:setFog('可见',rect)
+--锻造大师
+rect = ac.rect(-11600,10100,-9100,11800)
+off_fog(rect)
+creeps:setFog('可见',rect)
