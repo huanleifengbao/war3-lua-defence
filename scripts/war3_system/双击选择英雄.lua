@@ -2,22 +2,22 @@ local pick_mark = {}
 
 --英雄,x,y,面向角度
 local hero_tbl = {
-    {'关羽', 1217, -8671, 44},
-    {'张飞', 1682, -8615, 152},
-    {'黄忠', 2140, -8665, 288},
-    {'诸葛亮', 831, -8891, 109},
-    {'星彩', 1928, -8955, 50},
-    {'孙尚香', 1914, -8661, 230},
+    {'关羽', 1217, -8671, 270},
+    {'张飞', 1682, -8615, 270},
+    {'黄忠', 2140, -8665, 270},
+    {'诸葛亮', 831, -8891, 270},
+    {'星彩', 1928, -8955, 270},
+    {'孙尚香', 1914, -8661, 270},
     {'随机英雄', 1517, -8400, 270},
 }
 
 --高贵的传奇英雄(随机不到)
 local Legend_hero_tbl = {
-    {'刘备', 773, -8622, 229},
-    {'吕布', 1131, -8928, 5},
-    {'貂蝉', 2180, -8944, 88},
-    {'赵云', 1388, -8933, 91},
-    {'司马懿', 1659, -8952, 213},
+    {'刘备', 773, -8622, 270},
+    {'吕布', 1131, -8928, 270},
+    {'貂蝉', 2180, -8944, 270},
+    {'赵云', 1388, -8933, 270},
+    {'司马懿', 1659, -8952, 270},
     --[[{'副本-孔秀', 1914, -8361, 230},
     {'副本-韩福', 1914, -8061, 230},
     {'副本-孟坦', 1914, -7761, 230},
@@ -57,14 +57,22 @@ ac.game:event('地图-选择难度', function ()
         ac.player(i):add('金币', 50000)
         ac.player(i):event('玩家-选中单位', function (trg, player, unit)
             if unit:getOwner():id() == 16 and not player:getHero() then
+	            local name = unit:getName()
+	            --当你点击高贵的付费英雄时
+	            if sg.isintable(Legend_hero_mark,unit) then
+		            local hero_name = '传奇三国' .. name
+		            if player:get_shop_info(hero_name) <= 0 then
+			            player:message('|cffffff00您未购买|cffff00ff'..hero_name..'|cffffff00:|cffffaa00'..hero_name..'|r', 5)
+			            return
+		            end
+	            end
                 if pick_mark[i] == unit then
                     trg:remove()
                     --特殊处理随机英雄
-                    if unit:getName() == '随机英雄' then
+                    if name == '随机英雄' then
                         unit = hero_mark[math.random(#hero_mark)]
                     end
-                    --unit:setOwner(player, true)
-                    local name = unit:getName()
+                    --unit:setOwner(player, true)                  
                     for _ = 1, 1 do
                         sg.player_count = sg.player_count + 1
                         local start_p = ac.point(7044, -8792)
