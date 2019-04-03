@@ -66,60 +66,53 @@ function InitCustomPlayerSlots takes nothing returns nothing
     call ForcePlayerStartLocation(Player(0), 0)
     call SetPlayerColor(Player(0), ConvertPlayerColor(0))
     call SetPlayerRacePreference(Player(0), RACE_PREF_HUMAN)
-    call SetPlayerRaceSelectable(Player(0), true)
+    call SetPlayerRaceSelectable(Player(0), false)
     call SetPlayerController(Player(0), MAP_CONTROL_USER)
     // Player 1
     call SetPlayerStartLocation(Player(1), 1)
     call ForcePlayerStartLocation(Player(1), 1)
     call SetPlayerColor(Player(1), ConvertPlayerColor(1))
-    call SetPlayerRacePreference(Player(1), RACE_PREF_ORC)
-    call SetPlayerRaceSelectable(Player(1), true)
+    call SetPlayerRacePreference(Player(1), RACE_PREF_HUMAN)
+    call SetPlayerRaceSelectable(Player(1), false)
     call SetPlayerController(Player(1), MAP_CONTROL_USER)
     // Player 2
     call SetPlayerStartLocation(Player(2), 2)
     call ForcePlayerStartLocation(Player(2), 2)
     call SetPlayerColor(Player(2), ConvertPlayerColor(2))
-    call SetPlayerRacePreference(Player(2), RACE_PREF_UNDEAD)
-    call SetPlayerRaceSelectable(Player(2), true)
+    call SetPlayerRacePreference(Player(2), RACE_PREF_HUMAN)
+    call SetPlayerRaceSelectable(Player(2), false)
     call SetPlayerController(Player(2), MAP_CONTROL_USER)
     // Player 3
     call SetPlayerStartLocation(Player(3), 3)
     call ForcePlayerStartLocation(Player(3), 3)
     call SetPlayerColor(Player(3), ConvertPlayerColor(3))
-    call SetPlayerRacePreference(Player(3), RACE_PREF_NIGHTELF)
-    call SetPlayerRaceSelectable(Player(3), true)
+    call SetPlayerRacePreference(Player(3), RACE_PREF_HUMAN)
+    call SetPlayerRaceSelectable(Player(3), false)
     call SetPlayerController(Player(3), MAP_CONTROL_USER)
     // Player 4
     call SetPlayerStartLocation(Player(4), 4)
     call ForcePlayerStartLocation(Player(4), 4)
     call SetPlayerColor(Player(4), ConvertPlayerColor(4))
     call SetPlayerRacePreference(Player(4), RACE_PREF_HUMAN)
-    call SetPlayerRaceSelectable(Player(4), true)
+    call SetPlayerRaceSelectable(Player(4), false)
     call SetPlayerController(Player(4), MAP_CONTROL_USER)
     // Player 5
     call SetPlayerStartLocation(Player(5), 5)
     call ForcePlayerStartLocation(Player(5), 5)
     call SetPlayerColor(Player(5), ConvertPlayerColor(5))
-    call SetPlayerRacePreference(Player(5), RACE_PREF_ORC)
-    call SetPlayerRaceSelectable(Player(5), true)
+    call SetPlayerRacePreference(Player(5), RACE_PREF_HUMAN)
+    call SetPlayerRaceSelectable(Player(5), false)
     call SetPlayerController(Player(5), MAP_CONTROL_USER)
-    // Player 9
-    call SetPlayerStartLocation(Player(9), 6)
-    call ForcePlayerStartLocation(Player(9), 6)
-    call SetPlayerColor(Player(9), ConvertPlayerColor(9))
-    call SetPlayerRacePreference(Player(9), RACE_PREF_ORC)
-    call SetPlayerRaceSelectable(Player(9), true)
-    call SetPlayerController(Player(9), MAP_CONTROL_COMPUTER)
     // Player 10
-    call SetPlayerStartLocation(Player(10), 7)
-    call ForcePlayerStartLocation(Player(10), 7)
+    call SetPlayerStartLocation(Player(10), 6)
+    call ForcePlayerStartLocation(Player(10), 6)
     call SetPlayerColor(Player(10), ConvertPlayerColor(10))
     call SetPlayerRacePreference(Player(10), RACE_PREF_UNDEAD)
-    call SetPlayerRaceSelectable(Player(10), true)
+    call SetPlayerRaceSelectable(Player(10), false)
     call SetPlayerController(Player(10), MAP_CONTROL_COMPUTER)
 endfunction
 function InitCustomTeams takes nothing returns nothing
-    // Force: TRIGSTR_009
+    // Force: TRIGSTR_008
     call SetPlayerTeam(Player(0), 0)
     call SetPlayerState(Player(0), PLAYER_STATE_ALLIED_VICTORY, 1)
     call SetPlayerTeam(Player(1), 0)
@@ -194,10 +187,9 @@ function InitCustomTeams takes nothing returns nothing
     call SetPlayerAllianceStateVisionBJ(Player(5), Player(2), true)
     call SetPlayerAllianceStateVisionBJ(Player(5), Player(3), true)
     call SetPlayerAllianceStateVisionBJ(Player(5), Player(4), true)
-    // Force: TRIGSTR_010
-    call SetPlayerTeam(Player(9), 1)
-    // Force: TRIGSTR_011
-    call SetPlayerTeam(Player(10), 2)
+    // Force: TRIGSTR_009
+    call SetPlayerTeam(Player(10), 1)
+    call SetPlayerState(Player(10), PLAYER_STATE_ALLIED_VICTORY, 1)
 endfunction
 function InitAllyPriorities takes nothing returns nothing
     call SetStartLocPrioCount(0, 5)
@@ -273,8 +265,7 @@ function config takes nothing returns nothing
     call DefineStartLocation(3, 1472.0, - 8640.0)
     call DefineStartLocation(4, 1472.0, - 8640.0)
     call DefineStartLocation(5, 1472.0, - 8640.0)
-    call DefineStartLocation(6, 7040.0, - 9344.0)
-    call DefineStartLocation(7, 6976.0, 3392.0)
+    call DefineStartLocation(6, 6976.0, 3392.0)
     // Player setup
     call InitCustomPlayerSlots()
     call InitCustomTeams()
