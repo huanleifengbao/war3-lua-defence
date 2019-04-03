@@ -193,7 +193,7 @@ function mt:onAdd()
     local i_player = unit:getOwner()
     local hero = i_player:getHero()
 
-    for _, u in pairs(sg.all_enemy) do
+    for _, u in ipairs(sg.all_enemy) do
         hero:kill(u)
     end
 end
