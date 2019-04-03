@@ -1,0 +1,5 @@
+[FrameDef]
+BONUS_DAMAGE= - 每点增加1的攻击力
+BONUS_DEFENSE_FIXED= - 每1000点增加1点的护甲
+BONUS_HITPOINTS= - 每点增加25的生命值
+BONUS_MANA= - 每点增加15的魔法值
