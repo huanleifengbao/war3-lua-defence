@@ -1,18 +1,18 @@
 --获取商城道具
-local mt = {}
+--local mt = {}
 
-local function to_letter(i)
-	return string.sub('ABCDEFGHIJKLMNOPQRSTUVWXYZ',i,i + 1)
-end
+--local function to_letter(i)
+--	return string.sub('ABCDEFGHIJKLMNOPQRSTUVWXYZ',i,i + 1)
+--end
 
-local function get_table(player)
-	local playerid = player._handle
-	if not mt[playerid] then
-		local string = '11billing@' .. to_letter(playerid)
-		mt[playerid] = jass.InitGameCache(string)
-	end
-	return mt[playerid]
-end
+--local function get_table(player)
+--	local playerid = player._handle
+--	if not mt[playerid] then
+--		local string = '11billing@' .. to_letter(playerid)
+--		mt[playerid] = jass.InitGameCache(string)
+--	end
+--	return mt[playerid]
+--end
 --商城道具列表
 local item = {
 	['新手礼包'] = 92219,
@@ -34,18 +34,18 @@ local shop_info = {}
 local equip = {}
 for i = 1,sg.max_player do
 	local player = ac.player(i)
-	player.get_status = function(self,key)
-		return jass.GetStoredInteger(get_table(player), '状态', key)
-	end
-	player.get_item = function(self,key)
-		return jass.GetStoredInteger(get_table(player), '道具', key)
-	end
-	player.has_status = function(self,key)
-		return jass.HaveStoredInteger(get_table(player), '状态', key)
-	end
-	player.has_item = function(self,key)
-		return jass.HaveStoredInteger(get_table(player), '道具', key)
-	end
+	--player.get_status = function(self,key)
+	--	return jass.GetStoredInteger(get_table(player), '状态', key)
+	--end
+	--player.get_item = function(self,key)
+	--	return jass.GetStoredInteger(get_table(player), '道具', key)
+	--end
+	--player.has_status = function(self,key)
+	--	return jass.HaveStoredInteger(get_table(player), '状态', key)
+	--end
+	--player.has_item = function(self,key)
+	--	return jass.HaveStoredInteger(get_table(player), '道具', key)
+	--end
 	shop_info[player] = {}
 	local info = shop_info[player]
 	player.get_shop_info = function(self,key)

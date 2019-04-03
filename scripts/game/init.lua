@@ -4,3 +4,4 @@ require 'game.api'
 require 'game.enemy'
 
 require 'game.副本'
+require 'game.11RPG'

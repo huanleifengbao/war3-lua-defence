@@ -41,7 +41,7 @@ local data = {
 	id = function(n)
 		return sg.get_enemy_id(n)
 	end,
-	start_time = 120,	--前置等待时间
+	start_time = 10,	--前置等待时间
 	time_out = 80,	--每波间隔时间
 	count = 15,	--每条路怪物数量
 	boss = 10,	--每多少波出一次boss
@@ -163,7 +163,7 @@ local function init_unit(u)
 end
 
 sg.all_enemy = {}
-
+local win
 local function create_enemy(wave)
 	if data.count > 0 then
 		sg.enemy_timer = ac.timer(data.interval,data.count,function()
@@ -200,9 +200,10 @@ local function create_enemy(wave)
 			if data.max_wave ~= 0 and wave == data.max_wave then
 				ac.game:event('单位-死亡', function(trg, _, _)
 					ac.wait(0,function()
-						if #sg.all_enemy == 0 then
+						if not win and #sg.all_enemy == 0 then
+							win = true
 							trg:remove()							
-							ac.game:eventNotify('地图-进入无尽模式')							
+							ac.game:eventNotify('地图-游戏通关')							
 						end
 					end)
 				end)
@@ -267,15 +268,26 @@ ac.game:event('地图-选择难度', function (_, num)
 	game_start()
 end)
 
-ac.game:event('地图-进入无尽模式', function ()
+ac.game:event('地图-游戏通关', function ()
+	--难度大于2才进无尽
+	if sg.difficult >= 2 then
 	--将刷怪表替换为无尽表后重新开始刷怪逻辑
 	for key,val in pairs(ex_data) do
 		data[key] = val
 	end
-	sg.message('恭喜通关！' .. data.start_time .. '秒后将进入|cffffdd00无尽模式|r',5)
-	sg.ex_mode = true
-	wave = 0
-	game_start()
+		sg.message('游戏将于' .. data.start_time .. '秒后将进入|cffffdd00无尽模式|r',5)
+		sg.ex_mode = true
+		wave = 0
+		game_start()
+	else
+		sg.message('游戏将于5秒后|cffffdd00结束|r',5)
+		ac.wait(5,function()
+			for i = 1,sg.max_player do
+	    		ac.player(i):remove('胜利','胜利！')
+    		end
+			ac.game:pause()
+	    end)
+	end
 end)
 
 --作弊
