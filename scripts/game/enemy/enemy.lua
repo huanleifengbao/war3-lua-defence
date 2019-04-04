@@ -163,7 +163,6 @@ local function init_unit(u)
 end
 
 sg.all_enemy = {}
-local win
 local function create_enemy(wave)
 	if data.count > 0 then
 		sg.enemy_timer = ac.timer(data.interval,data.count,function()
@@ -198,14 +197,12 @@ local function create_enemy(wave)
 			u:level(boss_data.level(num),false)
 			--已是最后一波boss，创建胜利条件
 			if data.max_wave ~= 0 and wave == data.max_wave then
-				ac.game:event('单位-死亡', function(trg, _, _)
-					ac.wait(0,function()
-						if not win and #sg.all_enemy == 0 then
-							win = true
-							trg:remove()							
-							ac.game:eventNotify('地图-游戏通关')							
-						end
-					end)
+				local timer
+				timer = ac.loop(1,function()
+					if #sg.all_enemy == 0 then
+						timer:remove()
+						ac.game:eventNotify('地图-游戏通关')
+					end
 				end)
 			end
 		end)
