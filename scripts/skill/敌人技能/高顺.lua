@@ -98,6 +98,10 @@ function mt:onCastStop()
 	end
 end
 
+function mt:onCastBreak()
+    self:onCastStop()
+end
+
 local mt = ac.skill['高顺-次元空间斩']
 
 function mt:onCastStart()
@@ -179,4 +183,8 @@ function mt:onCastStop()
 	if self.load then
 		self.load:remove()
 	end
+end
+
+function mt:onCastBreak()
+    self:onCastStop()
 end

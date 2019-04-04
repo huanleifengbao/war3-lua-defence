@@ -166,3 +166,7 @@ function mt:onCastStop()
 		self.trg:remove()
 	end
 end
+
+function mt:onCastBreak()
+    self:onCastStop()
+end

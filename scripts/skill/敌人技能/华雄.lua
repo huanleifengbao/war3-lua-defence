@@ -70,6 +70,10 @@ function mt:onCastStop()
 	end
 end
 
+function mt:onCastBreak()
+    self:onCastStop()
+end
+
 local mt = ac.skill['华雄-雷霆一击']
 
 function mt:onCastStart()
@@ -155,4 +159,8 @@ function mt:onCastStop()
 	if self.load then
 		self.load:remove()
 	end
+end
+
+function mt:onCastBreak()
+    self:onCastStop()
 end

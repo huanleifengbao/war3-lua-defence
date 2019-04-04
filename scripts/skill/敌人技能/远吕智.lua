@@ -9,7 +9,7 @@ function mt:onCastChannel()
 	local point = hero:getPoint()
 	local target = self:getTarget()
 	self.eff = {}
-	self.eff[#self.eff + 1] = sg.load_bar({target = point,time = time})
+	self.load = sg.load_bar({target = point,time = time})
 	self.eff[#self.eff + 1] = ac.effect {
 	    target = point,
 	    model = [[Abilities\Spells\Human\FlameStrike\FlameStrikeTarget.mdl]],
@@ -71,7 +71,14 @@ function mt:onCastShot()
 end
 
 function mt:onCastStop()
-	for _,eff in ipairs(self.eff) do
+	if self.load then
+		self.load:remove()
+	end
+end
+
+function mt:onCastBreak()
+	self:onCastStop()
+    for _,eff in ipairs(self.eff) do
 		if eff then
 			eff:remove()
 		end
@@ -183,6 +190,10 @@ function mt:onCastStop()
 	if self.load then
 		self.load:remove()
 	end
+end
+
+function mt:onCastBreak()
+    self:onCastStop()
 end
 
 local mt = ac.skill['远吕智-灾厄的三重奏']
@@ -376,4 +387,8 @@ function mt:onCastStop()
 	end
 	local hero = self:getOwner()
 	hero:speed(1)
+end
+
+function mt:onCastBreak()
+    self:onCastStop()
 end

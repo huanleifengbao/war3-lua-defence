@@ -67,3 +67,15 @@ function mt:onCastShot()
 	    time = 1,
 	}
 end
+
+function mt:onCastStop()
+	for _,eff in ipairs(self.eff) do
+		if eff then
+			eff:remove()
+		end
+	end
+end
+
+function mt:onCastBreak()
+    self:onCastStop()
+end

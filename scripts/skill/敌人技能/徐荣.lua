@@ -98,6 +98,10 @@ function mt:onCastStop()
 	hero:speed(1)
 end
 
+function mt:onCastBreak()
+    self:onCastStop()
+end
+
 local mt = ac.buff['暗之咒缚']
 mt.coverGlobal = 1
 mt.show = 1
@@ -210,4 +214,8 @@ function mt:onCastStop()
 	end
 	local hero = self:getOwner()
 	hero:speed(1)
+end
+
+function mt:onCastBreak()
+    self:onCastStop()
 end
