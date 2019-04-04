@@ -41,7 +41,7 @@ local data = {
 	id = function(n)
 		return sg.get_enemy_id(n)
 	end,
-	start_time = 10,	--前置等待时间
+	start_time = 120,	--前置等待时间
 	time_out = 80,	--每波间隔时间
 	count = 15,	--每条路怪物数量
 	boss = 10,	--每多少波出一次boss
@@ -79,6 +79,9 @@ local data = {
 		['魔抗'] = function(n)
 			return math.max(0,n - 9)
 		end,
+		['命中'] = function(n)
+			return 20
+		end,
 		['移动速度'] = function(n)
 			return 400
 		end,
@@ -88,6 +91,11 @@ local data = {
 	end,
 	['死亡木材'] = function(n)
 		return math.max(0,(n - 5) * 2)
+	end,
+	buff = function(n)
+		if n >= 40 then
+			return '魔化'
+		end
 	end,
 }
 
@@ -111,12 +119,18 @@ local boss_data = {
 		['魔抗'] = function(n)
 			return n * 20
 		end,
+		['命中'] = function(n)
+			return 50
+		end,
 		['移动速度'] = function(n)
 			return 400
 		end,
 	},
 	level = function(n)
 		return 2000 * n
+	end,
+	buff = function(n)
+		return '纯化'
 	end,
 }
 
@@ -125,16 +139,19 @@ local ex_data = {
 	max_wave = 0,
 	attribute = {
 		['生命上限'] = function(n)
-			return (hp_tbl[#hp_tbl] * 2^n)
+			return (hp_tbl[#hp_tbl] * 1.2^n)
 		end,
 		['攻击'] = function(n)
 			return (4000000 * 2^n)
 		end,
 		['护甲'] = function(n)
-			return (def_tbl[#def_tbl] * 2^n)
+			return (def_tbl[#def_tbl] * 1.2^n)
 		end,
 		['魔抗'] = function(n)
 			return 30
+		end,
+		['命中'] = function(n)
+			return 100
 		end,
 		['移动速度'] = function(n)
 			return 400
@@ -145,6 +162,13 @@ local ex_data = {
 	end,
 	['死亡木材'] = function(n)
 		return 0
+	end,
+	buff = function(n)
+		if n <= 20 then
+			return '魔化'
+		else
+			return '纯化'
+		end
 	end,
 }
 
@@ -175,6 +199,13 @@ local function create_enemy(wave)
 				u:set('死亡金钱', data['死亡金钱'](wave))
 				u:set('死亡木材', data['死亡木材'](wave))
 				init_unit(u)
+				local buff = data.buff(wave)
+				if buff then
+					u:addBuff(buff)
+					{
+						time = 0,
+					}
+				end
 			end
 		end)
 	end
@@ -190,10 +221,13 @@ local function create_enemy(wave)
 			end
 			init_unit(u)
 			sg.add_ai_skill(u)
-			u:addBuff '纯化'
-			{
-				time = 0,
-			}
+			local buff = boss_data.buff(wave)
+			if buff then
+				u:addBuff(buff)
+				{
+					time = 0,
+				}
+			end
 			u:level(boss_data.level(num),false)
 			--已是最后一波boss，创建胜利条件
 			if data.max_wave ~= 0 and wave == data.max_wave then

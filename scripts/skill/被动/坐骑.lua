@@ -14,7 +14,7 @@ for _,skill_name in ipairs(tbl) do
 	    	local count = hero:get('觉醒等级') + 1
 			sg.add_allatr(hero,self.atr * count)
 	    end)
-		ac.game:eventNotify('地图-获得坐骑', hero:getOwner())
+		ac.game:eventNotify('地图-获得坐骑', hero)
 	end
 
 	function mt:onDisable()
@@ -30,6 +30,6 @@ for _,skill_name in ipairs(tbl) do
 		hero:add('抗性',-self.mdf)
 		hero:add('闪避',-self.avo)
 	    self.trg:remove()
-	    ac.game:eventNotify('地图-失去坐骑', hero:getOwner())
+	    ac.game:eventNotify('地图-失去坐骑', hero)
 	end
 end

@@ -186,8 +186,11 @@ shop:setItem('荣光不败之翼', 10, 'W')
 shop:setItem('原初的符文', 11, 'E')
 shop:setItem('头号玩家', 12, 'R')
 --shop:setItem('锻造礼包', 5, 'A')
-shop:setItem('天神下凡', 6, 'S')
+shop:setItem('天神下凡', 5, 'A')
 --shop:setItem('时为朦胧的雪花之翼', 3, 'C')
+shop:setItem('飞雷', 6, 'S')
+shop:setItem('的卢', 7, 'D')
+shop:setItem('赤兔', 8, 'F')
 if console.enable == true then
     shop:setItem('商城作弊怪', 4, 'V')
 end

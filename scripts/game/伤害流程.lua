@@ -3,6 +3,7 @@
 	战力 --> 百分比增伤
 	减伤 --> 百分比减伤
 	闪避 --> 闪避率
+	命中 --> 抵消目标的闪避
 	魔抗 --> 百分比魔法减伤
 	物理穿透 --> 计算防御时减去一部分防御
 	魔法穿透 --> 计算魔抗时减去一部分魔抗
@@ -33,7 +34,8 @@ damage表内可定义的属性：
 
 local function avoid(damage)
 	local target = damage.target
-	if damage.truestrike == false and sg.get_random(target:get '闪避') then
+	local avo = target:get '闪避' - damage.source:get '命中'
+	if damage.truestrike == false and sg.get_random(avo) then
 		sg.text_tag({
 			text = '|cffff0000miss|r',
 			size = 30,

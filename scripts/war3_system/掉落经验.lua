@@ -80,7 +80,7 @@ ac.game:event('单位-创建', function (_, unit)
             exp = exp + data[name][1]
         end
         if data[name][2] > 0 then
-            local wave = sg.get_wave()
+            local wave = math.max(1,sg.get_wave())
             exp = exp + data[name][2] * wave
         end
         if data[name][3] > 0 then

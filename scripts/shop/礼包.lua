@@ -19,7 +19,6 @@ local list = {
 		}
 		--强化券
 		local item = hero:create_item('锻造保护券')
-		print(item.ticket)
 		item:stack(item.ticket)
 	end,
 	['天神下凡'] = function(item,player)

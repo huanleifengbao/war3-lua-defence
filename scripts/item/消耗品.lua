@@ -224,6 +224,9 @@ function mt:onAdd()
 	player:add_shop_info('锻造礼包',1)
 	player:add_shop_info('天神下凡',1)
 	player:add_shop_info('时为朦胧的雪花之翼',1)
+	function player.__index:get_score()
+		return 99999
+	end
     player:message('哇噢商城的|cffffdd00氪金|r道具都是我的啦!', 5)
 end
 

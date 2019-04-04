@@ -28,7 +28,7 @@ ac.wait(0, function()
                 end
                 mark = true
                 dialog:hide()
-                ac.game:eventNotify('地图-选择难度', 1)
+                ac.game:eventNotify('地图-选择难度', 1, player)
             end)
             local msg = '选择难度'
             player:timerDialog(msg, timer)
