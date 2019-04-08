@@ -120,3 +120,46 @@ function mt:onCastShot()
 	end
 	hero:getOwner():message('当前背包：' .. now_page[hero] .. '/' .. max_page,3)
 end
+
+--镜头
+local height = {}
+
+local function setCamera(player,flag)
+	if not height[player] then
+		height[player] = 0
+	end
+	if flag == '降低' then
+		height[player] = math.max(height[player] - 300,0)
+	else
+		height[player] = math.min(height[player] + 300,1200)
+	end
+	player:setCamera('距离',height[player] + 1650,0.2)
+end
+
+
+ac.game:event('玩家-聊天', function (_, player, str)
+	if not height[player] then
+		height[player] = 0
+	end
+	if str == '++' then
+		setCamera(player)
+	elseif str == '--' then
+		setCamera(player,'降低')
+	end
+end)
+
+local mt = ac.skill['拉伸镜头']
+
+function mt:onCastShot()
+	local hero = self:getOwner()
+	local player = hero:getOwner()
+	setCamera(player)
+end
+
+local mt = ac.skill['降低镜头']
+
+function mt:onCastShot()
+	local hero = self:getOwner()
+	local player = hero:getOwner()
+	setCamera(player,'降低')
+end

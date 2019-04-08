@@ -36,19 +36,3 @@ ac.game:event('地图-选择英雄', function(_, hero, player)
         end
     end)
 end)
-
---镜头
-local height = {}
-ac.game:event('玩家-聊天', function (_, player, str)
-	if not height[player] then
-		height[player] = 0
-	end
-	local target = player:getHero():getPoint()
-	if str == '++' then
-		height[player] = math.min(height[player] + 300,1200)
-		player:setCamera('距离',height[player] + 1650,0.2)
-	elseif str == '--' then
-		height[player] = math.max(height[player] - 300,0)
-		player:setCamera('距离',height[player] + 1650,0.2)
-	end
-end)

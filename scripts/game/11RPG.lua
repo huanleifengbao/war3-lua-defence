@@ -20,30 +20,32 @@ for _, name in ipairs(names) do
 end
 
 local function get_key(player)
-	return ("ABCDEFGHIJKLMNOPQRSTUVWXYZ"):sub(player:get(),player:get())
+	local i = player:id()
+	return string.sub('ABCDEFGHIJKLMNOPQRSTUVWXYZ',i - 1,i)
 end
 
 local function is_player(player)
 	return player:controller() == '用户' and player:gameState() == '在线'
 end
 
+local record_data = {}
 for player in ac.eachPlayer() do
 	--获取积分对象
 	function player.__index:record()
-		if not self.record_data then
+		if not record_data[self] then
 			if is_player(self) then
-				self.record_data = japi.InitGameCache('11billing@' .. get_key(self))
+				record_data[self] = japi.InitGameCache('11billing@' .. get_key(self))
 			else
-				self.record_data = japi.InitGameCache('')
+				record_data[self] = japi.InitGameCache('')
 			end
 		end
-		return self.record_data
+		return record_data[self]
 	end
 
 	--判断玩家是否有商城道具(用来做判断皮肤，人物，地图内特权VIP)等等
 	function player.__index:has_item(key)
 		if has_record then
-			return japi.HaveStoredInteger(self:record(), "状态", key) or (ShopItem and ShopItem[self:get_name()] and ShopItem[self:get_name()]:find(key))
+			return japi.HaveStoredInteger(self:record(), "状态", key)-- or (ShopItem and ShopItem[self:get_name()] and ShopItem[self:get_name()]:find(key))
 		end
 		return false
 	end
@@ -140,6 +142,6 @@ for player in ac.eachPlayer() do
 	end
 end
 
-function ac.game:score_game_end()
-	write_score("$", "GameEnd", 0)
-end
+--function ac.game:score_game_end()
+--	write_score("$", "GameEnd", 0)
+--end

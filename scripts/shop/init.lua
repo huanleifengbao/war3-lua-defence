@@ -34,18 +34,6 @@ local shop_info = {}
 local equip = {}
 for i = 1,sg.max_player do
 	local player = ac.player(i)
-	--player.get_status = function(self,key)
-	--	return jass.GetStoredInteger(get_table(player), '状态', key)
-	--end
-	--player.get_item = function(self,key)
-	--	return jass.GetStoredInteger(get_table(player), '道具', key)
-	--end
-	--player.has_status = function(self,key)
-	--	return jass.HaveStoredInteger(get_table(player), '状态', key)
-	--end
-	--player.has_item = function(self,key)
-	--	return jass.HaveStoredInteger(get_table(player), '道具', key)
-	--end
 	shop_info[player] = {}
 	local info = shop_info[player]
 	player.get_shop_info = function(self,key)
@@ -62,16 +50,18 @@ for i = 1,sg.max_player do
 		info[key] = num
 	end
 	--初始化玩家商城信息
-	for key,id in pairs(item) do
-		if player:has_item(id) then
-			player:add_shop_info(key,1)
+	ac.game:event('地图-选择难度', function ()
+		for name,key in pairs(item) do
+			if player:has_item(tostring(key)) then
+				player:add_shop_info(name,1)
+			end
 		end
-	end
-	for key,id in pairs(hero) do
-		if player:has_item(id) then
-			player:add_shop_info(key,1)
+		for name,key in pairs(hero) do
+			if player:has_item(tostring(key)) then
+				player:add_shop_info(name,1)
+			end
 		end
-	end
+	end)
 	equip[player] = {}
 end
 

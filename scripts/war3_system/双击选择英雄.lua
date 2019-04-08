@@ -85,7 +85,7 @@ ac.game:event('地图-选择难度', function ()
 	               	local name = unit:getName()
 		            --当你点击高贵的付费英雄时
 		            if sg.isintable(Legend_hero_mark,unit) then
-			            local hero_name = '传奇三国' .. name
+			            local hero_name = '传奇三国-' .. name
 			            if player:get_shop_info(hero_name) <= 0 then
 				            player:message('|cffffff00您未购买|cffff00ff'..'英雄'..'|cffffff00:|cffffaa00'..hero_name..'|r', 5)
 				            return
