@@ -56,6 +56,28 @@ base:event('单位-死亡', function (trg, unit)
     end
 end)
 
+--受伤警报
+local cd = false
+base:event('单位-受到伤害', function()
+	if base:get '生命'/base:get '生命上限' <= 0.5 and  cd == false then
+		sg.message('本阵有难，请速速前往支援！',5)
+		cd = true
+		ac.wait(3,function()
+			cd = false
+		end)
+	end
+end)
+--无敌一次
+base:event('单位-即将死亡', function(trg,_)
+	sg.message('本阵即将沦陷，自动进入无敌状态（一局一次）',5)
+	base:addBuff '无敌'
+	{
+		time = 30,
+	}
+	trg:remove()
+	return false
+end)
+
 local tbl = {'交换金币','交换木材'}
 for _,name in ipairs(tbl) do
 	local mt = ac.item[name]
@@ -138,10 +160,11 @@ function mt:onAdd()
     hero:add('力量', self.attribute['力量'])
     hero:add('敏捷', self.attribute['敏捷'])
     hero:add('智力', self.attribute['智力'])
-
+	
 	level = level + 1
 	base:add('生命上限',self.hp)
 	base:add('护甲',self.amr)
+	base:add('减伤',self.def)
 	for i = 1,sg.max_player do
     	ac.player(i):message(sg.player_colour[id]..hero:getName()..'|r强化了本阵的耐久度|cffffff00(' .. level .. '/' .. self.max_level .. ')|r', 3)
 	end
