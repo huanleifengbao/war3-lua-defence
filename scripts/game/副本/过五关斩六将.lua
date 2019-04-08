@@ -29,7 +29,7 @@ local instance_data = {
         {name = '副本-王植', point = ac.point(-3050, 4650), facing = 270},
     },
     {
-        {name = '副本-秦琪', point = ac.point(-1950, 1125), facing = 270},
+        {name = '副本-秦琪', point = ac.point(-3200, 100), facing = 270},
     },
 }
 --打boss前的额外怪物
@@ -64,7 +64,7 @@ function mt:onAdd()
 
     local time = 120
     local msg = '副本-过五关斩六将'
-    local time2 = 300
+    local time2 = 600
     local msg2 = '时间限制'
     --飞机特效
     local eff1 = ac.effect {
