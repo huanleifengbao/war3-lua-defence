@@ -10,12 +10,33 @@ for name,skill in pairs(ac.skill) do
 	end
 end
 
+--安慰奖列表
+local low_prize = {}
+local crycryo = 
+{
+	[1] = {atr = 10888888,lot = 0.1},
+	[2] = {atr = 5288888,lot = 0.2},
+	[3] = {atr = 1088888,lot = 0.4},
+	[4] = {atr = 588888,lot = 0.8},
+	[5] = {atr = 208888,lot = 2},
+	[6] = {atr = 108888,lot = 4},
+	[7] = {atr = 52888,lot = 6},
+	[8] = {atr = 11888,lot = 8},
+	[9] = {atr = 1888,lot = 10},
+}
+for i = 1,#crycryo do
+	local data = crycryo[i]
+	for _ = 1,math.ceil(data.lot * 10) do
+		table.insert(low_prize,i)
+	end
+end
+
 --获取战魂
 local function get_skill(hero,name)
 	local skill = hero:findSkill(name)
 	if skill then
 		if skill:isEnable() then
-			return false,'你已经拥有' .. name .. '了，无法再次拥有'
+			return false
 		else
 			skill:enable()
 		end
@@ -54,14 +75,33 @@ function sg.get_sow(hero,name)
 end
 
 --抽奖
+
+
+
 local function draw(hero)
 	local player = hero:getOwner()
 	if sg.get_random(#prize/10) then
 		local name = prize[math.random(#prize)]	
-		player:message('你抽到了' .. name, 5)
+		sg.message('|cffffff00时|r|cfffbff17来|r|cfff6ff2e运|r|cfff2ff45转|r|cffedff5c！|r|cffe8ff73恭|r|cffe4ff8b喜|r|cffdfffa2玩|r|cffdaffb9家|cffff6800' .. player:name() .. '|r|r|cffd6ffd0抽|r|cffd1ffe7到|r|cffccffff了|r|cffff6800' .. name .. '|r|cffccffff！|r', 5)
 		sg.get_sow(hero,name)
 	else
-		player:message('你抽到了空气', 5)
+		--战魂莫得了，试试安慰奖
+		hero = player:getHero()
+		if sg.get_random(#low_prize/10) then
+			local index = low_prize[math.random(#low_prize)]
+			local atr = crycryo[index].atr
+			sg.add_allatr(hero,atr)
+			local text = '|cffccffff谢|r|cffcffcf9谢|r|cffd2f9f3惠|r|cffd5f6ec顾|r|cffd8f3e6！|r|cffdbf0e0你|r|cffdfecd9获|r|cffe2e9d3得|r|cffe5e6cc了|r|cffffff00' .. atr .. '|r|cfff2d9b3点|r|cfff5d6ad全|r|cfff8d3a6属|r|cfffbd0a0性|r|cffffcc99！|r'
+			if index <= 2 then
+				text = '|cffffcc99中|r|cffffbb8d大|r|cffffaa80奖|r|cffff9973了|r|cffff8866！|r|cffff775a你|r|cffff664d获|r|cffff5540得|r|cffff4433了|r|cffffff00' .. atr .. '|r|cffff3327全|r|cffff221a属|r|cffff110d性|r|cffff0000！|r'
+			elseif index <= 5 then
+				text = '|cffffff00恭|r|cfffff000喜|r|cffffe100！|r|cffffd200你|r|cffffc200获|r|cffffb300得|r|cffffa400了|cffffffcc' .. atr .. '|r|r|cffff9400全|r|cffff8500属|r|cffff7600性|r|cffff6600！|r'
+			end
+			player:message(text, 5)
+		else
+			sg.add_allatr(hero,888)
+			player:message('|cffccffff谢|r|cffcffcf9谢|r|cffd2f9f3惠|r|cffd5f6ec顾|r|cffd8f3e6！|r|cffdbf0e0你|r|cffdfecd9获|r|cffe2e9d3得|r|cffe5e6cc了|r|cffffff00888|r|cfff2d9b3点|r|cfff5d6ad全|r|cfff8d3a6属|r|cfffbd0a0性|r|cffffcc99！|r', 5)
+		end
 	end
 end
 
@@ -87,7 +127,7 @@ function mt:onCanAdd(hero)
 	    	draw(hero)
     	end
 	else
-		return false,'抽奖券不足'
+		return false,'|cffff0000抽奖券不足|r'
 	end
 end
 
@@ -105,6 +145,8 @@ for name,_ in pairs(has_skill) do
 					break
 				end
 			end
+		else
+			hero:getOwner():message('你已经拥有' .. name .. '了，无法使用',5)
 		end
 	end
 end

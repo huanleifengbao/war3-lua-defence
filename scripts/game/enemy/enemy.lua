@@ -117,7 +117,7 @@ local boss_data = {
 			return 10^n * 10000
 		end,
 		['魔抗'] = function(n)
-			return n * 20
+			return n * 20 + 10
 		end,
 		['命中'] = function(n)
 			return 50

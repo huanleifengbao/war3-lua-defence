@@ -1,4 +1,4 @@
-local tbl = {'通用被动','常胜将军','合众统合','旷世奇才','乱世枭雄','三国无双'}
+local tbl = {'通用被动','常胜将军','合众统合','旷世奇才','乱世佳人','三国无双'}
 
 for _,skill_name in ipairs(tbl) do
 	local mt = ac.skill[skill_name]
