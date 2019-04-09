@@ -1,6 +1,6 @@
 
 local mt = ac.item['副本-过五关斩六将']
-
+local stage_start = false
 --飞机位置
 local start_point = ac.point(6050, -9300)
 --副本位置
@@ -94,6 +94,7 @@ function mt:onAdd()
         end
         --结束副本一定会跑的函数
         local function instance_end()
+        	stage_start = false
         	sg.camera()
             sg.start_enemy()
             for _, u in pairs(sg.all_enemy) do
@@ -130,6 +131,7 @@ function mt:onAdd()
         if #mark == 0 then
             instance_end()
         else
+	        stage_start = true
 	        --视野
 			sg.off_fog(ac.rect(-8100,6800,-6500,9200))
 			sg.off_fog(ac.rect(-7800,-1400,-5700,6300))
@@ -245,6 +247,7 @@ function mt:onAdd()
 
             local function ace()
                 if hero_count == 0 then
+	                stage_start = false
                     monster_end()
                     timer2:remove()
                     for _, hero in ipairs(hero_mark) do
@@ -357,31 +360,36 @@ function mt:onAdd()
                                 monster_end()
                                 --下一关或者通关
                                 if instance_lv >= instance_count then
-                                    timer2:remove()
-                                    local back_time = 10
-                                    local back_msg = '即将返回'
-                                    local back_timer = ac.wait(back_time, function()
-                                        for k, hero in ipairs(hero_mark) do
-                                            local p2 = home - {360 / #hero_mark * k, 120}
-                                            hero:tp(p2, true)
-                                            local buff = hero:findBuff('假死')
-                                            if buff then
-                                                buff:remove()
-                                            end
-                                            hero:set('生命', hero:get('生命上限'))
-                                            hero:set('魔法', hero:get('魔法上限'))
-                                            hero:removeRestriction '无敌'
-                                        end
-                                        instance_end()
+	                                ac.wait(0,function()
+	                                	if stage_start == true then
+		                                	stage_start = false
+		                                    timer2:remove()
+		                                    local back_time = 10
+		                                    local back_msg = '即将返回'
+		                                    local back_timer = ac.wait(back_time, function()
+		                                        for k, hero in ipairs(hero_mark) do
+		                                            local p2 = home - {360 / #hero_mark * k, 120}
+		                                            hero:tp(p2, true)
+		                                            local buff = hero:findBuff('假死')
+		                                            if buff then
+		                                                buff:remove()
+		                                            end
+		                                            hero:set('生命', hero:get('生命上限'))
+		                                            hero:set('魔法', hero:get('魔法上限'))
+		                                            hero:removeRestriction '无敌'
+		                                        end
+		                                        instance_end()
+		                                    end)
+		                                    for _, hero in ipairs(hero_mark) do
+		                                        hero:addRestriction '无敌'
+		                                        local player = hero:getOwner()
+		                                        player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 8)
+		                                        player:message('所有参与者获得|cffffdd00600000|r金钱和|cff25cc75600000|r木材,爽死了', 8)
+		                                        player:timerDialog(back_msg, back_timer)
+		                                        hero:createItem('副本奖励3')
+		                                    end
+	                                    end
                                     end)
-                                    for _, hero in ipairs(hero_mark) do
-                                        hero:addRestriction '无敌'
-                                        local player = hero:getOwner()
-                                        player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 8)
-                                        player:message('所有参与者获得|cffffdd00600000|r金钱和|cff25cc75600000|r木材,爽死了', 8)
-                                        player:timerDialog(back_msg, back_timer)
-                                        hero:createItem('副本奖励3')
-                                    end
                                 else
                                     local next_time = 5
                                     for _, hero in ipairs(hero_mark) do

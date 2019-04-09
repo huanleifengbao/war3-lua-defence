@@ -5,6 +5,7 @@ local mt = ac.item['副本-大战黄巾贼']
 local start_point = ac.point(6050, -9300)
 --副本位置
 local target_point = ac.point(-4100, 8150)
+local stage_start = false
 --回城
 local home = ac.point(7044, -8792)
 --副本初始怪物
@@ -62,6 +63,7 @@ function mt:onAdd()
         end
         --结束副本一定会跑的函数
         local function instance_end()
+        	stage_start = false
             sg.start_enemy()
             for _, u in pairs(sg.all_enemy) do
                 local buff = u:findBuff('冻结')
@@ -81,6 +83,7 @@ function mt:onAdd()
         if #mark == 0 then
             instance_end()
         else
+	        stage_start = true
 	        --视野
 			sg.off_fog(ac.rect(-5000,7300,-1150,11150))
             --时限
@@ -100,6 +103,7 @@ function mt:onAdd()
             local function ace()
                 if hero_count == 0 then
                     timer2:remove()
+                    stage_start = false
                     for _, hero in ipairs(hero_mark) do
                         local player = hero:getOwner()
                         hero:kill(hero)
@@ -187,55 +191,60 @@ function mt:onAdd()
                     if killer ~= boss then
                         boss_count = boss_count - 1
                         if boss_count == 0 then
-                            timer2:remove()
-                            local back_time = 10
-                            local back_msg = '即将返回'
-                            local back_timer = ac.wait(back_time, function()
-                                for k, hero in ipairs(hero_mark) do
-                                    local p2 = home - {360 / #hero_mark * k, 120}
-                                    hero:tp(p2, true)
-                                    local buff = hero:findBuff('假死')
-                                    if buff then
-                                        buff:remove()
-                                    end
-                                    hero:set('生命', hero:get('生命上限'))
-                                    hero:set('魔法', hero:get('魔法上限'))
-                                    hero:removeRestriction '无敌'
-                                end
-                                instance_end()
+	                        ac.wait(0,function()
+		                        if stage_start == true then
+			                        stage_start = false
+		                            timer2:remove()
+		                            local back_time = 10
+		                            local back_msg = '即将返回'
+		                            local back_timer = ac.wait(back_time, function()
+		                                for k, hero in ipairs(hero_mark) do
+		                                    local p2 = home - {360 / #hero_mark * k, 120}
+		                                    hero:tp(p2, true)
+		                                    local buff = hero:findBuff('假死')
+		                                    if buff then
+		                                        buff:remove()
+		                                    end
+		                                    hero:set('生命', hero:get('生命上限'))
+		                                    hero:set('魔法', hero:get('魔法上限'))
+		                                    hero:removeRestriction '无敌'
+		                                end
+		                                instance_end()
+		                            end)
+		                            for _, hero in ipairs(hero_mark) do
+		                                hero:addRestriction '无敌'
+		                                local player = hero:getOwner()
+		                                player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 8)
+		                                player:message('所有参与者获得|cffffdd00400000|r金钱和|cff25cc75400000|r木材,爽死了', 8)
+		                                player:timerDialog(back_msg, back_timer)
+		                                hero:createItem('副本奖励2')
+		                            end
+		                            --打赢了当然要放点烟花(TNT)庆祝下
+		                            --放个p
+		                            --[==[local p1 = boss:getPoint()
+		                            ac.timer(0.05, 100, function()
+		                                local p2 = p1 - {math.random(360), math.random(100, 800)}
+		                                local mover = boss:moverLine
+		                                {
+		                                    model = [[Abilities\Weapons\DemolisherFireMissile\DemolisherFireMissile.mdl]],
+		                                    start = p2,
+		                                    angle = 0,
+		                                    speed = 600,
+		                                    distance = 1200,
+		                                    startHeight = 1500,
+		                                    middleHeight = 1500,
+		                                    finishHeight = 0,
+		                                }
+		                                --[=[ac.effect {
+		                                    target = p2,
+		                                    model = [[Abilities\Weapons\DemolisherFireMissile\DemolisherFireMissile.mdl]],
+		                                    speed = 1,
+		                                    size = math.random(10, 30) / 10,
+		                                    time = 0,
+		                                }]=]
+		                            end)]==]--
+	                            end
                             end)
-                            for _, hero in ipairs(hero_mark) do
-                                hero:addRestriction '无敌'
-                                local player = hero:getOwner()
-                                player:message('|cff00ff00boss团灭|r了xs,你们胜利了,|cffff7500'..back_time..'|r秒后返回', 8)
-                                player:message('所有参与者获得|cffffdd00400000|r金钱和|cff25cc75400000|r木材,爽死了', 8)
-                                player:timerDialog(back_msg, back_timer)
-                                hero:createItem('副本奖励2')
-                            end
-                            --打赢了当然要放点烟花(TNT)庆祝下
-                            --放个p
-                            --[==[local p1 = boss:getPoint()
-                            ac.timer(0.05, 100, function()
-                                local p2 = p1 - {math.random(360), math.random(100, 800)}
-                                local mover = boss:moverLine
-                                {
-                                    model = [[Abilities\Weapons\DemolisherFireMissile\DemolisherFireMissile.mdl]],
-                                    start = p2,
-                                    angle = 0,
-                                    speed = 600,
-                                    distance = 1200,
-                                    startHeight = 1500,
-                                    middleHeight = 1500,
-                                    finishHeight = 0,
-                                }
-                                --[=[ac.effect {
-                                    target = p2,
-                                    model = [[Abilities\Weapons\DemolisherFireMissile\DemolisherFireMissile.mdl]],
-                                    speed = 1,
-                                    size = math.random(10, 30) / 10,
-                                    time = 0,
-                                }]=]
-                            end)]==]--
                         end
                     end
                 end)

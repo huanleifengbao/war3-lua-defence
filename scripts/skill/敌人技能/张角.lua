@@ -98,6 +98,10 @@ function mt:onCastStop()
 	end
 end
 
+function mt:onCastBreak()
+    self:onCastStop()
+end
+
 local mt = ac.skill['张角-咆哮之火']
 
 function mt:onCastStart()
@@ -170,10 +174,10 @@ function mt:onCastChannel()
 			    : ofNot '建筑'
 			    : ipairs()
 			do
-				do_damage[u] = true
+				table.insert(do_damage,u)
 			end
 		end
-		for u,_ in pairs(do_damage) do
+		for _,u in ipairs(do_damage) do
 			local damage = self.damage * hero:get('攻击')
 			hero:damage
 			{
@@ -212,6 +216,10 @@ function mt:onCastStop()
 			eff:remove()
 		end
 	end
+end
+
+function mt:onCastBreak()
+    self:onCastStop()
 end
 
 local mt = ac.skill['张角-行尸走肉']

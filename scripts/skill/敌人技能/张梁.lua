@@ -108,3 +108,7 @@ function mt:onCastStop()
 		end
 	end
 end
+
+function mt:onCastBreak()
+    self:onCastStop()
+end

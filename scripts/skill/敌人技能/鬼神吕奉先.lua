@@ -467,6 +467,7 @@ function mt:onCastChannel()
 			    target = target,
 			    size = 3,
 			    model = [[effect\vector_arrow by deckai.mdx]],
+			    angle = direct,
 			    height = 20,
 			    time = wait,
 			}
@@ -527,4 +528,8 @@ function mt:onCastStop()
 	if self.load then
 		self.load:remove()
 	end
+end
+
+function mt:onCastBreak()
+    self:onCastStop()
 end

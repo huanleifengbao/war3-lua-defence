@@ -50,6 +50,7 @@ function mt:onAdd()
 			local point = hero:getPoint()
 			hero:addRestriction '无敌'
 			hero:addRestriction '硬直'
+			hero:set('生命',hero:get'生命上限' * 0.01)
 			sg.animation(hero,'death')
 			ac.wait(self.dying,function()
 				if hero:isAlive() then
