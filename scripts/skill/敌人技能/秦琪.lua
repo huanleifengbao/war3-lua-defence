@@ -27,21 +27,21 @@ function mt:onCastShot()
 	local skill = self
 
 	--天黑
-	for a = -8, 8 do
-		local p2 = point - {point / target + 15 * a + math.random(36), math.random(300, 1000)}
-		local h = 1
-		ac.timer(0.06, 1, function()
-			ac.effect {
-				target = p2,
-				model = [[Doodads\LordaeronSummer\Props\SmokeSmudge\SmokeSmudge2.mdl]],
-				size = 30,
-				speed = 0.5,
-				height = 15 * h,
-				time = math.random(25, 45) / 10,
-			}
-			h = h + 1
-		end)
-	end
+	--for a = -8, 8 do
+	--	local p2 = point - {point / target + 15 * a + math.random(36), math.random(300, 1000)}
+	--	local h = 1
+	--	ac.timer(0.06, 1, function()
+	--		ac.effect {
+	--			target = p2,
+	--			model = [[Doodads\LordaeronSummer\Props\SmokeSmudge\SmokeSmudge2.mdl]],
+	--			size = 30,
+	--			speed = 0.5,
+	--			height = 15 * h,
+	--			time = math.random(25, 45) / 10,
+	--		}
+	--		h = h + 1
+	--	end)
+	--end
 
 	for i = 1,count do
 		local a = 360/count * i
@@ -81,14 +81,14 @@ function mt:onCastShot()
 		local index = 1
 		local add = 0
 
-		local sx_mark = false
-		if i % 2 == 0 then
-			ac.wait(1.2, function()
-				a = point / target + math.random(-30, 30)
-				sx_mark = true
-				mover:setOption('distance',mover.distance + mover.mover:getPoint() * target)
-			end)
-		end
+		--local sx_mark = false
+		--if i % 2 == 0 then
+		--	ac.wait(1.2, function()
+		--		a = point / target + math.random(-30, 30)
+		--		sx_mark = true
+		--		mover:setOption('distance',mover.distance + mover.mover:getPoint() * target)
+		--	end)
+		--end
 		local timer = ac.loop(0.04,function()
 			add = add + index * self.angle/(pulse/0.04)
 			if math.abs(add) >= self.angle then
@@ -96,9 +96,9 @@ function mt:onCastShot()
 			end
 			mover:setOption('angle',a + add)
 			mover:setAngle(a + add)
-			if sx_mark == true then
-				a = a + math.random(-5, 5)
-			end
+			--if sx_mark == true then
+			--	a = a + math.random(-5, 5)
+			--end
 		end)
 		function mover:onRemove()
 			timer:remove()
@@ -145,15 +145,14 @@ local mt = ac.skill['秦琪-影压']
 function mt:onCastStart()
 	local hero = self:getOwner()
 	local point = hero:getPoint()
-	sg.animation(hero,'spell slam')
 	hero:setFacing(point/self:getTarget(),0.1)
 end
 
 function mt:onCastChannel()
 	local hero = self:getOwner()
-	hero:speed(0)
 	local time = self.castChannelTime
 	local point = hero:getPoint()
+	sg.animation(hero,'stand victory',true)
 	self.load = sg.load_bar({target = point,time = time})
 	local target = self:getTarget()
 	local point = target:getPoint()
@@ -173,30 +172,45 @@ function mt:onCastShot()
     local area = self.area
     local skill = self
     local damage = skill.damage * hero:get('攻击')
-	hero:speed(1)
-	sg.animation(hero,'spell throw')
-
+    sg.animation(hero,'spell attack')
 	local function cast(point)
 		--放烟花
-		local size = 4
-		ac.timer(0.05, 5, function()
-			ac.effect {
-				target = point,
-				model = [[Abilities\Spells\Undead\OrbOfDeath\OrbOfDeathMissile.mdl]],
-				size = size,
-				time = 0,
-			}
-		end)
-		for i = 1, 20 do
-			local p2 = point - {360 / 20 * i, area - 25}
-			ac.effect {
-				target = p2,
-				model = [[Abilities\Spells\Undead\OrbOfDeath\AnnihilationMissile.mdl]],
-				size = 0.6,
-				time = 0,
-			}
-		end
-
+		--local size = 4
+		--ac.timer(0.05, 5, function()
+		--	ac.effect {
+		--		target = point,
+		--		model = [[Abilities\Spells\Undead\OrbOfDeath\OrbOfDeathMissile.mdl]],
+		--		size = size,
+		--		time = 0,
+		--	}
+		--end)
+		--for i = 1, 20 do
+		--	local p2 = point - {360 / 20 * i, area - 25}
+		--	ac.effect {
+		--		target = p2,
+		--		model = [[Abilities\Spells\Undead\OrbOfDeath\AnnihilationMissile.mdl]],
+		--		size = 0.6,
+		--		time = 0,
+		--	}
+		--end
+		ac.effect{
+			target = point,
+			model = [[Abilities\Spells\Undead\DeathCoil\DeathCoilSpecialArt.mdl]],
+			size = 2,
+			time = 0,
+		}
+		ac.effect{
+			target = point,
+			model = [[Abilities\Spells\Other\HowlOfTerror\HowlCaster.mdl]],
+			size = 1,
+			time = 0,
+		}
+		ac.effect{
+			target = point,
+			model = [[Objects\Spawnmodels\Undead\UndeadDissipate\UndeadDissipate.mdl]],
+			size = 1,
+			time = 0,
+		}
 		for _, u in ac.selector()
 			: inRange(point, area)
 			: isEnemy(hero)
@@ -226,7 +240,7 @@ function mt:onCastShot()
 				speed = 2,
 				time = 0,
 			}
-			ac.wait(1, function()
+			ac.wait(1.5, function()
 				cast(p2)
 			end)
 		end

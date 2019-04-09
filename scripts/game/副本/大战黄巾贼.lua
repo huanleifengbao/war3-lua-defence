@@ -81,6 +81,8 @@ function mt:onAdd()
         if #mark == 0 then
             instance_end()
         else
+	        --视野
+			sg.off_fog(ac.rect(-5000,7300,-1150,11150))
             --时限
             local timer2 = ac.wait(time2, function()
                 for _, hero in ipairs(hero_mark) do

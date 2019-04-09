@@ -81,7 +81,7 @@ end)
 ac.game:fog(false)
 ac.game:mask(true)
 
-local function off_fog(rect)
+function sg.off_fog(rect)
 	for i = 1,sg.max_player do
 		ac.player(i):setFog('可见',rect)
 	end
@@ -91,32 +91,32 @@ local enemy = sg.enemy_player
 local creeps = sg.creeps_player
 --选人区
 local rect = ac.rect(-800,-11200,3400,-5500)
-off_fog(rect)
+sg.off_fog(rect)
 --刷怪区
 rect = ac.rect(5000,-6000,9000,4200)
-off_fog(rect)
+sg.off_fog(rect)
 enemy:setFog('可见',rect)
 --基地
 rect = ac.rect(3700,-11200,10500,-6000)
-off_fog(rect)
+sg.off_fog(rect)
 enemy:setFog('可见',rect)
 --练功房
 rect = ac.rect(4300,4700,11000,11700)
-off_fog(rect)
+sg.off_fog(rect)
 creeps:setFog('可见',rect)
 --专属升级区
 rect = ac.rect(9700,-4625,11100,4400)
-off_fog(rect)
+sg.off_fog(rect)
 creeps:setFog('可见',rect)
 --觉醒挑战
 rect = ac.rect(-7600,-5150,5000,-1900)
-off_fog(rect)
+sg.off_fog(rect)
 creeps:setFog('可见',rect)
 --锻造石
 rect = ac.rect(-350,-1900,3000,11500)
-off_fog(rect)
+sg.off_fog(rect)
 creeps:setFog('可见',rect)
 --锻造大师
 rect = ac.rect(-11600,10100,-9100,11800)
-off_fog(rect)
+sg.off_fog(rect)
 creeps:setFog('可见',rect)

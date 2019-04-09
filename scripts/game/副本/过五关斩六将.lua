@@ -130,6 +130,12 @@ function mt:onAdd()
         if #mark == 0 then
             instance_end()
         else
+	        --视野
+			sg.off_fog(ac.rect(-8100,6800,-6500,9200))
+			sg.off_fog(ac.rect(-7800,-1400,-5700,6300))
+			sg.off_fog(ac.rect(-8800,9600,-6300,11700))
+			sg.off_fog(ac.rect(-4900,2700,-750,6800))
+			sg.off_fog(ac.rect(-5100,-1900,-1100,1900))
             --时限
             local timer2 = ac.wait(time2, function()
                 for _, hero in ipairs(hero_mark) do
@@ -169,6 +175,7 @@ function mt:onAdd()
                                     boss_awake = true
                                     for _, boss in ipairs(boss_mark) do
                                         boss:removeRestriction '隐藏'
+                                        boss:removeRestriction '硬直'
                                         if boss:getName() == '副本-王植' then
                                             local p = boss:getPoint()
                                             ac.effect {
@@ -219,6 +226,7 @@ function mt:onAdd()
                 end)
                 for _, boss in ipairs(boss_mark) do
                     boss:addRestriction '隐藏'
+                    boss:addRestriction '硬直'
                 end
             end
             --清空小怪
