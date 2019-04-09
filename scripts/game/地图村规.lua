@@ -120,3 +120,24 @@ creeps:setFog('可见',rect)
 rect = ac.rect(-11600,10100,-9100,11800)
 sg.off_fog(rect)
 creeps:setFog('可见',rect)
+
+--tips
+local tips = {
+	'前期优先练功房升级，专属武器经验刷满，前往野外挑战升级专属武器',
+	'争取在第一波怪来临之前，升满新手装备',
+	'基地很脆弱，一不小心就炸了',
+	'进攻boss拥有各种蓄力范围技能，记得躲避',
+	'抽奖一时爽，一直抽一直爽，多出的战魂可以给队友哦',
+}
+
+ac.game:event('地图-选择难度', function()
+	local now_tips = sg.copytable(tips)
+	ac.timer(30,40,function()
+		local index = math.random(#now_tips)
+		sg.message(now_tips[index],10)
+		table.remove(now_tips,index)
+		if #now_tips == 0 then
+			now_tips = sg.copytable(tips)
+		end
+	end)
+end)

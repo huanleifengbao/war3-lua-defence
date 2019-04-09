@@ -105,7 +105,7 @@ local boss_data = {
 	end,
 	attribute = {	--进攻怪物属性公式
 		['生命'] = function(n)
-			return 10^n * 500000
+			return 10^n * 5000000
 		end,
 		['力量'] = function(n)
 			return 10^n * 10000

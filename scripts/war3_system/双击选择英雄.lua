@@ -93,7 +93,9 @@ ac.game:event('地图-选择难度', function ()
 		            end
                     trg:remove()
                     --特殊处理随机英雄
+                    local random = false
                     if name == '随机英雄' then
+	                    random = true
                         unit = hero_mark[math.random(#hero_mark)]
                         for i = 1,#hero_mark do
 	                        if unit == hero_mark[i] then
@@ -102,6 +104,8 @@ ac.game:event('地图-选择难度', function ()
 	                        end
                         end
                         name = unit:getName()
+                    else
+	                    random = false
                     end
                     unit:remove()
                     --unit:setOwner(player, true)                  
@@ -128,6 +132,10 @@ ac.game:event('地图-选择难度', function ()
                             hero:userData('专属名字', item:getName())
                             hero:userData('专属等级', 1)
                             hero:userData('专属挑战等级', 1)
+                        end
+                        --随机大礼包
+                        if random == true then
+	                        hero:createItem('治疗药水-小')
                         end
                         player:moveCamera(start_p, 0.2)
                         hero:userData('杀敌数', 0)

@@ -8,6 +8,19 @@ function sg.isintable(tbl,val)
 	return false
 end
 
+--复制一个表
+function sg.copytable(tbl)
+	local list = {}
+	for a,b in pairs(tbl) do
+		if type(b) == 'table' then
+			list[a] = sg.copytable(b)
+		else
+			list[a] = b
+		end
+	end
+	return list
+end
+
 --分割字符串
 function sg.split(str, p)
 	local rt = {}
