@@ -57,14 +57,10 @@ base:event('单位-死亡', function (trg, unit)
 end)
 
 --受伤警报
-local cd = false
 base:event('单位-受到伤害', function()
-	if base:get '生命'/base:get '生命上限' <= 0.5 and  cd == false then
-		sg.message('本阵有难，请速速前往支援！',5)
-		cd = true
-		ac.wait(3,function()
-			cd = false
-		end)
+	local rate = base:get '生命'/base:get '生命上限'
+	if rate > 0 and rate <= 0.5 then
+		sg.message('本阵有难，请速速前往支援！剩余生命值' .. math.ceil(rate * 100) .. '%',5)
 	end
 end)
 --无敌一次

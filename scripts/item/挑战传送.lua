@@ -42,9 +42,9 @@ end
 
 --练功房
 local point = {
-    ac.point(6293, 10301),   ac.point(9534, 10301),
-    ac.point(6293, 7740),    ac.point(9534, 7740),
-    ac.point(6293, 5547),    ac.point(9534, 5547),
+    ac.point(6580, 10300),   ac.point(8260, 10300),
+    ac.point(6580, 8835),    ac.point(8260, 8835),
+    ac.point(6580, 7355),    ac.point(8260, 7355),
 }
 
 local mt = ac.item['练功房']
@@ -75,15 +75,15 @@ local exercise_monster = {
 }
 
 local exercise_point = {
-    ac.point(5793, 10301),   ac.point(9034, 10301),
-    ac.point(5793, 7740),    ac.point(9034, 7740),
-    ac.point(5793, 5547),    ac.point(9034, 5547),
+    ac.point(6140, 10300),   ac.point(8700, 10300),
+    ac.point(6140, 8835),    ac.point(8700, 8835),
+    ac.point(6140, 7355),    ac.point(8700, 7355),
 }
 
 --练功房刷怪
 local function exercise(unit, id, data)
     local p = exercise_point[id]
-    local rect = ac.rect(p, 2688, 2176)
+    local rect = ac.rect(p, 1700, 1200)
     local timer = false
     for _ = 1, data.count do
         local u = sg.creeps_player:createUnit(data.name, p, 270)

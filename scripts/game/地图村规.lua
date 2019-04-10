@@ -141,3 +141,9 @@ ac.game:event('地图-选择难度', function()
 		end
 	end)
 end)
+
+--音乐
+sg.last_music = [[resource\music\s1.mp3]]
+ac.wait(0,function()
+	ac.game:music(sg.last_music)
+end)

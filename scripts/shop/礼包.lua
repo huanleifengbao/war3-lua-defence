@@ -9,7 +9,7 @@ local list = {
 		--抽奖券
 		player:add_shop_info('抽奖券',item.draw)
 	end,
-	['锻造礼包'] = function(item,player)
+	['大师祝福'] = function(item,player)
 		local hero = player:getHero()
 		--成功率
 		hero:addBuff '锻造成功率上升'
@@ -17,9 +17,11 @@ local list = {
 			time = 0,
 			odds = 20,
 		}
-		--强化券
-		local item = hero:create_item('锻造保护券')
-		item:stack(item.ticket)
+		--获得率
+		hero:add('额外经验',item.add)
+		hero:add('额外金钱',item.add)
+		hero:add('额外木材',item.add)
+		print(hero:get'额外金钱',item.add)
 	end,
 	['天神下凡'] = function(item,player)
 		local hero = player:getHero()

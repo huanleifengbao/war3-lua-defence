@@ -5,9 +5,10 @@ ac.game:event('单位-死亡', function (_, dead, killer)
     if (player_dead == sg.creeps_player or player_dead == sg.enemy_player) and (player_killer:id() >= 1 and player_killer:id() <= sg.max_player) then
         killer:userData('杀敌数', killer:userData('杀敌数') + 1)
         ac.game:eventNotify('地图-英雄杀敌', killer, player_killer, dead)
-        local gold = (dead:get('死亡金钱') + killer:get('击杀金钱')) * (1 + killer:get('击杀金钱%'))
-        local lumber = (dead:get('死亡木材') + killer:get('击杀木材')) * (1 + killer:get('击杀木材%'))
-        local exp = (dead:get('死亡经验') + killer:get('击杀经验')) * (1 + killer:get('击杀经验%'))
+        print(killer:get('额外金钱'))
+        local gold = (dead:get('死亡金钱') + killer:get('击杀金钱')) * (1 + killer:get('额外金钱')/100)
+        local lumber = (dead:get('死亡木材') + killer:get('击杀木材')) * (1 + killer:get('额外木材')/100)
+        local exp = (dead:get('死亡经验') + killer:get('击杀经验')) * (1 + killer:get('额外经验')/100)
         local msg_height = 140
         if gold > 0 then
             player_killer:add('金币', gold)

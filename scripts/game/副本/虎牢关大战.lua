@@ -68,6 +68,7 @@ function mt:onAdd()
         end
         --结束副本一定会跑的函数
         local function instance_end()
+        	ac.game:music(sg.last_music)
         	stage_start = false
         	sg.camera()
             sg.start_enemy()
@@ -106,6 +107,8 @@ function mt:onAdd()
         if #mark == 0 then
             instance_end()
         else
+	        --音乐
+	        ac.game:music([[resource\music\fb1.mp3]])
 	        stage_start = true
 	        --视野
 			sg.off_fog(ac.rect(-11650,-1650,-8100,2300))
@@ -257,6 +260,7 @@ function mt:onAdd()
 		                                    u:remove()
 		                                end
 		                            end
+		                            ac.game:musicTheme([[resource\music\victory.mp3]])
 		                            --打赢了当然要放点烟花(TNT)庆祝下
 		                            --放个p
 		                            --[==[local p1 = boss:getPoint()

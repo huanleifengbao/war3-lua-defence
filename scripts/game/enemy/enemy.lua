@@ -41,7 +41,7 @@ local data = {
 	id = function(n)
 		return sg.get_enemy_id(n)
 	end,
-	start_time = 120,	--前置等待时间
+	start_time = 10,	--前置等待时间
 	time_out = 80,	--每波间隔时间
 	count = 15,	--每条路怪物数量
 	boss = 10,	--每多少波出一次boss
@@ -229,6 +229,9 @@ local function create_enemy(wave)
 				}
 			end
 			u:level(boss_data.level(num),false)
+			for i = 1,5 do
+				sg.message('|cffff0000敌|r|cffff0800方|r|cffff1000将|r|cffff1800领|r|cffff2000出|r|cffff2800现|r|cffff3000！|r|cffff3800速|r|cffff4000速|r|cffff4800支|r|cffff5000援|r|cffff5800本|r|cffff6000阵|r|cffff6800！|r',10)
+			end
 			--已是最后一波boss，创建胜利条件
 			if data.max_wave ~= 0 and wave == data.max_wave then
 				local timer
@@ -236,9 +239,20 @@ local function create_enemy(wave)
 					if #sg.all_enemy == 0 then
 						timer:remove()
 						ac.game:eventNotify('地图-游戏通关')
+						sg.last_music = [[resource\music\s1.mp3]]
+						ac.game:music(sg.last_music)
+						ac.game:musicTheme([[resource\music\victory.mp3]])											
 					end
 				end)
+				sg.last_music = [[resource\music\bs4.mp3]]
+			else
+				sg.last_music = [[resource\music\bs1.mp3]]
+				u:event('单位-死亡',function()
+					sg.last_music = [[resource\music\s1.mp3]]
+					ac.game:music(sg.last_music)
+				end)
 			end
+			ac.game:music(sg.last_music)			
 		end)
 		sg.timerdialog('boss',sg.boss_timer)
 	end
@@ -259,7 +273,14 @@ local function create_wave()
 	local time_out = data.time_out
 	local str = get_dialog_str(wave + 1)
 	local max_wave = data.max_wave
-	sg.wave_timer = ac.wait(time_out,function()		
+	sg.wave_timer = ac.wait(time_out,function()
+		sg.message('第' .. wave .. '波进攻到来，请注意防守本阵！',10)
+		--非无尽给工资
+		local gold = 5000 * wave
+		sg.message('所有玩家获得了' .. gold .. '金币的补给',10)
+		for i = 1,sg.max_player do
+			ac.player(i):add('金币', gold)
+		end
 		if max_wave == 0 or wave < max_wave then
 			create_wave()
 		end

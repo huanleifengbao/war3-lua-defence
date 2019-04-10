@@ -185,21 +185,21 @@ shop:setItem('新手礼包', 9, 'Q')
 shop:setItem('荣光不败之翼', 10, 'W')
 shop:setItem('原初的符文', 11, 'E')
 shop:setItem('头号玩家', 12, 'R')
---shop:setItem('锻造礼包', 5, 'A')
 shop:setItem('天神下凡', 5, 'A')
+shop:setItem('大师祝福', 6, 'S')
 --shop:setItem('时为朦胧的雪花之翼', 3, 'C')
-shop:setItem('飞雷', 6, 'S')
-shop:setItem('的卢', 7, 'D')
-shop:setItem('赤兔', 8, 'F')
+shop:setItem('飞雷', 1, 'Z')
+shop:setItem('的卢', 2, 'X')
+shop:setItem('赤兔', 3, 'C')
 if console.enable == true then
     shop:setItem('商城作弊怪', 4, 'V')
 end
 
 --练功
 local point = {
-    ac.point(6593, 10301),   ac.point(9834, 10301),
-    ac.point(6593, 7740),    ac.point(9834, 7740),
-    ac.point(6593, 5547),    ac.point(9834, 5547),
+    ac.point(6780, 10300),   ac.point(8060, 10300),
+    ac.point(6780, 8835),    ac.point(8060, 8835),
+    ac.point(6780, 7355),    ac.point(8060, 7355),
 }
 for i = 1, #point do
     local shop = ac.player(16):createShop('野外挑战', point[i], 270)

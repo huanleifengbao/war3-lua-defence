@@ -94,6 +94,7 @@ function mt:onAdd()
         end
         --结束副本一定会跑的函数
         local function instance_end()
+        	ac.game:music(sg.last_music)
         	stage_start = false
         	sg.camera()
             sg.start_enemy()
@@ -131,6 +132,8 @@ function mt:onAdd()
         if #mark == 0 then
             instance_end()
         else
+	        --音乐
+	        ac.game:music([[resource\music\fb3.mp3]])
 	        stage_start = true
 	        --视野
 			sg.off_fog(ac.rect(-8100,6800,-6500,9200))
@@ -380,6 +383,7 @@ function mt:onAdd()
 		                                        end
 		                                        instance_end()
 		                                    end)
+		                                    ac.game:musicTheme([[resource\music\victory.mp3]])
 		                                    for _, hero in ipairs(hero_mark) do
 		                                        hero:addRestriction '无敌'
 		                                        local player = hero:getOwner()
