@@ -218,7 +218,7 @@ function mt:onAdd()
     local player = unit:getOwner()
 
 	player:add_shop_info('新手礼包',1)
-	player:add_shop_info('荣光不败之翼',1)
+	player:add_shop_info('白亚之翼',1)
 	player:add_shop_info('原初的符文',1)
 	player:add_shop_info('头号玩家',1)
 	player:add_shop_info('大师祝福',1)
