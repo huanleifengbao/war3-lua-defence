@@ -70,6 +70,7 @@ base:event('单位-即将死亡', function(trg,_)
 	{
 		time = 30,
 	}
+	base:set('生命',base:get'生命上限')
 	trg:remove()
 	return false
 end)

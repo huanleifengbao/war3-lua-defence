@@ -41,7 +41,7 @@ local data = {
 	id = function(n)
 		return sg.get_enemy_id(n)
 	end,
-	start_time = 10,	--前置等待时间
+	start_time = 120,	--前置等待时间
 	time_out = 80,	--每波间隔时间
 	count = 15,	--每条路怪物数量
 	boss = 10,	--每多少波出一次boss
@@ -61,11 +61,11 @@ local data = {
 			if n < 10 then
 				atk = n * 100
 			elseif n < 20 then
-				atk = n * 1000
+				atk = n * 2000
 			elseif n < 30 then
 				atk = n * 50000
 			elseif n <= 40 then
-				atk = n * 5000000
+				atk = n * 150000
 			end
 			return atk
 		end,
@@ -105,7 +105,7 @@ local boss_data = {
 	end,
 	attribute = {	--进攻怪物属性公式
 		['生命'] = function(n)
-			return 10^n * 5000000
+			return 10^n * 25000000
 		end,
 		['力量'] = function(n)
 			return 10^n * 10000
@@ -115,6 +115,9 @@ local boss_data = {
 		end,
 		['智力'] = function(n)
 			return 10^n * 10000
+		end,
+		['护甲'] = function(n)
+			return 5000 * n
 		end,
 		['魔抗'] = function(n)
 			return n * 20 + 10
@@ -229,7 +232,7 @@ local function create_enemy(wave)
 				}
 			end
 			u:level(boss_data.level(num),false)
-			for i = 1,5 do
+			for i = 1,10 do
 				sg.message('|cffff0000敌|r|cffff0800方|r|cffff1000将|r|cffff1800领|r|cffff2000出|r|cffff2800现|r|cffff3000！|r|cffff3800速|r|cffff4000速|r|cffff4800支|r|cffff5000援|r|cffff5800本|r|cffff6000阵|r|cffff6800！|r',10)
 			end
 			--已是最后一波boss，创建胜利条件
@@ -247,7 +250,9 @@ local function create_enemy(wave)
 				sg.last_music = [[resource\music\bs4.mp3]]
 			else
 				sg.last_music = [[resource\music\bs1.mp3]]
-				u:event('单位-死亡',function()
+				u:event('单位-死亡',function(_,_,killer)
+					local player = killer:getOwner()
+					sg.message('|cffff0000' .. player:name() .. '|r|cffffff00作|r|cffffff0c出|r|cffffff19了|r|cffffff26最|r|cffffff33后|r|cffffff3f一|r|cffffff4c击|r|cffffff59，|r|cffffff66成|r|cffffff72功|r|cffffff7f讨|r|cffffff8c伐|r|cffffff99敌|r|cffffffa5方|r|cffffffb2将|r|cffffffbf领|r|cffffffcc！|r',10)
 					sg.last_music = [[resource\music\s1.mp3]]
 					ac.game:music(sg.last_music)
 				end)
@@ -273,14 +278,16 @@ local function create_wave()
 	local time_out = data.time_out
 	local str = get_dialog_str(wave + 1)
 	local max_wave = data.max_wave
-	sg.wave_timer = ac.wait(time_out,function()
-		sg.message('第' .. wave .. '波进攻到来，请注意防守本阵！',10)
-		--非无尽给工资
+	sg.message('|cffffffcc第|r|cffff9900' .. wave .. '|r|cffffffcc波进攻到来，请注意防守本阵！|r',10)
+	--非无尽给工资
+	if sg.ex_mode ~= true then		
 		local gold = 5000 * wave
-		sg.message('所有玩家获得了' .. gold .. '金币的补给',10)
+		sg.message('|cffff6600所有玩家获得了|r|cffffff00' .. gold .. '|r|cffff6600金币的补给|r',10)
 		for i = 1,sg.max_player do
 			ac.player(i):add('金币', gold)
 		end
+	end
+	sg.wave_timer = ac.wait(time_out,function()		
 		if max_wave == 0 or wave < max_wave then
 			create_wave()
 		end
