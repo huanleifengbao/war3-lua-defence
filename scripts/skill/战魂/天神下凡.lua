@@ -12,7 +12,9 @@ function mt:onEnable()
     	if sg.get_random(self.odds) then
     		sg.add_allatr(hero,self.atr)
 		end
-    	sg.recovery(hero,self.rec)
+		if sg.get_random(self.rec_odds) then
+    		sg.recovery(hero,self.rec)
+		end   	
 		if not target:isHero() and sg.get_random(self.kill) then
 			local p = target:getPoint()
 			ac.effect {

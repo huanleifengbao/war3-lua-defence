@@ -61,11 +61,11 @@ local data = {
 			if n < 10 then
 				atk = n * 100
 			elseif n < 20 then
-				atk = n * 2000
+				atk = n * 5000
 			elseif n < 30 then
 				atk = n * 50000
 			elseif n <= 40 then
-				atk = n * 150000
+				atk = n * 300000
 			end
 			return atk
 		end,
@@ -120,7 +120,7 @@ local boss_data = {
 			return 5000 * n
 		end,
 		['魔抗'] = function(n)
-			return n * 20 + 10
+			return n * 50 + 10
 		end,
 		['命中'] = function(n)
 			return 50
@@ -244,7 +244,9 @@ local function create_enemy(wave)
 						ac.game:eventNotify('地图-游戏通关')
 						sg.last_music = [[resource\music\s1.mp3]]
 						ac.game:music(sg.last_music)
+						ac.wait(0,function()
 						ac.game:musicTheme([[resource\music\victory.mp3]])											
+						end)
 					end
 				end)
 				sg.last_music = [[resource\music\bs4.mp3]]
@@ -276,7 +278,8 @@ local function create_wave()
 	wave = wave + 1
 	create_enemy(wave)
 	local time_out = data.time_out
-	local str = get_dialog_str(wave + 1)
+	local now_wave = wave + 1
+	local str = get_dialog_str(now_wave)
 	local max_wave = data.max_wave
 	sg.message('|cffffffcc第|r|cffff9900' .. wave .. '|r|cffffffcc波进攻到来，请注意防守本阵！|r',10)
 	--非无尽给工资
@@ -287,11 +290,11 @@ local function create_wave()
 			ac.player(i):add('金币', gold)
 		end
 	end
-	sg.wave_timer = ac.wait(time_out,function()		
-		if max_wave == 0 or wave < max_wave then
+	if max_wave == 0 or now_wave < max_wave then
+		sg.wave_timer = ac.wait(time_out,function()		
 			create_wave()
-		end
-	end)
+		end)
+	end
 	if max_wave == 0 or wave < max_wave then
 		timerdialog = sg.timerdialog(str,sg.wave_timer)
 	end

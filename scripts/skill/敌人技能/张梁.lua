@@ -27,7 +27,7 @@ function mt:onCastStart()
 	end
 	local x,y = point:getXY()
 	local start = ac.point(x - 1000,y + 1000)
-	for i = 0,5 do
+	for i = 0,3 do
 		for j = 0,1 do
 			local angle = 270 * j
 			local direct = angle - 90 + 180 * j
@@ -58,14 +58,13 @@ function mt:onCastShot()
 	local area = self.area
 	local x,y = point:getXY()
 	local start = ac.point(x - 1000,y + 1000)
-	local skill = self
-	local damage = self.damage * hero:get('攻击')
+	local skill = self	
 	if self.lie == true then
 		start = ac.point(x - 800,y + 800)
 	end	
 	local hit = {}
 	local distance = self.distance
-	for i = 0,5 do
+	for i = 0,3 do
 		for j = 0,1 do
 			local angle = 270 * j
 			local direct = angle - 90 + 180 * j
@@ -82,6 +81,7 @@ function mt:onCastShot()
 			}
 			function mover:onHit(u)
 				if not hit[u] then
+					local damage = skill.damage/100 * u:get '生命上限'
 					hero:damage
 					{
 					    target = u,

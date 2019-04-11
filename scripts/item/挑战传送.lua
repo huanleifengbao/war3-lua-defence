@@ -65,11 +65,11 @@ for i = 1, sg.max_player do
 end
 
 local exercise_monster = {
-    ['刷钱1'] = {name = '金币怪1', count = 20, cd = 1, gold = 500, lumber = 0},
+    ['刷钱1'] = {name = '金币怪1', count = 20, cd = 1, gold = 1000, lumber = 0},
     ['刷钱2'] = {name = '金币怪2', count = 20, cd = 1, gold = 10000, lumber = 0},
-    ['刷木1'] = {name = '木材怪1', count = 20, cd = 1, gold = 0, lumber = 50},
-    ['刷木2'] = {name = '木材怪2', count = 20, cd = 1, gold = 0, lumber = 150},
-    ['刷木3'] = {name = '木材怪3', count = 20, cd = 1, gold = 0, lumber = 500},
+    ['刷木1'] = {name = '木材怪1', count = 20, cd = 1, gold = 0, lumber = 10},
+    ['刷木2'] = {name = '木材怪2', count = 20, cd = 1, gold = 0, lumber = 50},
+    ['刷木3'] = {name = '木材怪3', count = 20, cd = 1, gold = 0, lumber = 100},
     ['刷经验1'] = {name = '经验宝宝1', count = 20, cd = 1, gold = 100, lumber = 0},
     ['作弊刷怪'] = {name = '经验宝宝1', count = 100, cd = 0.1, gold = 0, lumber = 0},
 }

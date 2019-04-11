@@ -39,3 +39,26 @@ require 'skill.敌人技能.孟坦'
 require 'skill.敌人技能.卞喜'
 require 'skill.敌人技能.王植'
 require 'skill.敌人技能.秦琪'
+
+local mt = ac.skill['BOSS-穿甲攻击']
+
+function mt:onAdd()
+	local hero = self:getOwner()
+	self.trg = hero:event('单位-即将造成伤害',function(_,_,damage)
+		if damage:isCommonAttack() == true then
+			local target = damage.target
+			local dam = target:get '生命上限' * self.damage/100
+			hero:damage
+			{
+			    target = target,
+			    damage = dam,
+			    damage_type = self.damage_type,
+			    skill = self,
+			}
+		end
+	end)
+end
+
+function mt:onRemove()
+	self.trg:remove()
+end

@@ -12,13 +12,13 @@ sg.creeps_player:alliance(sg.enemy_player, '结盟', true)
 --增加三维并增加对应属性
 local function add_atr(hero,name,count)
 	if name == '力量' then
-		hero:add('生命上限',25 * count)
-		hero:add('生命恢复',0.05 * count)
+		hero:add('生命上限',5 * count)
+		hero:add('生命恢复',0.005 * count)
 	elseif name == '敏捷' then
 		hero:add('攻击速度',0.02 * count)
 		hero:add('护甲',0.001 * count)
 	elseif name == '智力' then
-		hero:add('魔法上限',15 * count)
+		hero:add('魔法上限',1 * count)
 		hero:add('魔法恢复',0.05 * count)
 		hero:add('攻击',1 * count)
 	end
@@ -146,4 +146,14 @@ end)
 sg.last_music = [[resource\music\s1.mp3]]
 ac.wait(0,function()
 	ac.game:music(sg.last_music)
+end)
+
+--指令
+ac.game:event('玩家-聊天', function (_, player, str)
+	if str == '-自杀' then
+		local hero = player:getHero()
+		if hero:isAlive() then
+			hero:kill(hero)
+		end
+	end
 end)

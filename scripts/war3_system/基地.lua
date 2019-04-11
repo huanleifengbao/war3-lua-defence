@@ -17,12 +17,12 @@ base:event('单位-死亡', function (trg, unit)
             }
         end
     end
-    for _, u in ac.selector()
-        : inRange(base, 800)
-        : ipairs()
-    do
-        base:kill(u)
-    end
+    --for _, u in ac.selector()
+    --    : inRange(base, 800)
+    --    : ipairs()
+    --do
+    --    base:kill(u)
+    --end
 	for i = 1,sg.max_player do
 		local player = ac.player(i)
         player:moveCamera(p1, 0)

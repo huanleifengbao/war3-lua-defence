@@ -44,9 +44,9 @@ local shop_list = {
     ['药水商店'] = {p = ac.point(6344, -10529),n = [[shop\yaoshuishangdian.mdx]]},
     --中心
 	['新手装备'] = {p = ac.point(7044, -10529),n = [[shop\xinshouzhuangbei.mdx]]},
-	['进阶挑战'] = {p = ac.point(7744, -10529),n = [[shop\jinjietiaozhan.mdx]]},
-	['装备进阶'] = {p = ac.point(8444, -10529),n = [[shop\zhuangbeijinjie.mdx]]},
-	['野外挑战'] = {p = ac.point(9144, -10529),n = [[shop\yewaitiaozhan.mdx]]},
+	['野外挑战'] = {p = ac.point(7744, -10529),n = [[shop\yewaitiaozhan.mdx]]},
+	['进阶挑战'] = {p = ac.point(8444, -10529),n = [[shop\jinjietiaozhan.mdx]]},
+	['装备进阶'] = {p = ac.point(9144, -10529),n = [[shop\zhuangbeijinjie.mdx]]},	
 }
 
 for name,data in pairs(shop_list) do
@@ -226,12 +226,12 @@ end
 
 --觉醒挑战房
 local point = {
-    ac.point(-6250, -3500),
-    ac.point(-3950, -3500),
-    ac.point(-1750, -3500),
-    ac.point(400, -3500),
-    ac.point(2450, -3500),
-    ac.point(4600, -3500),
+    ac.point(-6400, -3500),
+    ac.point(-4100, -3500),
+    ac.point(-1900, -3500),
+    ac.point(250, -3500),
+    ac.point(2300, -3500),
+    ac.point(4450, -3500),
 }
 for i = 1, #point do
     local shop = ac.player(16):createShop('野外挑战', point[i], 270)

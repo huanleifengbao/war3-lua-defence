@@ -58,7 +58,7 @@ function mt:onCastShot()
 						speed = distance/0.2,
 						angle = u:getPoint()/point,
 					}
-					local damage = self.damage * hero:get('攻击')
+					local damage = self.damage/100 * u:get '生命上限'
 					hero:damage
 					{
 					    target = u,
@@ -144,7 +144,7 @@ function mt:do_damage(angle)
 			speed = 2000,
 			angle = angle,
 		}
-		local damage = self.damage * hero:get('攻击')
+		local damage = self.damage/100 * u:get '生命上限'
 		hero:damage
 		{
 		    target = u,

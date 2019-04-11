@@ -1,10 +1,11 @@
 --创建权重表
 local prize = {}
-local has_skill = {}
+local sow = {}
 for name,skill in pairs(ac.skill) do
 	if skill.lottery then
-		has_skill[name] = {}
-		for i = 1,math.ceil(skill.lottery[1] * 10) do
+		local lottery = skill.lottery[1]
+		sow[name] = lottery
+		for i = 1,math.ceil(lottery * 10) do
 			table.insert(prize,name)
 		end
 	end
@@ -14,15 +15,15 @@ end
 local low_prize = {}
 local crycryo = 
 {
-	[1] = {atr = 10888888,lot = 0.1},
-	[2] = {atr = 5288888,lot = 0.2},
-	[3] = {atr = 1088888,lot = 0.4},
-	[4] = {atr = 588888,lot = 0.8},
-	[5] = {atr = 208888,lot = 2},
-	[6] = {atr = 108888,lot = 4},
-	[7] = {atr = 52888,lot = 6},
-	[8] = {atr = 11888,lot = 8},
-	[9] = {atr = 1888,lot = 10},
+	[1] = {atr = 50888888,lot = 0.1},
+	[2] = {atr = 2888888,lot = 0.2},
+	[3] = {atr = 588888,lot = 0.4},
+	[4] = {atr = 288888,lot = 0.8},
+	[5] = {atr = 108888,lot = 2},
+	[6] = {atr = 58888,lot = 4},
+	[7] = {atr = 28888,lot = 6},
+	[8] = {atr = 5888,lot = 8},
+	[9] = {atr = 888,lot = 10},
 }
 for i = 1,#crycryo do
 	local data = crycryo[i]
@@ -36,9 +37,11 @@ local function get_skill(hero,name)
 	local skill = hero:findSkill(name)
 	if skill then
 		if skill:isEnable() then
+			hero:particle([[Abilities\Spells\Items\AIlm\AIlmTarget.mdl]],'origin')()				
 			return false
 		else
 			skill:enable()
+			return true
 		end
 	else
 		print(name,'有个战魂初始没加到魔法书里')
@@ -84,6 +87,16 @@ local function draw(hero)
 		local name = prize[math.random(#prize)]	
 		sg.message('|cffffff00时|r|cfffbff17来|r|cfff6ff2e运|r|cfff2ff45转|r|cffedff5c！|r|cffe8ff73恭|r|cffe4ff8b喜|r|cffdfffa2玩|r|cffdaffb9家|cffff6800' .. player:name() .. '|r|r|cffd6ffd0抽|r|cffd1ffe7到|r|cffccffff了|r|cffff6800' .. name .. '|r|cffccffff！|r', 5)
 		sg.get_sow(hero,name)
+		if sow[name] <= 0.1 then
+			hero:particle([[Abilities\Spells\Human\Resurrect\ResurrectCaster.mdl]],'origin')()	
+		end
+		if sow[name] <= 0.2 then
+			hero:particle([[effect\TheHolyBomb.mdx]],'origin')()
+		end
+		if sow[name] <= 0.3 then
+			hero:particle([[Abilities\Spells\Human\HolyBolt\HolyBoltSpecialArt.mdl]],'origin')()
+		end
+		hero:particle([[Abilities\Spells\Demon\DarkPortal\DarkPortalTarget.mdl]],'origin')()
 	else
 		--战魂莫得了，试试安慰奖
 		hero = player:getHero()
@@ -99,8 +112,8 @@ local function draw(hero)
 			end
 			player:message(text, 5)
 		else
-			sg.add_allatr(hero,888)
-			player:message('|cffccffff谢|r|cffcffcf9谢|r|cffd2f9f3惠|r|cffd5f6ec顾|r|cffd8f3e6！|r|cffdbf0e0你|r|cffdfecd9获|r|cffe2e9d3得|r|cffe5e6cc了|r|cffffff00888|r|cfff2d9b3点|r|cfff5d6ad全|r|cfff8d3a6属|r|cfffbd0a0性|r|cffffcc99！|r', 5)
+			sg.add_allatr(hero,88)
+			player:message('|cffccffff谢|r|cffcffcf9谢|r|cffd2f9f3惠|r|cffd5f6ec顾|r|cffd8f3e6！|r|cffdbf0e0你|r|cffdfecd9获|r|cffe2e9d3得|r|cffe5e6cc了|r|cffffff0088|r|cfff2d9b3点|r|cfff5d6ad全|r|cfff8d3a6属|r|cfffbd0a0性|r|cffffcc99！|r', 5)
 		end
 	end
 end
@@ -132,7 +145,7 @@ function mt:onCanAdd(hero)
 end
 
 --使用战魂
-for name,_ in pairs(has_skill) do
+for name,_ in pairs(sow) do
 	local mt = ac.skill['获得-' .. name]
 
 	function mt:onCastShot()

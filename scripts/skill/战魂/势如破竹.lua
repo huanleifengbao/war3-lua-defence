@@ -7,7 +7,9 @@ function mt:onEnable()
 	local hero = self:getOwner()
 	hero:add('战力',self.dam)
 	self.trg = hero:event('单位-攻击出手', function (_, _, target, damage, mover)
-		sg.recovery(hero,self.rec)
+		if sg.get_random(self.rec_odds) then
+    		sg.recovery(hero,self.rec)
+		end
 	end)
 	self.trg2 = ac.game:event('单位-死亡', function (_, dead, killer)
 		if killer == hero and sg.get_random(self.odds) then

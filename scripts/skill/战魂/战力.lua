@@ -12,7 +12,9 @@ for _,skill_name in ipairs(tbl) do
 	    	if sg.get_random(self.odds) then
 	    		sg.add_allatr(hero,self.atr)
 			end
-	    	sg.recovery(hero,self.rec)
+	    	if sg.get_random(self.rec_odds) then
+    			sg.recovery(hero,self.rec)
+			end
 		end)
 		ac.game:eventNotify('地图-获得战魂', hero)
 	end

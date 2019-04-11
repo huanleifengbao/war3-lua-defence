@@ -73,7 +73,7 @@ function mt:onCastShot()
 			    : ofNot '建筑'
 			    : ipairs()
 			do
-				local damage = self.damage * hero:get('攻击')
+				local damage = self.damage/100 * u:get '生命上限'
 				hero:damage
 				{
 				    target = u,
@@ -178,7 +178,7 @@ function mt:onCastChannel()
 			end
 		end
 		for _,u in ipairs(do_damage) do
-			local damage = self.damage * hero:get('攻击')
+			local damage = self.damage/100 * u:get '生命上限'
 			hero:damage
 			{
 			    target = u,
