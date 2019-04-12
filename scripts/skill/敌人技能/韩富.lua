@@ -21,7 +21,7 @@ function mt:onCastShot()
 	}
 	local skill = self
 	function mover:onRemove()
-		local damage = skill.damage/100 * u:get '生命上限'
+		local damage = skill.damage/100 * target:get '生命上限'
 		hero:damage
 		{
 		    target = target,

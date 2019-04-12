@@ -29,7 +29,6 @@ function mt:onCastShot()
     local area = self.area
     local count = self.count
     local skill = self
-    local damage = self.damage/100 * u:get '生命上限'
     local int = math.random(2)
 
     for i = - count / 2, count / 2 do
@@ -77,6 +76,7 @@ function mt:onCastShot()
                 }
             end
             if not u:isType '建筑' then
+                local damage = skill.damage/100 * u:get '生命上限'
                 hero:damage
                 {
                     target = u,
@@ -141,7 +141,6 @@ function mt:onCastShot()
 	local target = self:getTarget()
     local area = self.area
     local skill = self
-    local damage = self.damage/100 * u:get '生命上限'
 
     local angle = math.random(360)
     local speed = 60
@@ -206,7 +205,8 @@ function mt:onCastShot()
 		    : isEnemy(hero)
 		    : ofNot '建筑'
 		    : ipairs()
-		do
+        do
+            local damage = skill.damage/100 * u:get '生命上限'
             hero:damage
             {
                 target = u,
@@ -284,7 +284,6 @@ function mt:onCastShot()
 	local point = hero:getPoint()
     local area = self.area
     local skill = self
-    local damage = self.damage/100 * u:get '生命上限'
 	hero:speed(1)
 	sg.animation(hero,'spell throw')
     --放烟花
@@ -353,6 +352,7 @@ function mt:onCastShot()
                 height = 50,
                 time = 0,
             }
+            local damage = skill.damage/100 * u:get '生命上限'
             hero:damage
             {
                 target = u,

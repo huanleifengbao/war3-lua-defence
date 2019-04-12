@@ -171,7 +171,6 @@ function mt:onCastShot()
 	local hero = self:getOwner()
     local area = self.area
     local skill = self
-    local damage = self.damage/100 * u:get '生命上限'
     sg.animation(hero,'spell attack')
 	local function cast(point)
 		--放烟花
@@ -217,6 +216,7 @@ function mt:onCastShot()
 			: ofNot '建筑'
 			: ipairs()
 		do
+			local damage = skill.damage/100 * u:get '生命上限'
 			hero:damage
 			{
 				target = u,
