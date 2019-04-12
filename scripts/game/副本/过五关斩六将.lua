@@ -365,6 +365,7 @@ function mt:onAdd()
                                 if instance_lv >= instance_count then
 	                                ac.wait(0,function()
 	                                	if stage_start == true then
+		                                	sg.base.shop:getItem(msg):remove()
 		                                	stage_start = false
 		                                    timer2:remove()
 		                                    local back_time = 10

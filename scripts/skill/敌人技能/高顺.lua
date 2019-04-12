@@ -48,6 +48,7 @@ function mt:onCastShot()
 		end
 	end
 	ac.wait(time,function()
+		local mark = {}
 		for i = 1,count do
 			local p = point - {angle,distance/count * i - attack_range}
 			local tbl = {2,3}
@@ -62,6 +63,7 @@ function mt:onCastShot()
 				sg.set_color(u,{a = 0})
 				unit[j] = u
 			end
+			
 			ac.wait(0.1 + pulse * i,function()
 				ac.wait(0.5,function()
 					for i = 1,2 do
@@ -72,9 +74,12 @@ function mt:onCastShot()
 				    : inRange(p,area)
 				    : isEnemy(hero)
 				    : ofNot '建筑'
+				    : filter(function(u)
+				        return not mark[u]
+				    end)
 				    : ipairs()
 				do
-					local damage = skill.damage * sg.get_allatr(hero)
+					local damage = skill.damage/100 * u:get '生命上限'
 					hero:damage
 					{
 					    target = u,
@@ -83,6 +88,7 @@ function mt:onCastShot()
 					    skill = skill,
 					}
 					u:particle([[Abilities\Spells\Other\Stampede\StampedeMissileDeath.mdl]],'chest')()
+					mark[u] = true
 				end
 			end)
 		end
@@ -143,7 +149,7 @@ function mt:onCastChannel()
 	ac.effect {
 	    target = self.target_point,
 	    model = [[effect\Dimension Slash.mdx]],
-	    size = self.area/300,
+	    size = self.area/200,
 	    speed = 0.6/time,
 	    time = time * 2,
 	}
@@ -158,7 +164,7 @@ function mt:onCastShot()
 		ac.effect {
 		    target = target,
 		    model = [[effect\DarkBlast.mdx]],
-		    size = self.area/250,
+		    size = self.area/200,
 		    time = 1,
 		}
 		for _, u in ac.selector()
@@ -167,7 +173,7 @@ function mt:onCastShot()
 		    : ofNot '建筑'
 		    : ipairs()
 		do
-			local damage = self.damage * sg.get_allatr(hero)
+			local damage = self.damage/100 * u:get '生命上限'
 			hero:damage
 			{
 			    target = u,

@@ -56,7 +56,7 @@ function mt:onCastShot()
 				    : ofNot '建筑'
 				    : ipairs()
 				do
-					local damage = self.damage * sg.get_allatr(hero)
+					local damage = self.damage/100 * u:get '生命上限'
 					hero:damage
 					{
 					    target = u,
@@ -99,7 +99,7 @@ function mt:do_damage(point,damage)
 		hero:damage
 		{
 		    target = u,
-		    damage = damage,
+		    damage = damage * u:get '生命上限',
 		    damage_type = self.damage_type,
 		    skill = self,
 		}
@@ -108,10 +108,10 @@ end
 
 function mt:create_fire(point)
 	local hero = self:getOwner()
-	self:do_damage(point,self.damage * sg.get_allatr(hero))
+	self:do_damage(point,self.damage/100)
 	local damage_pulse = self.damage_pulse
 	ac.timer(damage_pulse,self.time/damage_pulse,function()
-		self:do_damage(point,self.damage2 * sg.get_allatr(hero) * damage_pulse)
+		self:do_damage(point,self.damage2/100 * damage_pulse)
 	end)
 end
 
@@ -298,7 +298,7 @@ function mt:onCastChannel()
 	    time = 1,
 	}
 	self:do_damage(area,function(u)
-		local damage = self.damage * sg.get_allatr(hero)
+		local damage = self.damage/100 * u:get '生命上限'
 		hero:damage
 		{
 		    target = u,
@@ -323,7 +323,7 @@ function mt:onCastChannel()
 			--外圈伤害判定
 			self:do_damage(self.range,function(u)
 				if u:getPoint() * point > area then
-					local damage = self.damage2 * sg.get_allatr(hero)
+					local damage = self.damage2/100 * u:get '生命上限'
 					hero:damage
 					{
 					    target = u,

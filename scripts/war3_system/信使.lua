@@ -131,7 +131,7 @@ local function setCamera(player,flag)
 	if flag == '降低' then
 		height[player] = math.max(height[player] - 300,0)
 	else
-		height[player] = math.min(height[player] + 300,1200)
+		height[player] = math.min(height[player] + 300,600)
 	end
 	player:setCamera('距离',height[player] + 1650,0.2)
 end

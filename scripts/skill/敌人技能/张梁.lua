@@ -60,7 +60,7 @@ function mt:onCastShot()
 	local start = ac.point(x - 1000,y + 1000)
 	local skill = self	
 	if self.lie == true then
-		start = ac.point(x - 800,y + 800)
+		start = ac.point(x - 1000 + area,y + 1000 - area)
 	end	
 	local hit = {}
 	local distance = self.distance

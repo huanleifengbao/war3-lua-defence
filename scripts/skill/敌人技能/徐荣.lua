@@ -5,7 +5,6 @@ local mt = ac.skill['徐荣-暗之咒缚']
 function mt:do_stun(time)
 	local hero = self:getOwner()
 	local target = self:getTarget()
-	local damage = self.damage * sg.get_allatr(hero) * self.pulse
 	for _, u in ac.selector()
 	    : inRange(target,self.area)
 	    : isEnemy(hero)
@@ -15,6 +14,7 @@ function mt:do_stun(time)
 	    end)
 	    : ipairs()
 	do
+		local damage = self.damage/100 * u:get '生命上限'
 		u:addBuff '暗之咒缚' 
 		{
 			source = hero,
@@ -108,6 +108,7 @@ mt.show = 1
 mt.icon = [[ReplaceableTextures\CommandButtons\BTNAnimateDead.blp]]
 mt.title = '暗之咒缚'
 mt.description = '该单位被束缚了，无法行动且受到持续伤害。'
+mt.pulse = 0.5
 
 function mt:onAdd()
 	local u = self:getOwner()
@@ -122,7 +123,7 @@ function mt:onPulse()
 	hero:damage
 	{
 	    target = u,
-	    damage = self.damage,
+	    damage = self.damage * self.pulse,
 	    damage_type = skill.damage_type,
 	    skill = skill,
 	}
@@ -180,7 +181,7 @@ function mt:onCastShot()
 		}
 		function mover:onHit(u)
 			if not u:isType '建筑' then
-				local damage = skill.damage * sg.get_allatr(hero)
+				local damage = skill.damage/100 * u:get '生命上限'
 				hero:damage
 				{
 				    target = u,

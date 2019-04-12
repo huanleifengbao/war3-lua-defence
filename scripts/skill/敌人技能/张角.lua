@@ -21,8 +21,9 @@ function mt:onCastChannel()
 	hero:speed(0.6/self.castChannelTime)
 	sg.animation(hero,'spell slam')
 	self.angle = {}
+	local random = math.random(360)
 	for i = 1,self.direct do
-		local angle = hero:getFacing() + 360/self.direct * i
+		local angle = hero:getFacing() + 360/self.direct * i + random
 		local distance = self.area * self.count
 		local speed = distance/self.castChannelTime
 		local dummy = hero:createUnit('张角-闪电预警',point,angle)
@@ -153,7 +154,7 @@ function mt:onCastChannel()
 	local area = self.area
 	local distance = self.distance
 	local pulse = self.pulse
-	ac.timer(pulse,180/turn,function()
+	ac.timer(pulse,90/turn,function()
 		for i = 1,4 do
 			ac.effect {
 			    target = point,
@@ -205,7 +206,7 @@ function mt:onCastChannel()
 	local dummy = hero:createUnit('张角-幻象',point,angle)
 	sg.animation(dummy,'spell channel',true)
 	sg.set_color(dummy,{a = 0.5})
-	ac.wait(pulse * 180/turn + 1,function()
+	ac.wait(pulse * 90/turn + 1,function()
 		dummy:remove()
 	end)
 end

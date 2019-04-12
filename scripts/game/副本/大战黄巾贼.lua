@@ -196,6 +196,7 @@ function mt:onAdd()
                         if boss_count == 0 then
 	                        ac.wait(0,function()
 		                        if stage_start == true then
+			                        sg.base.shop:getItem(msg):remove()
 			                        stage_start = false
 		                            timer2:remove()
 		                            local back_time = 10

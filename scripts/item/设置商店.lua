@@ -1,6 +1,7 @@
 -- console.enable --> 是否打开控制台,true就是能作弊,false就是不能作弊
 --基地
 local shop = sg.base:createShop()
+sg.base.shop = shop
 shop:setBuyRange(1000000)
 shop:setItem('交换金币', 9, 'Q')
 shop:setItem('交换木材', 10, 'W')

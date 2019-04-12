@@ -50,7 +50,7 @@ function mt:onCastShot()
 			}		
 			function mover:onHit(u)
 				if not u:isType '建筑' then
-					local damage = skill.damage * sg.get_allatr(hero)
+					local damage = skill.damage/100 * u:get '生命上限'
 					hero:damage
 					{
 					    target = u,
@@ -110,13 +110,13 @@ function mt:onCastShot()
 	    model = [[Abilities\Spells\Human\Thunderclap\ThunderClapCaster.mdl]],
 	    time = 1,
 	}
-	local damage = skill.damage * sg.get_allatr(hero)
 	for _, u in ac.selector()
 	    : inRange(target,area)
 	    : isEnemy(hero)
 	    : ofNot '建筑'
 	    : ipairs()
-	do	
+	do
+		local damage = skill.damage/100 * u:get '生命上限'
 		hero:damage
 		{
 		    target = u,
@@ -142,7 +142,7 @@ function mt:onCastShot()
 		}
 		function mover:onHit(u)
 			if not u:isType '建筑' then
-				local damage = skill.damage2 * sg.get_allatr(hero)
+				local damage = skill.damage2/100 * u:get '生命上限'
 				hero:damage
 				{
 				    target = u,
