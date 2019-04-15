@@ -2,8 +2,10 @@ local ai_groups  = {}
 local unit_groups = {}
 local actions = {}
 local pulse = 0.5
+local time_count = 0.0
 
 local timer = ac.loop(pulse,function()
+	time_count = time_count + pulse
 	for i = #unit_groups,1,-1 do
 		local u = unit_groups[i]
 		if not u:isAlive() then
@@ -124,41 +126,55 @@ local function check_point(u)
 			ai_groups[u].index = index + 1
 			attack_move(u)
 		end
+		return true
+	else
 		return false
+	end	
+end
+
+--每3秒强制发布一次攻击命令
+local function check_attack(u)
+	if time_count%3 == 0.0 then
+		u:stopWalk()
+		attack_move(u)
+		print('葱鸭')
+		return false
+	else
+		return true
 	end
-	return true
 end
 
 --若长时间未产生位移且不在攻击状态，则使其继续向下个点移动
-local max_idle = 5
-local function check_move(u)
-	local data = ai_groups[u]
-	local point = data.last_point
-	local now_point = u:getPoint()
-	data.last_point = now_point
-	if point * now_point <= 1 and data.is_attack == false then
-		data.idle = data.idle + pulse
-		if data.idle >= max_idle then
-			data.idle = 0
-			local stuck = true
-			for _,_ in ac.selector()
-			    : inRange(u:getPoint(),1000)
-			    : isEnemy(u)
-			    : isVisible(u)
-			    : ipairs()
-			do
-				stuck = false				
-				break
-			end
-			if stuck == true then
-				attack_move(u)
-			end
-		end
-	else
-		data.idle = 0
-	end
-end
+--local max_idle = 5
+--local function check_move(u)
+--	local data = ai_groups[u]
+--	local point = data.last_point
+--	local now_point = u:getPoint()
+--	data.last_point = now_point
+--	if point * now_point <= 1 and data.is_attack == false then
+--		data.idle = data.idle + pulse
+--		if data.idle >= max_idle then
+--			data.idle = 0
+--			local stuck = true
+--			for _,_ in ac.selector()
+--			    : inRange(u:getPoint(),1000)
+--			    : isEnemy(u)
+--			    : isVisible(u)
+--			    : ipairs()
+--			do
+--				stuck = false				
+--				break
+--			end
+--			if stuck == true then
+--				attack_move(u)
+--			end
+--		end
+--	else
+--		data.idle = 0
+--	end
+--end
 
 add_action(check_stun)
 add_action(check_point)
-add_action(check_move)
+add_action(check_attack)
+--add_action(check_move)

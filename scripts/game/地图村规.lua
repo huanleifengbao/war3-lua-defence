@@ -87,48 +87,6 @@ function sg.off_fog(rect)
 	end
 end
 
---初始镜头位置
-ac.wait(0,function()
-	for i = 1,sg.max_player do
-		ac.player(i):moveCamera(ac.point(1460,-8570), 0)
-	end
-end)
-
-local enemy = sg.enemy_player
-local creeps = sg.creeps_player
---选人区
-local rect = ac.rect(-800,-11200,3400,-5500)
-sg.off_fog(rect)
---刷怪区
-rect = ac.rect(5000,-6000,9000,4200)
-sg.off_fog(rect)
-enemy:setFog('可见',rect)
---基地
-rect = ac.rect(3700,-11200,10500,-6000)
-sg.off_fog(rect)
-enemy:setFog('可见',rect)
---练功房
-rect = ac.rect(4300,4700,11000,11700)
-sg.off_fog(rect)
-creeps:setFog('可见',rect)
---专属升级区
-rect = ac.rect(9700,-4625,11100,4400)
-sg.off_fog(rect)
-creeps:setFog('可见',rect)
---觉醒挑战
-rect = ac.rect(-7600,-5150,5000,-1900)
-sg.off_fog(rect)
-creeps:setFog('可见',rect)
---锻造石
-rect = ac.rect(-350,-1900,3000,11500)
-sg.off_fog(rect)
-creeps:setFog('可见',rect)
---锻造大师
-rect = ac.rect(-11600,10100,-9100,11800)
-sg.off_fog(rect)
-creeps:setFog('可见',rect)
-
---tips
 local tips = {
 	'前期优先练功房升级，专属武器经验刷满，前往野外挑战升级专属武器',
 	'争取在第一波怪来临之前，升满新手装备',
@@ -138,7 +96,53 @@ local tips = {
 	'前期建议优先提升等级，挑战觉醒boss',
 }
 
-ac.game:event('地图-选择难度', function()
+ac.game:event('地图-选择难度', function ()
+--初始镜头位置
+	for i = 1,sg.max_player do
+		ac.player(i):moveCamera(ac.point(1460,-8570), 0)
+	end
+
+	local enemy = sg.enemy_player
+	local creeps = sg.creeps_player
+	--选人区
+	local rect = ac.rect(-800,-11200,3400,-5500)
+	sg.off_fog(rect)
+	--刷怪区
+		rect = ac.rect(5000,-6000,9000,4400)
+	sg.off_fog(rect)
+	enemy:setFog('可见',rect)
+	--基地
+	rect = ac.rect(3700,-11200,10500,-6000)
+	sg.off_fog(rect)
+	enemy:setFog('可见',rect)
+	--练功房
+	rect = ac.rect(4300,4700,11000,11700)
+	sg.off_fog(rect)
+	creeps:setFog('可见',rect)
+	--专属升级区
+	rect = ac.rect(9700,-4625,11100,4400)
+	sg.off_fog(rect)
+	creeps:setFog('可见',rect)
+	--觉醒挑战
+	rect = ac.rect(-7600,-5150,5000,-1900)
+	sg.off_fog(rect)
+	creeps:setFog('可见',rect)
+	--锻造石
+	rect = ac.rect(-350,-1900,3000,11500)
+	sg.off_fog(rect)
+	creeps:setFog('可见',rect)
+	--锻造大师
+	rect = ac.rect(-11600,10100,-9100,11800)
+	sg.off_fog(rect)
+	creeps:setFog('可见',rect)
+
+	--音乐
+	sg.last_music = [[resource\music\s1.mp3]]
+	ac.wait(0,function()
+		ac.game:music(sg.last_music)
+	end)
+
+--tips
 	local now_tips = sg.copytable(tips)
 	ac.timer(30,40,function()
 		local index = math.random(#now_tips)
@@ -148,12 +152,6 @@ ac.game:event('地图-选择难度', function()
 			now_tips = sg.copytable(tips)
 		end
 	end)
-end)
-
---音乐
-sg.last_music = [[resource\music\s1.mp3]]
-ac.wait(0,function()
-	ac.game:music(sg.last_music)
 end)
 
 --指令
