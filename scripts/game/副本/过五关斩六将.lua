@@ -110,6 +110,7 @@ function mt:onAdd()
             for i = 1,sg.max_player do
                 local player = ac.player(i)
                 player:message('副本已结束,敌人重新开始|cffff7500进攻|r', 5)
+                sg.reborn(player,0)
             end
         end
         --删除剩余小怪
@@ -310,18 +311,19 @@ function mt:onAdd()
                     local id = player:id()
                     local p2 = target_point[instance_lv] - {360 / #hero_mark * k, 120}
                     hero:tp(p2, true)
-                    local buff = hero:findBuff('假死')
-                    if buff then
-                        buff:remove()
+                    --local buff = hero:findBuff('假死')
+                    --if buff then
+                    --    buff:remove()
                         player:message('阵亡英雄已|cffffff00复活|r', 8)
-                        ac.effect {
-                            target = p2,
-                            model = [[Abilities\Spells\Human\Resurrect\ResurrectTarget.mdl]],
-                            time = 0,
-                        }
-                    end
+                        sg.reborn(player,0,p2)
+                        --ac.effect {
+                        --    target = p2,
+                        --    model = [[Abilities\Spells\Human\Resurrect\ResurrectTarget.mdl]],
+                        --    time = 0,
+                        --}
+                   -- end
                     local trg1, trg2
-                    trg1 = hero:event('单位-即将死亡', function ()
+                    trg1 = hero:event('单位-死亡', function ()
                         trg1:remove()
                         trg2:remove()
                         hero_count = hero_count - 1
@@ -329,10 +331,10 @@ function mt:onAdd()
                             ace()
                         else
                             --没团灭的死者会假死
-                            hero:addBuff '假死'{}
-                            for i = 1,sg.max_player do
-                                ac.player(i):message(sg.player_colour[id]..hero:getName()..'|r被杀了!剩余英雄:|cffff7500'..hero_count..'|r', 5)
-                            end
+                            --hero:addBuff '假死'{}
+                           -- for i = 1,sg.max_player do
+                               sg.message(sg.player_colour[id]..hero:getName()..'|r被杀了!剩余英雄:|cffff7500'..hero_count..'|r', 5)
+                            --end
                             return false
                         end
                     end)
@@ -374,10 +376,10 @@ function mt:onAdd()
 		                                        for k, hero in ipairs(hero_mark) do
 		                                            local p2 = home - {360 / #hero_mark * k, 120}
 		                                            hero:tp(p2, true)
-		                                            local buff = hero:findBuff('假死')
-		                                            if buff then
-		                                                buff:remove()
-		                                            end
+		                                            --local buff = hero:findBuff('假死')
+		                                            --if buff then
+		                                            --    buff:remove()
+		                                            --end
 		                                            hero:set('生命', hero:get('生命上限'))
 		                                            hero:set('魔法', hero:get('魔法上限'))
 		                                            hero:removeRestriction '无敌'
@@ -477,7 +479,7 @@ function mt:onAdd()
         local player = ac.player(i)
         player:timerDialog(msg, timer)
         player:message('进攻的敌人已被|cff00ffff冻结|r', 60)
-        player:message('|cffff7500过五关斩六将|r副本已激活,想去就所有人在|cffff7500'..time..'|r秒内去|cffff7500飞机|r集合.jpg', 60)
+        player:message('|cffff7500过五关斩六将|r副本已激活,想去就所有人在|cffff7500'..time..'|r秒内去|cffff7500飞机|r集合', 60)
     end
 end
 

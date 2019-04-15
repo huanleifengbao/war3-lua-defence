@@ -21,7 +21,7 @@ end
 
 local function get_key(player)
 	local i = player:id()
-	return string.sub('ABCDEFGHIJKLMNOPQRSTUVWXYZ',i - 1,i)
+	return string.sub('ABCDEFGHIJKLMNOPQRSTUVWXYZ',i,i)
 end
 
 local function is_player(player)

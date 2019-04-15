@@ -12,7 +12,7 @@ shop:setItem('你知道吗-1', 8, 'F')
 shop:setItem('副本-虎牢关大战', 1, 'Z')
 shop:setItem('副本-大战黄巾贼', 2, 'X')
 shop:setItem('副本-过五关斩六将', 3, 'C')
-if console.enable == true then
+if sg.test then
     shop:setItem('作弊副本', 4, 'V')
 end
 
@@ -68,7 +68,7 @@ shop:setBuyRange(1000000)
 shop:setItem('治疗药水-小', 9, 'Q')
 shop:setItem('治疗药水-大', 10, 'W')
 shop:setItem('孙子兵法', 5, 'A')
-if console.enable == true then
+if sg.test then
     shop:setItem('作弊等级', 6, 'S')
     shop:setItem('作弊属性', 7, 'D')
     shop:setItem('经验之书', 8, 'F')
@@ -88,7 +88,7 @@ shop:setItem('武器升级', 5, 'A')
 shop:setItem('衣服升级', 6, 'S')
 shop:setItem('鞋子升级', 7, 'D')
 shop:setItem('饰品升级', 8, 'F')
-if console.enable == true then
+if sg.test then
     shop:setItem('专属升级', 1, 'Z')
     shop:setItem('作弊武器', 2, 'X')
     shop:setItem('作弊防具', 3, 'C')
@@ -110,7 +110,7 @@ shop:setItem('挑战锻造石boss-9', 1, 'Z')
 shop:setItem('挑战锻造石boss-10', 2, 'X')
 shop:setItem('挑战锻造石boss-11', 3, 'C')
 
-if console.enable == true then
+if sg.test then
     --作弊:出售锻造石
     local shop = ac.player(16):createShop('商店', ac.point(7444, -10829), 270)
     shop:setBuyRange(1000000)
@@ -192,7 +192,7 @@ shop:setItem('大师祝福', 6, 'S')
 shop:setItem('飞雷', 1, 'Z')
 shop:setItem('的卢', 2, 'X')
 shop:setItem('赤兔', 3, 'C')
-if console.enable == true then
+if sg.test then
     shop:setItem('商城作弊怪', 4, 'V')
 end
 
@@ -212,7 +212,7 @@ for i = 1, #point do
 	}
     shop:setBuyRange(1500)
     shop:setItem('刷经验1', 9, 'Q')
-    if console.enable == true then
+    if sg.test then
         shop:setItem('作弊刷怪', 10, 'W')
     end
     shop:setItem('刷钱1', 5, 'A')

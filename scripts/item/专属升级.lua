@@ -3,9 +3,9 @@
 local Aghanim_lv = {
     {500, nil},
     {1000, 3},
-    {3000, 4},
-    {5000, 5},
-    {8000, 6}
+    {2000, 4},
+    {3000, 5},
+    {4000, 6}
 }
 
 ac.game:event('地图-英雄杀敌', function (_, unit, player, dead)

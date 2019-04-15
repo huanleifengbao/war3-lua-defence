@@ -12,7 +12,7 @@ sg.creeps_player:alliance(sg.enemy_player, '结盟', true)
 --增加三维并增加对应属性
 local function add_atr(hero,name,count)
 	if name == '力量' then
-		hero:add('生命上限',5 * count)
+		hero:add('生命上限',10 * count)
 		hero:add('生命恢复',0.005 * count)
 	elseif name == '敏捷' then
 		hero:add('攻击速度',0.02 * count)
@@ -87,6 +87,13 @@ function sg.off_fog(rect)
 	end
 end
 
+--初始镜头位置
+ac.wait(0,function()
+	for i = 1,sg.max_player do
+		ac.player(i):moveCamera(ac.point(1460,-8570), 0)
+	end
+end)
+
 local enemy = sg.enemy_player
 local creeps = sg.creeps_player
 --选人区
@@ -128,6 +135,7 @@ local tips = {
 	'基地很脆弱，一不小心就炸了',
 	'进攻boss拥有各种蓄力范围技能，记得躲避',
 	'抽奖一时爽，一直抽一直爽，多出的战魂可以给队友哦',
+	'前期建议优先提升等级，挑战觉醒boss',
 }
 
 ac.game:event('地图-选择难度', function()
@@ -154,6 +162,10 @@ ac.game:event('玩家-聊天', function (_, player, str)
 		local hero = player:getHero()
 		if hero:isAlive() then
 			hero:kill(hero)
+			sg.message(player:name() .. '寻死无方，选择了原地去世',5)
 		end
 	end
 end)
+
+--作弊
+sg.test = false

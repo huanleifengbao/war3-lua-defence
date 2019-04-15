@@ -41,7 +41,7 @@ local data = {
 	id = function(n)
 		return sg.get_enemy_id(n)
 	end,
-	start_time = 10,	--前置等待时间
+	start_time = 120,	--前置等待时间
 	time_out = 80,	--每波间隔时间
 	count = 15,	--每条路怪物数量
 	boss = 10,	--每多少波出一次boss
@@ -245,7 +245,7 @@ local function create_enemy(wave)
 						sg.last_music = [[resource\music\s1.mp3]]
 						ac.game:music(sg.last_music)
 						ac.wait(0,function()
-						ac.game:musicTheme([[resource\music\victory.mp3]])											
+							ac.game:musicTheme([[resource\music\victory.mp3]])											
 						end)
 					end
 				end)
@@ -353,7 +353,7 @@ ac.game:event('地图-游戏通关', function ()
 end)
 
 --作弊
-if console.enable == true then
+if sg.test then
 	ac.game:event('玩家-聊天', function (_, _, str)
 		if string.find(str,'-波数 ',1,5) then
 			local gsu =  sg.split(str,'-波数 ')

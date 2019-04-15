@@ -49,8 +49,13 @@ for i = 1,sg.max_player do
 	player.set_shop_info = function(self,key,num)
 		info[key] = num
 	end
-	--初始化玩家商城信息
-	ac.game:event('地图-选择难度', function ()
+	equip[player] = {}
+end
+
+--初始化玩家商城信息
+ac.game:event('地图-选择难度', function ()
+	for i = 1,sg.max_player do
+		local player = ac.player(i)
 		for name,key in pairs(item) do
 			if player:has_item(tostring(key)) then
 				player:add_shop_info(name,1)
@@ -61,9 +66,8 @@ for i = 1,sg.max_player do
 				player:add_shop_info(name,1)
 			end
 		end
-	end)
-	equip[player] = {}
-end
+	end
+end)
 
 --领取装备类物品逻辑
 for name,_ in pairs(item) do

@@ -1,5 +1,10 @@
 [FrameDef]
 BONUS_DAMAGE= - 每点增加1的攻击力
 BONUS_DEFENSE_FIXED= - 每1000点增加1点的护甲
-BONUS_HITPOINTS= - 每点增加25的生命值
-BONUS_MANA= - 每点增加15的魔法值
+BONUS_HITPOINTS= - 每点增加10的生命值
+BONUS_MANA= - 每点增加1的魔法值
+IDLE_PEON=信使 (|Cfffed312F8|R)
+IDLE_PEON_DESC=信使可以用于携带物品。
+
+[CustomSkin]
+IdlePeon=ReplaceableTextures\CommandButtons\BTNRiderlessHorse.blp

@@ -3,8 +3,7 @@ local mark = false
 ac.wait(0, function()
     sg.game_mod = '通常'
 	for i = 1,sg.max_player do
-        local player = ac.player(i)
-        player:moveCamera(ac.point(1460,-8570), 0)
+        local player = ac.player(i)       
         if player:controller() == '用户' and player:gameState() == '在线' then
             print('玩家'..i..'正在选择难度')
             for i2 = 1,sg.max_player do

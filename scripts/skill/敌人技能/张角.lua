@@ -271,11 +271,11 @@ function mt:start()
 		sg.animation(self.illusion,'spell channel',true)
 		sg.set_color(self.illusion,{a = 0.75})
 		hero:setFacing(270)
-		sg.message('张角使用妖术成为不死之身！',5)
+		sg.message('|cffffff00张角使用妖术成为不死之身！|r',5)
 		ac.wait(2,function()
 			sg.message('张角在地图中心开始咏唱湮灭！',5)
 			self.load = sg.load_bar({target = point,time = time})
-			sg.message('依照顺序击破张角的幻象，破除咒术！',5)
+			sg.message('|cffffff00依照顺序击破|r|cffff0000始动|r、|cff3366ff起义|r、|cff00ff00终焉|r，|cffffff00破除咒术！|r',5)
 			local name = {'始动','起义','终焉'}
 			local dummy = {}
 			self.dummy = dummy
@@ -399,6 +399,7 @@ function mt:onRemove()
 		u:particle([[effect\Blood Explosion.mdx]],'origin',1)
 	end
 	hero:remove()
+	sg.message('|cffff0000始动|r|cffffff00被击破，所有玩家受到当前生命值|r|cffff000060%的伤害|r',5)
 end
 
 local mt = ac.buff['起义']
@@ -423,6 +424,7 @@ function mt:onRemove()
 		}
 	end
 	hero:remove()
+	sg.message('|cff3366ff起义|r|cffffff00被击破，所有玩家在15秒内受到的伤害|r|cff3366ff增加100%|r',5)
 end
 
 local mt = ac.buff['终焉']
@@ -444,4 +446,5 @@ function mt:onRemove()
 		u:particle([[effect\Cure.mdx]],'origin')
 	end
 	hero:remove()
+	sg.message('|cff00ff00终焉|r|cffffff00被击破，所有敌人获得|r|cff00ff0099%减伤|r',5)
 end

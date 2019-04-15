@@ -78,6 +78,7 @@ function mt:onAdd()
             for i = 1,sg.max_player do
                 local player = ac.player(i)
                 player:message('副本已结束,敌人重新开始|cffff7500进攻|r', 5)
+                sg.reborn(player,0)
             end
         end
         --如果根本没人上飞机就直接end
@@ -140,7 +141,7 @@ function mt:onAdd()
                 hero_mark[k] = u
                 hero_count = hero_count + 1
                 local trg1, trg2
-                trg1 = u:event('单位-即将死亡', function ()
+                trg1 = u:event('单位-死亡', function ()
                     trg1:remove()
                     trg2:remove()
                     hero_count = hero_count - 1
@@ -148,11 +149,11 @@ function mt:onAdd()
                         ace()
                     else
                         --没团灭的死者会假死
-                        u:addBuff '假死'{}
-                        for i = 1,sg.max_player do
-                            ac.player(i):message(sg.player_colour[id]..u:getName()..'|r被杀了!剩余英雄:|cffff7500'..hero_count..'|r', 5)
-                        end
-                        return false
+                       -- u:addBuff '假死'{}
+                        --for i = 1,sg.max_player do
+                        sg.message(sg.player_colour[id]..u:getName()..'|r被杀了!剩余英雄:|cffff7500'..hero_count..'|r', 5)
+                        --end
+                       -- return false
                     end
                 end)
                 trg2 = u:event('单位-死亡', function ()
@@ -205,10 +206,10 @@ function mt:onAdd()
 		                                for k, hero in ipairs(hero_mark) do
 		                                    local p2 = home - {360 / #hero_mark * k, 120}
 		                                    hero:tp(p2, true)
-		                                    local buff = hero:findBuff('假死')
-		                                    if buff then
-		                                        buff:remove()
-		                                    end
+		                                    --local buff = hero:findBuff('假死')
+		                                    --if buff then
+		                                    --    buff:remove()
+		                                    --end
 		                                    hero:set('生命', hero:get('生命上限'))
 		                                    hero:set('魔法', hero:get('魔法上限'))
 		                                    hero:removeRestriction '无敌'
@@ -316,6 +317,6 @@ function mt:onAdd()
         local player = ac.player(i)
         player:timerDialog(msg, timer)
         player:message('进攻的敌人已被|cff00ffff冻结|r', 60)
-        player:message('|cffff7500大战黄巾贼|r副本已激活,想去就所有人在|cffff7500'..time..'|r秒内去|cffff7500飞机|r集合.jpg', 60)
+        player:message('|cffff7500大战黄巾贼|r副本已激活,想去就所有人在|cffff7500'..time..'|r秒内去|cffff7500飞机|r集合', 60)
     end
 end
