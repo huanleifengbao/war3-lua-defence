@@ -2,7 +2,7 @@ local mt = ac.skill['张角-雷鸣电闪']
 
 function mt:onCastStart()
 	local hero = self:getOwner()
-	sg.animation(hero,'spell channel',true)
+	sg.animation(hero,'stand channel',true)
 	local time = self.castStartTime
 	local point = hero:getPoint()
 	local target = self:getTarget()
@@ -19,7 +19,7 @@ function mt:onCastChannel()
 	local hero = self:getOwner()
 	local point = hero:getPoint()
 	hero:speed(0.6/self.castChannelTime)
-	sg.animation(hero,'spell slam')
+	sg.animation(hero,'spell')
 	self.angle = {}
 	local random = math.random(360)
 	for i = 1,self.direct do
@@ -54,7 +54,7 @@ function mt:onCastShot()
 	local point = hero:getPoint()
 	local area = self.area
 	hero:speed(1)
-	sg.animation(hero,'attack spell')
+	sg.animation(hero,'spell throw')
 	for i = 1,self.direct do
 		local angle = self.angle[i]
 		local distance = area * self.count + area
@@ -107,7 +107,7 @@ local mt = ac.skill['张角-咆哮之火']
 
 function mt:onCastStart()
 	local hero = self:getOwner()
-	sg.animation(hero,'spell channel',true)
+	sg.animation(hero,'stand channel',true)
 	local time = self.castStartTime
 	local point = hero:getPoint()
 	local target = self:getTarget()
@@ -204,7 +204,7 @@ function mt:onCastChannel()
 		angle = angle - turn
 	end)
 	local dummy = hero:createUnit('张角-幻象',point,angle)
-	sg.animation(dummy,'spell channel',true)
+	sg.animation(dummy,'stand channel',true)
 	sg.set_color(dummy,{a = 0.5})
 	ac.wait(pulse * 90/turn + 1,function()
 		dummy:remove()
@@ -268,7 +268,7 @@ function mt:start()
 		    time = 2,
 		}
 		self.illusion = hero:createUnit('张角-幻象',point,270)
-		sg.animation(self.illusion,'spell channel',true)
+		sg.animation(self.illusion,'stand channel',true)
 		sg.set_color(self.illusion,{a = 0.75})
 		hero:setFacing(270)
 		sg.message('|cffffff00张角使用妖术成为不死之身！|r',5)
@@ -283,7 +283,7 @@ function mt:start()
 			for i = 1,3 do
 				local p = point - {120 * i,600}
 				local u = hero:createUnit('张角-' .. name[i],p,120 * i + 180)
-				sg.animation(u,'spell channel',true)
+				sg.animation(u,'stand channel',true)
 				ac.effect {
 				    target = p,
 				    model = [[effect\BlackBlink.mdx]],

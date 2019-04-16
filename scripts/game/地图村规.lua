@@ -166,4 +166,4 @@ ac.game:event('玩家-聊天', function (_, player, str)
 end)
 
 --作弊
-sg.test = false
+sg.test = true

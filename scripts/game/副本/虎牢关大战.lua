@@ -42,10 +42,10 @@ function mt:onAdd()
     local msg2 = '时间限制'
     --飞机特效
     local eff1 = ac.effect {
-        target = start_point,
-        model = [[units\human\Gyrocopter\Gyrocopter_V1.mdl]],
-        height = 300,
-        angle = 135,
+        target = start_point - {135,300},
+        model = [[effect\flag.mdx]],
+        height = 0,
+        angle = 315,
         size = 2.5,
         speed = 1,
     }
@@ -374,7 +374,7 @@ function mt:onAdd()
     timer = ac.wait(time, function()
         for i = 1,sg.max_player do
             local player = ac.player(i)
-            player:message('还没进副本的进不去了,飞机都|cffff0000boom|r了', 60)
+            player:message('还没进副本的进不去了,旗帜都|cffff0000boom|r了', 60)
         end
         instance()
     end)
@@ -387,6 +387,6 @@ function mt:onAdd()
         local player = ac.player(i)
         player:timerDialog(msg, timer)
         player:message('进攻的敌人已被|cff00ffff冻结|r', 60)
-        player:message('|cffff7500虎牢关大战|r副本已激活,想去就所有人在|cffff7500'..time..'|r秒内去|cffff7500飞机|r集合', 60)
+        player:message('|cffff7500虎牢关大战|r副本已激活,想去就所有人在|cffff7500'..time..'|r秒内去|cffff7500能量圈|r集合', 60)
     end
 end
