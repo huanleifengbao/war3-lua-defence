@@ -128,7 +128,7 @@ function mt:onAdd()
                 end
             end)
             local function ace()
-                if hero_count == 0 then
+                if stage_start == true and hero_count == 0 then
 	                stage_start = false
                     timer2:remove()
                     for _, hero in ipairs(hero_mark) do

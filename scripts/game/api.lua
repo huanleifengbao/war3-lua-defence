@@ -257,14 +257,16 @@ end
 local stop = 0
 function sg.stop_enemy()
 	stop = stop + 1
-	if sg.wave_timer then
-		sg.wave_timer:pause()
-	end
-	if sg.enemy_timer then
-		sg.enemy_timer:pause()
-	end
-	if sg.boss_timer then
-		sg.boss_timer:pause()
+	if stop > 0 then
+		if sg.wave_timer then
+			sg.wave_timer:pause()
+		end
+		if sg.enemy_timer then
+			sg.enemy_timer:pause()
+		end
+		if sg.boss_timer then
+			sg.boss_timer:pause()
+		end
 	end
 end
 

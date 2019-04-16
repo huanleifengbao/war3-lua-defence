@@ -41,7 +41,7 @@ local data = {
 	id = function(n)
 		return sg.get_enemy_id(n)
 	end,
-	start_time = 10,	--前置等待时间
+	start_time = 120,	--前置等待时间
 	time_out = 80,	--每波间隔时间
 	count = 15,	--每条路怪物数量
 	boss = 10,	--每多少波出一次boss
@@ -120,7 +120,7 @@ local boss_data = {
 			return 5000 * n
 		end,
 		['魔抗'] = function(n)
-			return n * 50 + 10
+			return n * 10 + 50
 		end,
 		['命中'] = function(n)
 			return 50

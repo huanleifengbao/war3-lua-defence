@@ -58,7 +58,7 @@ end)
 --进入无尽后，退出游戏的玩家结算无尽积分
 ac.game:event('玩家-退出游戏', function(_,player)
 	if sg.ex_mode then
-		local score = sg.difficult * sg.get_wave()
+		local score = sg.get_wave()
 		player:add_score('无尽',score)
 		--ac.game:addScore(player,'无尽',score)
 	end

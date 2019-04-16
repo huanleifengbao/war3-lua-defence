@@ -250,7 +250,7 @@ function mt:onAdd()
             end
 
             local function ace()
-                if hero_count == 0 then
+                if stage_start == true and hero_count == 0 then
 	                stage_start = false
                     monster_end()
                     timer2:remove()
@@ -404,7 +404,9 @@ function mt:onAdd()
                                         player:message('|cff00ff00boss团灭|r了xs,但还没胜利了,|cffff7500'..next_time..'|r秒后进入下一关', 8)
                                     end
                                     ac.wait(5, function()
-                                        next_lv()
+                                    	if stage_start == true then
+                                        	next_lv()
+                                    	end
                                     end)
                                 end
                             end

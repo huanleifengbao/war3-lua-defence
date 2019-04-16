@@ -79,8 +79,20 @@ local title2_icon = {
     [11] = [[passive\awake10.blp]],
 }
 
+local player_id = {}
 ac.wait(0, function()
-    local board = ac.game:board(7, 9, '初始化中')
+	--根据当前在线玩家调整计分板
+	local online_player = {}
+	local max_player = 0
+	for i = 1,sg.max_player do
+		local player = ac.player(i)
+		if player:controller() == '用户' and player:gameState() == '在线' then
+			max_player = max_player + 1
+			player_id[player] = max_player
+			table.insert(online_player,player)
+		end
+	end
+    local board = ac.game:board(max_player + 1, 9, '初始化中')
     ac.wait(1, function()
         board:show()
         board:style(true, false)
@@ -93,8 +105,8 @@ ac.wait(0, function()
         board[1][7]:text('战魂')
         board[1][8]:text('坐骑')
         board[1][9]:text('杀敌')
-        for i = 1,sg.max_player do
-            board[i][1]:width(0.07)
+        for i = 1,max_player + 1 do
+	        board[i][1]:width(0.07)
             board[i][2]:width(0.03)
             board[i][3]:width(0.02)
             board[i][4]:width(0.02)
@@ -104,16 +116,31 @@ ac.wait(0, function()
             board[i][8]:width(0.02)
             board[i][9]:width(0.04)
             if i ~= 1 then
-                local player = ac.player(i-1)
-                if player and player:controller() == '用户' and player:gameState() == '在线' then
-                    board[i][1]:text(sg.player_colour[i-1]..player:name()..'|r')
-                end
+	            local player = online_player[i - 1]
+	            board[i][1]:text(sg.player_colour[player:id()]..player:name()..'|r')
             end
         end
+        --for i = 1,sg.max_player do
+        --    board[i][1]:width(0.07)
+        --    board[i][2]:width(0.03)
+        --    board[i][3]:width(0.02)
+        --    board[i][4]:width(0.02)
+        --    board[i][5]:width(0.06)
+        --    board[i][6]:width(0.05)
+        --    board[i][7]:width(0.02)
+        --    board[i][8]:width(0.02)
+        --    board[i][9]:width(0.04)
+        --    if i ~= 1 then
+        --        local player = ac.player(i-1)
+        --        if player and player:controller() == '用户' and player:gameState() == '在线' then
+        --            board[i][1]:text(sg.player_colour[i-1]..player:name()..'|r')
+        --        end
+        --    end
+        --end
     end)
 
     ac.game:event('地图-选择英雄', function (_, unit, player)
-        local id = player:id()
+        local id = player_id[player]
         if unit then
             --初始化积分相关属性
             unit:set('威望等级', 1)
@@ -144,7 +171,7 @@ ac.wait(0, function()
     end)
     ac.game:event('地图-觉醒等级变化', function (_, unit)
         local player = unit:getOwner()
-        local id = player:id()
+        local id = player_id[player]
         board[id+1][6]:icon(title2_icon[unit:get('觉醒等级') + 1])
         board[id+1][6]:text(title2[unit:get('觉醒等级') + 1])
         for i = 1,sg.max_player do
@@ -163,13 +190,13 @@ ac.wait(0, function()
     --战魂数量变化
     ac.game:event('地图-获得战魂', function (_, unit)
         local player = unit:getOwner()
-        local id = player:id()
+        local id = player_id[player]
         unit:add('战魂数量', 1)
         board[id+1][7]:text(math.floor(unit:get('战魂数量')))
     end)
     ac.game:event('地图-失去战魂', function (_, unit)
         local player = unit:getOwner()
-        local id = player:id()
+        local id = player_id[player]
         unit:add('战魂数量', -1)
         board[id+1][7]:text(math.floor(unit:get('战魂数量')))
     end)
@@ -177,13 +204,13 @@ ac.wait(0, function()
     --坐骑数量变化
     ac.game:event('地图-获得坐骑', function (_, unit)
         local player = unit:getOwner()
-        local id = player:id()
+        local id = player_id[player]
         unit:add('坐骑数量', 1)
         board[id+1][8]:text(math.floor(unit:get('坐骑数量')))
     end)
     ac.game:event('地图-失去坐骑', function (_, unit)
         local player = unit:getOwner()
-        local id = player:id()
+        local id = player_id[player]
         unit:add('坐骑数量', -1)
         board[id+1][8]:text(math.floor(unit:get('坐骑数量')))
     end)
@@ -191,11 +218,11 @@ ac.wait(0, function()
     --等级
     --[[ac.game:event('地图-选择英雄', function (_, unit, player)
         unit:event('单位-升级', function (trg, unit)
-            local id = player:id()
+            local id = player_id[player]
             board[id+1][3]:text(unit:level())
         end)
         unit:event('单位-降级', function (trg, unit)
-            local id = player:id()
+            local id = player_id[player]
             board[id+1][3]:text(unit:level())
         end)
     end)]]
@@ -206,7 +233,7 @@ ac.wait(0, function()
         hero_dead[i] = 0
     end
     ac.game:event('地图-英雄死亡', function (_, unit, player, reborn_time)
-        local id = player:id()
+        local id = player_id[player]
         if unit then
             hero_dead[id] = hero_dead[id] + 1
             board[id+1][5]:text(hero_dead[id])
@@ -215,7 +242,7 @@ ac.wait(0, function()
 
     --击杀
     ac.game:event('地图-英雄杀敌', function (_, unit, player, dead)
-        local id = player:id()
+        local id = player_id[player]
         board[id+1][9]:text(unit:userData('杀敌数'))
         --称号
         if unit:get('威望等级') < #title_level and unit:userData('杀敌数') >= title_level[unit:get('威望等级') + 1] then

@@ -96,7 +96,7 @@ function mt:onCastShot()
 	    target = target,
 	    model = 'SPLK',
 	    sourceHeight = 300,
-	    sourceHeight = 100,
+	    targetHeight = 100,
 	}
 	hero:particle([[effect\tx003.mdx]],'origin')()
 	target:particle([[effect\tx003.mdx]],'origin')()

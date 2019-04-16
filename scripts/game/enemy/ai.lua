@@ -137,7 +137,6 @@ local function check_attack(u)
 	if time_count%3 == 0.0 then
 		u:stopWalk()
 		attack_move(u)
-		print('葱鸭')
 		return false
 	else
 		return true
