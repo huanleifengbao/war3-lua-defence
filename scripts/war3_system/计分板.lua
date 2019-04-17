@@ -174,9 +174,7 @@ ac.wait(0, function()
         local id = player_id[player]
         board[id+1][6]:icon(title2_icon[unit:get('觉醒等级') + 1])
         board[id+1][6]:text(title2[unit:get('觉醒等级') + 1])
-        for i = 1,sg.max_player do
-            ac.player(i):message('|cffffff00'..unit:getName()..'觉醒了!已达到'..title2[unit:get('觉醒等级') + 1]..'|r', 10)
-        end
+        sg.message('|cffffff00'..unit:getName()..'觉醒了!已达到'..title2[unit:get('觉醒等级') + 1]..'|r', 10)
 
         local skill1 = unit:userData('觉醒技能')
         if skill1 then
@@ -283,25 +281,31 @@ ac.wait(0, function()
         elseif num == 4 then
             game_mod_str = '|cffff00ff噩梦|r'
         end
-        for i = 1,sg.max_player do
-            local player = ac.player(i)
-            player:message(sg.player_colour[id]..i_player:name()..'|r难度选择为:'..game_mod_str, 10)
-            player:message('|cffffcc00双击|r一名英雄来扮演Ta')
-        end
+        sg.message(sg.player_colour[id]..i_player:name()..'|r难度选择为:'..game_mod_str, 10)
+        sg.message('|cffffcc00双击|r一名英雄来扮演Ta')
         game_mod_str = '|cffffcc00当前难度: |r'..game_mod_str
     end)
 
     ac.loop(1, function()
         --修改玩家属性
-	    for i = 1,sg.max_player do
-            local player = ac.player(i)
-            if player and player:controller() == '用户' then
-                local unit = player:getHero()
-                if unit then
-                    board[i+1][2]:text(math.floor(unit:get('战力'))..'%')
-                    board[i+1][3]:text(math.floor(unit:get('抗性'))..'%')
-                    board[i+1][4]:text(math.floor(unit:get('闪避'))..'%')
-                end
+	    --for i = 1,sg.max_player do
+     --       local player = ac.player(i)
+     --       if player and player:controller() == '用户' then
+     --           local unit = player:getHero()
+     --           if unit then
+     --               board[i+1][2]:text(math.floor(unit:get('战力'))..'%')
+     --               board[i+1][3]:text(math.floor(unit:get('抗性'))..'%')
+     --               board[i+1][4]:text(math.floor(unit:get('闪避'))..'%')
+     --           end
+     --       end
+     --   end
+        for i = 1,max_player do
+	        local player = online_player[i]
+	        local unit = player:getHero()
+            if unit then
+                board[i+1][2]:text(math.floor(unit:get('战力'))..'%')
+                board[i+1][3]:text(math.floor(unit:get('抗性'))..'%')
+                board[i+1][4]:text(math.floor(unit:get('闪避'))..'%')
             end
         end
 

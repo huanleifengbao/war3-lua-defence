@@ -1,7 +1,8 @@
 sg.ally_player = ac.player(10)	--基地玩家
 sg.creeps_player = ac.player(11)	--野怪玩家
 sg.enemy_player = ac.player(12)	--刷怪玩家
-sg.max_player = 6
+sg.max_player = 6	--最大玩家数
+sg.max_level = 10000	--等级上限
 for i = 1, sg.max_player do
     ac.player(10):alliance(ac.player(i), '结盟', true)
     ac.player(i):alliance(ac.player(10), '结盟', true)
@@ -166,4 +167,4 @@ ac.game:event('玩家-聊天', function (_, player, str)
 end)
 
 --作弊
-sg.test = true
+--sg.test = true

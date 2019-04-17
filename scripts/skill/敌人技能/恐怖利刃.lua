@@ -40,10 +40,7 @@ local mt = ac.buff['恐怖利刃-魔化']
 function mt:onAdd()
 	local hero = self:getOwner()
 	jass.AddUnitAnimationProperties(hero._handle, 'alternate', true)
-	self.buff = hero:addBuff '魔化'
-	{
-		time = 0,
-	}
+	self.buff = hero:addSkill('BOSS-穿甲攻击','隐藏')
 	hero:set('攻击范围',self.skill.range)
 	self.trg = hero:event('单位-攻击出手', function (_, _, target, damage, mover)
     	local mover = hero:moverTarget

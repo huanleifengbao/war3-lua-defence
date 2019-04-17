@@ -290,7 +290,7 @@ local function create_wave()
 			ac.player(i):add('金币', gold)
 		end
 	end
-	if max_wave == 0 or now_wave < max_wave then
+	if max_wave == 0 or wave < max_wave then
 		sg.wave_timer = ac.wait(time_out,function()		
 			create_wave()
 		end)
@@ -339,6 +339,8 @@ ac.game:event('地图-游戏通关', function ()
 	end
 		sg.message('游戏将于' .. data.start_time .. '秒后将进入|cffffdd00无尽模式|r',5)
 		sg.ex_mode = true
+		--无尽难度系数默认为噩梦
+		sg.difficult = 4
 		wave = 0
 		game_start()
 	else

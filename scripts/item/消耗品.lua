@@ -28,6 +28,14 @@ local tbl = {'作弊等级','孙子兵法'}
 for _, tbl_name in ipairs(tbl) do
 	local mt = ac.item[tbl_name]
 
+	function mt:onCanAdd(unit)
+        local player = unit:getOwner()
+        local hero = player:getHero()
+        if hero:level() >= sg.max_level then
+        	return false,'|cffffff00你的英雄已达到|cffff7500满级|r'
+    	end
+    end
+
     function mt:onAdd()
         local item = self
         --作用目标是玩家英雄

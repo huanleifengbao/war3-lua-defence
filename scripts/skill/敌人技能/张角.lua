@@ -226,6 +226,9 @@ end
 local mt = ac.skill['张角-行尸走肉']
 
 function mt:death()
+	if self.text then
+		self.text:life(0.6, 0.3)
+	end
 	if self.load then
 		self.load:remove()
 	end
@@ -274,15 +277,41 @@ function mt:start()
 		sg.message('|cffffff00张角使用妖术成为不死之身！|r',5)
 		ac.wait(2,function()
 			sg.message('张角在地图中心开始咏唱湮灭！',5)
-			self.load = sg.load_bar({target = point,time = time})
-			sg.message('|cffffff00依照顺序击破|r|cffff0000始动|r、|cff3366ff起义|r、|cff00ff00终焉|r，|cffffff00破除咒术！|r',5)
+			local msg = 50
+			local color = '|cff25cc75'
+			self.text = ac.textTag()
+	            : text(color .. msg .. '|r', 0.05)
+	            : at(point, 350)
+			self.load = ac.timer(1,time,function()
+				msg = msg - 1
+				if msg <= 10 then
+					color = '|cffff0000'
+				elseif msg <= 30 then
+					color = '|cffffdd00'
+				elseif msg == 0 then
+					self.text:life(0.6, 0.3)
+				end
+	            self.text:text(color .. msg .. '|r', 0.05)
+			end)
+			--self.load = sg.load_bar({target = point,time = time})
+			sg.message('|cffffff00依照顺序击破|r|cffff0000始动|r、|cff3366ff起义|r、|cff00ff00终焉|r，|cffffff00破除咒术！|r',15)
 			local name = {'始动','起义','终焉'}
+			local pt = {ac.point(-2000, 8150),ac.point(-4100, 10280),ac.point(-2000, 10280)}
+			local lnt_type = {'AFOD','DRAM','DRAL'}
+			local particle = {
+				[[Abilities\Spells\Other\Incinerate\IncinerateBuff.mdl]],
+				[[Abilities\Spells\Other\Drain\ManaDrainTarget.mdl]],
+				[[Abilities\Spells\Other\Drain\DrainTarget.mdl]],
+			}
 			local dummy = {}
 			self.dummy = dummy
 			self.illusion:particle([[Abilities\Spells\Other\Drain\DrainCaster.mdl]],'chest')
 			for i = 1,3 do
-				local p = point - {120 * i,600}
-				local u = hero:createUnit('张角-' .. name[i],p,120 * i + 180)
+				--local p = point - {120 * i,600}
+				local index = math.random(#pt)
+				local p = pt[index]
+				table.remove(pt,index)
+				local u = hero:createUnit('张角-' .. name[i],p,p/point)
 				sg.animation(u,'stand channel',true)
 				ac.effect {
 				    target = p,
@@ -295,11 +324,11 @@ function mt:start()
 					time = 0,
 					skill = self,
 				}
-				u:particle([[Abilities\Spells\Other\Drain\DrainTarget.mdl]],'chest')
+				u:particle(particle[i],'chest')
 				local lnt = ac.lightning {
 				    source = point,
-				    target = p,
-				    model = 'DRAL',
+				    target = u,
+				    model = lnt_type[i],
 				    sourceHeight = 150,
 				    targetHeight = 150,
 				}
@@ -328,6 +357,7 @@ function mt:start()
 						time = 1,
 					}
 					if finish == true and not self.is_finish then
+						hero:removeRestriction '隐藏'						
 						sg.message('|cffffff00张角：黄天...抛弃我了吗...|r',5)
 						killer:kill(hero)
 					end
@@ -335,7 +365,7 @@ function mt:start()
 			end
 			self.timer = ac.wait(time,function()
 				sg.message('|cffffff00张角：岁在甲子...天下大吉！|r',5)
-				sg.animation(self.illusion,'spell attack')
+				sg.animation(self.illusion,'spell')
 				ac.effect
 				{
 					model = [[effect\BloodSlam.mdx]],

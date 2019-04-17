@@ -172,7 +172,7 @@ function mt:onAdd()
                 local int = 5
                 ac.timer(1, 6, function()
                     if int == 5 then
-                        player:message('目标:讨伐(击杀)|cff0070ff张宝|r,|cffff0000张角|r,|cff00aa00张梁|r', 8)
+                        player:message('目标:讨伐(击杀)|cffff0000张梁|r,|cff0070ff张宝|r,|cff00aa00张角|r', 8)
                     end
                     if int <= 3 and int >= 1 then
                         player:message('开始倒计时:|cffff7500'..int..'|r', 1)
