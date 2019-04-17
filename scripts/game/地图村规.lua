@@ -166,5 +166,13 @@ ac.game:event('玩家-聊天', function (_, player, str)
 	end
 end)
 
+--出售物品系数
+ac.game:event('单位-出售物品',function(_,_,item,sell)
+	local rate = 0.5 --贩卖系数
+	for name,value in pairs(sell) do
+		sell[name] = value * rate
+	end
+end)
+
 --作弊
 --sg.test = true
