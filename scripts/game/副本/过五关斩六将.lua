@@ -55,6 +55,7 @@ function mt:onAdd()
     sg.game_mod = '副本准备'
     local mark = {}
     local hero_mark = {}
+    local trg_mark = {}
     local hero_count = 0
     local boss_mark = {}
     local boss_count = 0
@@ -103,6 +104,12 @@ function mt:onAdd()
                 if buff then
                     buff:remove()
                 end
+            end
+            --清空事件
+            for _,trg in ipairs(trg_mark) do
+	            if trg then
+		            trg:remove()
+	            end
             end
             hero_mark = {}
             boss_mark = {}
@@ -303,6 +310,12 @@ function mt:onAdd()
             end
             local next_lv
             function next_lv()
+	            --清空事件
+	            for _,trg in ipairs(trg_mark) do
+		            if trg then
+			            trg:remove()
+		            end
+	            end
                 instance_lv = instance_lv + 1
                 hero_count = #hero_mark
                 --传送英雄
@@ -314,18 +327,17 @@ function mt:onAdd()
                     --local buff = hero:findBuff('假死')
                     --if buff then
                     --    buff:remove()
-                        player:message('阵亡英雄已|cffffff00复活|r', 8)
-                        sg.reborn(player,0,p2)
+                    player:message('阵亡英雄已|cffffff00复活|r', 8)
+                    sg.reborn(player,0,p2)
                         --ac.effect {
                         --    target = p2,
                         --    model = [[Abilities\Spells\Human\Resurrect\ResurrectTarget.mdl]],
                         --    time = 0,
                         --}
                    -- end
-                    local trg1, trg2
-                    trg1 = hero:event('单位-死亡', function ()
-                        trg1:remove()
-                        trg2:remove()
+                    trg_mark[k] = hero:event('单位-死亡', function ()
+                        trg_mark[k]:remove()
+                        --trg2:remove()
                         hero_count = hero_count - 1
                         if hero_count <= 0 then
                             ace()
@@ -333,19 +345,19 @@ function mt:onAdd()
                             --没团灭的死者会假死
                             --hero:addBuff '假死'{}
                            -- for i = 1,sg.max_player do
-                               sg.message(sg.player_colour[id]..hero:getName()..'|r被杀了!剩余英雄:|cffff7500'..hero_count..'|r', 5)
+                            sg.message(sg.player_colour[id]..hero:getName()..'|r被杀了!剩余英雄:|cffff7500'..hero_count..'|r', 5)
                             --end
                             return false
                         end
                     end)
-                    trg2 = hero:event('单位-死亡', function ()
-                        trg1:remove()
-                        trg2:remove()
-                        hero_count = hero_count - 1
-                        if hero_count <= 0 then
-                            ace()
-                        end
-                    end)
+                    --trg2 = hero:event('单位-死亡', function ()
+                    --    trg1:remove()
+                    --    trg2:remove()
+                    --    hero_count = hero_count - 1
+                    --    if hero_count <= 0 then
+                    --        ace()
+                    --    end
+                    --end)
                     hero:set('生命', hero:get('生命上限'))
                     hero:set('魔法', hero:get('魔法上限'))
                     player:message('第|cffff7500'..instance_lv..'|r关', 8)

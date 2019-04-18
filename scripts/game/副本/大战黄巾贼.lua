@@ -27,6 +27,7 @@ function mt:onAdd()
     sg.game_mod = '副本准备'
     local mark = {}
     local hero_mark = {}
+    local trg_mark = {}
     local hero_count = 0
     local boss_mark = {}
     local boss_count = 0
@@ -71,6 +72,12 @@ function mt:onAdd()
                 if buff then
                     buff:remove()
                 end
+            end
+            --清空事件
+            for _,trg in ipairs(trg_mark) do
+	            if trg then
+		            trg:remove()
+	            end
             end
             hero_mark = {}
             boss_mark = {}
@@ -140,10 +147,10 @@ function mt:onAdd()
                 player:message('另外副本中可是|cffff7500禁止传送|r并且|cffff7500无法复活|r的哟', 8)
                 hero_mark[k] = u
                 hero_count = hero_count + 1
-                local trg1, trg2
-                trg1 = u:event('单位-死亡', function ()
-                    trg1:remove()
-                    trg2:remove()
+                --local trg1, trg2
+                trg_mark[k] = u:event('单位-死亡', function ()
+                    trg_mark[k]:remove()
+                   -- trg2:remove()
                     hero_count = hero_count - 1
                     if hero_count <= 0 then
                         ace()
@@ -156,14 +163,14 @@ function mt:onAdd()
                        -- return false
                     end
                 end)
-                trg2 = u:event('单位-死亡', function ()
-                    trg1:remove()
-                    trg2:remove()
-                    hero_count = hero_count - 1
-                    if hero_count <= 0 then
-                        ace()
-                    end
-                end)
+                --trg2 = u:event('单位-死亡', function ()
+                --    trg1:remove()
+                --    trg2:remove()
+                --    hero_count = hero_count - 1
+                --    if hero_count <= 0 then
+                --        ace()
+                --    end
+                --end)
                 local p2 = target_point - {360 / #mark * k, 120}
 				u:tp(p2, true)
                 u:set('生命', u:get('生命上限'))
