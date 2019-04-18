@@ -140,6 +140,13 @@ function mt:onAdd()
         if #mark == 0 then
             instance_end()
         else
+	        --刁民一下？
+	        local rect = ac.rect(-7300,2800,-6200,3200)
+	        jass.EnumDestructablesInRect(rect._handle,nil,function()
+	        	local door = jass.GetEnumDestructable()
+	        	jass.DestructableRestoreLife(door,jass.GetDestructableMaxLife(door), false)
+	        end)
+	        rect:remove()
 	        --音乐
 	        ac.game:music([[resource\music\fb3.mp3]])
 	        stage_start = true
