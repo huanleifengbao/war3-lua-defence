@@ -21,7 +21,6 @@ local list = {
 		hero:add('额外经验',item.add)
 		hero:add('额外金钱',item.add)
 		hero:add('额外木材',item.add)
-		print(hero:get'额外金钱',item.add)
 	end,
 	['天神下凡'] = function(item,player)
 		local hero = player:getHero()

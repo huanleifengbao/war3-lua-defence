@@ -25,6 +25,7 @@ function mt:onCastShot()
     local time = skill.time
     local area = skill.area
     hero:addRestriction '硬直'
+    hero:addRestriction '无敌'
     local eff = hero:particle([[Abilities\Weapons\PhoenixMissile\Phoenix_Missile.mdl]],'weapon')
     self.point = point
     self.target = target
@@ -61,6 +62,7 @@ function mt:onCastShot()
 	function mover:onRemove()
 		eff()
 		hero:removeRestriction '硬直'
+		hero:removeRestriction '无敌'
 		hero:speed(1)
 	end
 	--特效

@@ -10,9 +10,10 @@ function mt:onAdd()
 		sg.add_allatr(hero,self.atr * hero:get '觉醒等级')
 	end)
 	--每秒获得木头
-	self.timer = ac.loop(1,function()
-		player:add('木材', self.lumber)
-	end)
+	--self.timer = ac.loop(1,function()
+	--	player:add('木材', self.lumber)
+	--end)
+	hero:add('击杀木材',self.lumber)
 	--战力
 	hero:add('战力',self.dam)
 end
@@ -21,6 +22,7 @@ function mt:onRemove()
 	local hero = self:getOwner()
 	self.eff()
 	self.trg:remove()
-	self.timer:remove()
+	--self.timer:remove()
+	hero:add('击杀木材',-self.lumber)
 	hero:add('战力',-self.mdf)
 end
