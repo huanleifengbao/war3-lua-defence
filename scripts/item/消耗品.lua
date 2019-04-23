@@ -162,6 +162,9 @@ for _, tbl_name in ipairs(tbl) do
             size = 2,
             time = 1.5,
         }
+        local score = item.score * sg.difficult
+		i_player:message('|cffff7500恭喜通过副本！你获得了|r|cffffdd00战力值+' .. score .. '|r|cffff7500的积分奖励|r',5)
+		i_player:add_score('战力值',score)
     end
 end
 
