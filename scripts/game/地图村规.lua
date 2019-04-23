@@ -55,6 +55,8 @@ local dif_tbl = {
 }
 local atr = {'力量','敏捷','智力'}
 ac.game:event('单位-创建', function (_, unit)
+	--默认50爆伤
+	unit:add('暴击伤害',50)
 	local player = unit:getOwner()
 	if player == sg.creeps_player or player == sg.enemy_player then
 		local num = dif_tbl[sg.difficult]
