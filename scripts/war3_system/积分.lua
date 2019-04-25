@@ -1,46 +1,12 @@
---11积分，需在war3map.j下声明全局变量[gamecache YYScoreGamecache]才可使用
---local Jglobals = require 'jass.globals'
---local jass = require 'jass.common'
---local japi = require 'jass.japi'
---local YYScore = Jglobals.YYScoreGamecache
-
---jass.FlushGameCache(jass.InitGameCache('11.x'))
---gamecache = jass.InitGameCache('11.x')
-
---local function to_letter(i)
---	return string.sub('ABCDEFGHIJKLMNOPQRSTUVWXYZ',i,i + 1)
---end
---local function isLivingPlayer(player)
---	return player:gameState() == '在线' and player:controller() == '用户'
---end
-
---local local_player
---local function writeToScore(tbl,key,data)
---	if not local_player or not isLivingPlayer(local_player) then
---		for i = 1,12 do
---			local player = ac.player(i)
---			if isLivingPlayer(player) or i == 12 then
---				local_player = player
---				break
---			end
---		end
---	end
---	jass.StoreInteger(YYScore,tbl,key,data)
---	if ac.localPlayer() == local_player then
---		japi.SyncStoredInteger(YYScore,tbl,key)
---	end
---end
-
---积分API
---function ac.game:getScore(player,key)
---	return japi.GetStoredInteger(YYScore,to_letter(player._handle),key)
---end
---function ac.game:setScore(player,key,value)
---	writeToScore(to_letter(player._handle) ..  '=' ,key,value)
---end
---function ac.game:addScore(player,key,value)
---	writeToScore(to_letter(player._handle) ..  '+' ,key,value)
---end
+--积分战力加成
+ac.game:event('地图-选择英雄', function(trg,hero,player)
+    local score = math.floor(tonumber(player:get_score('战力值')))
+    local damage = math.floor(score/10)
+    if damage > 0 then
+	    player:message('您拥有' .. score .. '点|cffffdd00战力值|r积分,获得了|cffffdd00' .. damage .. '%|r的战力奖励。',5)
+	    hero:add('战力',damage)
+    end
+end)
 
 --通关时结算通关积分
 ac.game:event('地图-游戏通关', function()
@@ -56,10 +22,16 @@ ac.game:event('地图-游戏通关', function()
 end)
 
 --进入无尽后，退出游戏的玩家结算无尽积分
-ac.game:event('玩家-退出游戏', function(_,player)
+ac.game:event('地图-进攻开始', function(_,wave)
 	if sg.ex_mode then
-		local score = sg.get_wave()
-		player:add_score('无尽',score)
-		--ac.game:addScore(player,'无尽',score)
+		local score = wave - 1
+		if score > 0 then
+			for i = 1,sg.max_player do
+				local player = ac.player(i)			
+				player:add_score('无尽',score)
+				player:message('所有在线玩家获得了|cffffdd00无尽+' .. score .. '|r的积分奖励',5)
+				--ac.game:addScore(player,'无尽',score)
+			end
+		end
 	end
 end)

@@ -22,6 +22,21 @@ local list = {
 		local name = item:getName()
 		skill_on(hero,name)
 	end,
+	['道具-横扫千军'] = function(item,player)
+		local hero = player:getHero()
+		local name = item.sow
+		sg.get_sow(hero,name)
+	end,
+	['道具-铜墙铁壁'] = function(item,player)
+		local hero = player:getHero()
+		local name = item.sow
+		sg.get_sow(hero,name)
+	end,
+	['道具-妙手回春'] = function(item,player)
+		local hero = player:getHero()
+		local name = item.sow
+		sg.get_sow(hero,name)
+	end,
 }
 
 local has = {}

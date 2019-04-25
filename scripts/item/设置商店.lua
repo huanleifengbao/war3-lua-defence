@@ -67,15 +67,13 @@ local shop = shop_list['药水商店']
 shop:setBuyRange(1000000)
 shop:setItem('治疗药水-小', 9, 'Q')
 shop:setItem('治疗药水-大', 10, 'W')
-shop:setItem('孙子兵法', 5, 'A')
-if sg.test then
-    shop:setItem('作弊等级', 6, 'S')
-    shop:setItem('作弊属性', 7, 'D')
-    shop:setItem('经验之书', 8, 'F')
-    shop:setItem('作弊自杀', 1, 'Z')
-    shop:setItem('作弊清怪', 2, 'X')
-    shop:setItem('作弊WTF', 3, 'C')
-end
+shop:setItem('孙子兵法', 11, 'E')
+shop:setItem('道具-横扫千军', 5, 'A')
+shop:setItem('道具-铜墙铁壁', 6, 'S')
+shop:setItem('道具-妙手回春', 7, 'D')
+shop:setItem('飞雷', 1, 'Z')
+shop:setItem('的卢', 2, 'X')
+shop:setItem('赤兔', 3, 'C')
 
 --新手装备
 local shop = shop_list['新手装备']
@@ -141,6 +139,15 @@ if sg.test then
     shop:setItem('九幽玄铁', 2, 'X')
     shop:setItem('作弊锻造强运券', 3, 'C')
     shop:setItem('作弊锻造失败券', 4, 'V')
+
+    --作弊：加个牛背
+    local shop = ac.player(16):createShop('商店', ac.point(7444, -11429), 270)
+    shop:setItem('作弊等级', 6, 'S')
+    shop:setItem('作弊属性', 7, 'D')
+    shop:setItem('经验之书', 8, 'F')
+    shop:setItem('作弊自杀', 1, 'Z')
+    shop:setItem('作弊清怪', 2, 'X')
+    shop:setItem('作弊WTF', 3, 'C')
 end
 
 --装备进阶
@@ -189,9 +196,6 @@ shop:setItem('头号玩家', 12, 'R')
 shop:setItem('天神下凡', 5, 'A')
 shop:setItem('大师祝福', 6, 'S')
 --shop:setItem('时为朦胧的雪花之翼', 3, 'C')
-shop:setItem('飞雷', 1, 'Z')
-shop:setItem('的卢', 2, 'X')
-shop:setItem('赤兔', 3, 'C')
 if sg.test then
     shop:setItem('商城作弊怪', 4, 'V')
 end

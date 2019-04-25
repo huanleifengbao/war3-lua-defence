@@ -54,6 +54,7 @@ base:event('单位-死亡', function (trg, unit)
 	        end)
         end
     end
+    --ac.game:eventNotify('地图-游戏即将失败')
 end)
 
 --受伤警报

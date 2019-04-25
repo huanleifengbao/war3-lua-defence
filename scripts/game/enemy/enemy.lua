@@ -36,6 +36,8 @@ local def_tbl = {
 	15000,20000,25000,30000,35000,40000,50000,55000,55000,55000,
 	60000,65000,70000,80000,90000,100000,110000,130000,1630000,2630000,
 }
+--BOSS掉落木材表
+local boss_lumber = {1000,5000,10000,20000}
 
 local data = {
 	id = function(n)
@@ -128,7 +130,10 @@ local boss_data = {
 		['移动速度'] = function(n)
 			return 400
 		end,
-	},
+		['死亡木材'] = function(n)
+			return boss_lumber[n]
+		end,
+	},	
 	level = function(n)
 		return 2000 * n
 	end,
@@ -290,6 +295,7 @@ local function create_wave()
 			ac.player(i):add('金币', gold)
 		end
 	end
+	ac.game:eventNotify('地图-进攻开始',wave)
 	if max_wave == 0 or wave < max_wave then
 		sg.wave_timer = ac.wait(time_out,function()		
 			create_wave()

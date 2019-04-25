@@ -96,18 +96,18 @@ ac.game:event('地图-选择难度', function ()
                     local random = false
                     if name == '随机英雄' then
 	                    random = true
-                        unit = hero_mark[math.random(#hero_mark)]
-                        for i = 1,#hero_mark do
-	                        if unit == hero_mark[i] then
-								table.remove(hero_mark,i)
-								break
-	                        end
-                        end
+                        unit = hero_mark[math.random(#hero_mark)]                        
                         name = unit:getName()
                     else
 	                    random = false
                     end
-                    unit:remove()
+                    for i = 1,#hero_mark do
+	                    if unit == hero_mark[i] then
+							table.remove(hero_mark,i)
+							break
+	                    end
+                    end
+                    unit:remove()                    
                     --unit:setOwner(player, true)                  
                     for _ = 1, 1 do
                         sg.player_count = sg.player_count + 1
@@ -136,7 +136,7 @@ ac.game:event('地图-选择难度', function ()
                         --随机大礼包
                         if random == true then
 	                        hero:createItem('治疗药水-小')
-                        end
+                        end                    
                         player:moveCamera(start_p, 0.2)
                         hero:userData('杀敌数', 0)
                         sg.family[player] = {}
