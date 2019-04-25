@@ -177,4 +177,4 @@ ac.game:event('单位-出售物品',function(_,_,item,sell)
 end)
 
 --作弊
---sg.test = true
+sg.test = console.enable

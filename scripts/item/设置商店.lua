@@ -9,9 +9,9 @@ shop:setItem('基地无敌', 5, 'A')
 shop:setItem('暂停刷怪', 6, 'S')
 shop:setItem('基地升级', 7, 'D')
 shop:setItem('你知道吗-1', 8, 'F')
-shop:setItem('副本-虎牢关大战', 1, 'Z')
-shop:setItem('副本-大战黄巾贼', 2, 'X')
-shop:setItem('副本-过五关斩六将', 3, 'C')
+shop:setItem('副本-虎牢关大战', 1)
+shop:setItem('副本-大战黄巾贼', 2)
+shop:setItem('副本-过五关斩六将', 3)
 if sg.test then
     shop:setItem('作弊副本', 4, 'V')
 end

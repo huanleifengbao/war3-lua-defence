@@ -7,9 +7,12 @@ function mt:onAdd()
 		{
 			time = self.time,
 		}
-	end)
+		self.trg:remove()
+	end)	
 end
 
 function mt:onRemove()
-	self.trg:remove()
+	if self.trg:remove() then
+		self.trg:remove()
+	end
 end

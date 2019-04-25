@@ -146,13 +146,13 @@ end
 function sg.on_block(p1,p2)
 	local angle = p1/p2
 	local distance = p1*p2
-	local j = distance/10
+	local j = math.floor(distance/5)
 	local target = p1
 	for i = 1,j do
 		if target:isBlock() then
 			break
 		else
-			target = target - {angle,10}
+			target = target - {angle,5}
 		end
 	end
 	return target
@@ -162,11 +162,11 @@ end
 function sg.leap_block(p1,p2)
 	local angle = p2/p1
 	local distance = p1*p2
-	local j = distance/10
+	local j = distance/5
 	local target = p2
 	for i = 1,j do
 		if target:isBlock() then
-			target = target - {angle,10}
+			target = target - {angle,5}
 		else
 			break
 		end

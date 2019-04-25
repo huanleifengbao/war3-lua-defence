@@ -14,6 +14,8 @@ local instance_data = {
     {name = '副本-张梁', point = ac.point(-4100, 10280), facing = 270},
     {name = '副本-张角', point = ac.point(-2000, 10280), facing = 270},
 }
+--购买次数限制
+local limit = 3
 
 function mt:onCanAdd(unit)
     local player = unit:getOwner()
@@ -32,7 +34,7 @@ function mt:onAdd()
     local boss_mark = {}
     local boss_count = 0
 
-    local time = 120
+    local time = 20
     local msg = '副本-大战黄巾贼'
     local time2 = 300
     local msg2 = '时间限制'
@@ -204,7 +206,10 @@ function mt:onAdd()
                         if boss_count == 0 then
 	                        ac.wait(0,function()
 		                        if stage_start == true then
-			                        sg.base.shop:getItem(msg):remove()
+			                        local item = sg.base.shop:getItem(msg)
+		                        	if item then
+			                        	item:remove()
+		                        	end
 			                        stage_start = false
 		                            timer2:remove()
 		                            local back_time = 10
@@ -311,7 +316,12 @@ function mt:onAdd()
     timer = ac.wait(time, function()
         for i = 1,sg.max_player do
             local player = ac.player(i)
-            player:message('还没进副本的进不去了,旗帜都|cffff0000boom|r了', 60)
+            player:message('集结时间已到，|cffff0000强制|r进入副本', 10)
+            local hero = player:getHero()
+            if hero and not ac.isInTable(mark,hero) then
+	            sg.reborn(player,0)
+	            table.insert(mark,hero)
+            end
         end
         instance()
     end)
@@ -323,7 +333,16 @@ function mt:onAdd()
 	for i = 1,sg.max_player do
         local player = ac.player(i)
         player:timerDialog(msg, timer)
-        player:message('进攻的敌人已被|cff00ffff冻结|r', 60)
-        player:message('|cffff7500大战黄巾贼|r副本已激活,想去就所有人在|cffff7500'..time..'|r秒内去|cffff7500能量圈|r集合', 60)
+        player:message('进攻的敌人已被|cff00ffff冻结|r', 20)
+        player:message('|cffff7500大战黄巾贼|r副本已激活,想去就所有人在|cffff7500'..time..'|r秒内去|cffff7500能量圈|r集合', 20)
     end
+    --次数限制
+    limit = limit - 1
+    if limit <= 0 then
+	    local item = sg.base.shop:getItem(msg)
+		if item then
+			item:remove()
+		end
+    end
+    sg.message('剩余挑战次数：' .. '|cffff7500'..limit..'|r',5)
 end
