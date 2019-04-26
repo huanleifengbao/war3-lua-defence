@@ -64,11 +64,9 @@ function mt:onAdd()
 
     local rect = ac.rect(start_point, 500, 500)
     local function instance()
-    	for _,trg in ipairs(trg_mark) do
-		    if trg then
-		        trg:remove()
-		    end
-	    end
+	    if exit_trg then
+	    	exit_trg:remove()
+    	end
         if timer then
             timer:remove()
         end
@@ -85,11 +83,9 @@ function mt:onAdd()
                 end
             end
             --清空事件
-            for _,trg in ipairs(trg_mark) do
-	            if trg then
-		            trg:remove()
-	            end
-            end
+            if exit_trg then
+		    	exit_trg:remove()
+	    	end
             for _,trg in ipairs(trg_mark) do
 		        if trg then
 			        trg:remove()
