@@ -91,10 +91,14 @@ function mt:onAdd()
     local timer
 
     local rect = ac.rect(start_point, 500, 500)
+    local exit_trg
     local function instance()
         if timer then
             timer:remove()
         end
+        if exit_trg then
+		    exit_trg:remove()
+	    end
         --结束副本一定会跑的函数
         local function instance_end()
         	ac.game:music(sg.last_music)
@@ -113,6 +117,9 @@ function mt:onAdd()
 		            trg:remove()
 	            end
             end
+            if exit_trg then
+		    	exit_trg:remove()
+	    	end
             hero_mark = {}
             boss_mark = {}
             sg.game_mod = '通常'
@@ -474,7 +481,7 @@ function mt:onAdd()
             end
         end
     end
-    ac.game:event('地图-删除英雄', function (_, u)
+    exit_trg = ac.game:event('地图-删除英雄', function (_, u)
         for k, unit in ipairs(mark) do
             if u == unit then
                 table.remove(mark, k)

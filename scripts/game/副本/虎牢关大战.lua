@@ -64,6 +64,11 @@ function mt:onAdd()
 
     local rect = ac.rect(start_point, 500, 500)
     local function instance()
+    	for _,trg in ipairs(trg_mark) do
+		    if trg then
+		        trg:remove()
+		    end
+	    end
         if timer then
             timer:remove()
         end
@@ -85,6 +90,11 @@ function mt:onAdd()
 		            trg:remove()
 	            end
             end
+            for _,trg in ipairs(trg_mark) do
+		        if trg then
+			        trg:remove()
+		        end
+	        end
             event1_mark = false
             if #event1_monster_mark > 0 then
                 for _, u in ipairs(event1_monster_mark) do
@@ -364,7 +374,7 @@ function mt:onAdd()
             end
         end
     end
-    ac.game:event('地图-删除英雄', function (_, u)
+    exit_trg = ac.game:event('地图-删除英雄', function (_, u)
         for k, unit in ipairs(mark) do
             if u == unit then
                 table.remove(mark, k)

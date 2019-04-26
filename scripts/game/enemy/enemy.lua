@@ -179,12 +179,17 @@ local ex_data = {
 		end
 	end,
 }
-
+sg.player_kill_count = {}
 local function init_unit(u)
 	sg.add_ai(u)
 	table.insert(sg.all_enemy,u)
 	u:set('生命',u:get'生命上限')
-	u:event('单位-死亡', function(_, _, _)
+	u:event('单位-死亡', function(_, _, killer)
+		local player = killer:getOwner()
+		if not sg.player_kill_count[player] then
+			sg.player_kill_count[player] = 0
+		end
+		sg.player_kill_count[player] = sg.player_kill_count[player] + 1
 		for i = 1,#sg.all_enemy do
 			if sg.all_enemy[i] == u then
 				table.remove(sg.all_enemy,i)

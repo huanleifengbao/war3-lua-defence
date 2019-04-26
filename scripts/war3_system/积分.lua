@@ -36,3 +36,19 @@ ac.game:event('地图-进攻开始', function(_,wave)
 		end
 	end
 end)
+
+--每分钟提交杀敌数量的积分
+function sg.kill_score()
+	for i = 1,sg.max_player do
+		local rate = 100
+		local player = ac.player(i)
+		if sg.player_kill_count[player] and not player._isRemove then
+			local score = math.floor(sg.player_kill_count[player]/rate)
+			sg.player_kill_count[player] = sg.player_kill_count[player] - score * rate
+			player:add_score('杀敌',score)
+		end
+	end
+end
+ac.loop(60,function()
+	sg.kill_score()
+end)

@@ -17,6 +17,8 @@ base:event('单位-死亡', function (trg, unit)
             }
         end
     end
+    --提交杀敌数积分
+    sg.kill_score()
     --for _, u in ac.selector()
     --    : inRange(base, 800)
     --    : ipairs()
