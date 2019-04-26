@@ -162,9 +162,11 @@ for _, tbl_name in ipairs(tbl) do
             size = 2,
             time = 1.5,
         }
-        local score = item.score * sg.difficult
-		i_player:message('|cffff7500恭喜通过副本！你获得了|r|cffffdd00战力值+' .. score .. '|r|cffff7500的积分奖励|r',5)
-		i_player:add_score('战力值',score)
+        if not i_player._isRemove then
+	        local score = item.score * sg.difficult
+			i_player:message('|cffff7500恭喜通过副本！你获得了|r|cffffdd00战力值+' .. score .. '|r|cffff7500的积分奖励|r',5)
+			i_player:add_score('战力值',score)
+		end
     end
 end
 
@@ -326,4 +328,17 @@ function mt:onCastShot()
             item:remove()
         end
     end
+end
+
+local mt = ac.item['异界的邀请函']
+
+function mt:onCanAdd(unit)
+	if sg.ex_mode then
+	    return false,'无尽模式下不可购买该物品'
+    end
+	local wave = self.wave
+    if sg.get_wave() >= wave - 1 then
+	    return false,'当前波数已到达' .. wave .. '，购买失败'
+    end
+    ac.game:eventNotify('地图-选择波数',wave)
 end

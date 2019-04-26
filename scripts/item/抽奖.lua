@@ -36,15 +36,16 @@ end
 local function get_skill(hero,name)
 	local skill = hero:findSkill(name)
 	if skill then
-		if skill:isEnable() then
-			hero:particle([[Abilities\Spells\Items\AIlm\AIlmTarget.mdl]],'origin')()				
+		if skill:isEnable() then						
 			return false
 		else
+			hero:particle([[Abilities\Spells\Items\AIlm\AIlmTarget.mdl]],'origin')()	
 			skill:enable()
 			return true
 		end
 	else
 		print(name,'有个战魂初始没加到魔法书里')
+		return false
 	end
 
 	--[[local index = has_skill[name]
@@ -81,11 +82,15 @@ end
 
 
 
-local function draw(hero)
+local function draw(hero,boolean)
 	local player = hero:getOwner()
-	if sg.get_random(#prize/10) then
-		local name = prize[math.random(#prize)]	
-		sg.message('|cffffff00时|r|cfffbff17来|r|cfff6ff2e运|r|cfff2ff45转|r|cffedff5c！|r|cffe8ff73恭|r|cffe4ff8b喜|r|cffdfffa2玩|r|cffdaffb9家|cffff6800' .. player:name() .. '|r|r|cffd6ffd0抽|r|cffd1ffe7到|r|cffccffff了|r|cffff6800' .. name .. '|r|cffccffff！|r', 5)
+	if boolean == true or sg.get_random(#prize/10) then
+		local name = prize[math.random(#prize)]
+		if boolean ~= true then
+			sg.message('|cffffff00时|r|cfffbff17来|r|cfff6ff2e运|r|cfff2ff45转|r|cffedff5c！|r|cffe8ff73恭|r|cffe4ff8b喜|r|cffdfffa2玩|r|cffdaffb9家|cffff6800' .. player:name() .. '|r|r|cffd6ffd0抽|r|cffd1ffe7到|r|cffccffff了|r|cffff6800' .. name .. '|r|cffccffff！|r', 5)
+		else
+			player:message('|cffffff00合|r|cffffe000成|r|cffffc000成|r|cffffa000功|r|cffff8000！|r|cffff6000你|r|cffff4000获|r|cffff2000得|r|cffff0000了|r|cffffff00' .. name .. '|r',5)
+		end
 		sg.get_sow(hero,name)
 		if sow[name] <= 0.1 then
 			hero:particle([[Abilities\Spells\Human\Resurrect\ResurrectCaster.mdl]],'origin')()	
@@ -150,16 +155,44 @@ for name,_ in pairs(sow) do
 
 	function mt:onCastShot()
 		local name = self.SpiritOfWar
-		local hero = self:getOwner()
+		local unit = self:getOwner()
+		local player = unit:getOwner()
+		local hero = player:getHero()
 		if get_skill(hero,name) == true then
-			for item in hero:eachItem() do
+			for item in unit:eachItem() do
 				if name == item:getName() then
 					item:remove()
 					break
 				end
 			end
 		else
-			hero:getOwner():message('你已经拥有' .. name .. '了，无法使用',5)
+			player:message('你已经拥有' .. name .. '了，无法使用',5)
 		end
+	end
+end
+
+--合成战魂
+local mt = ac.skill['翻倍机会！']
+
+function mt:onCastShot()
+	local hero = self:getOwner()
+	local player = hero:getOwner()
+	local tbl = {}
+	local count = self.count
+	for item in hero:eachItem() do
+		if sow[item:getName()] then
+			table.insert(tbl,item)
+			if #tbl >= count then
+				break
+			end
+		end
+	end
+	if #tbl >= count then
+		for _,item in ipairs(tbl) do
+			item:remove()
+		end
+		draw(hero,true)
+	else
+		player:message('|cffff0000背包中的|r|cffffff00战魂|r|cffff0000不足|r|cffffff00' .. count .. '|r|cffff0000个，不能合成|r')
 	end
 end

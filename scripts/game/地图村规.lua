@@ -157,17 +157,6 @@ ac.game:event('地图-选择难度', function ()
 	end)
 end)
 
---指令
-ac.game:event('玩家-聊天', function (_, player, str)
-	if str == '-自杀' then
-		local hero = player:getHero()
-		if hero:isAlive() then
-			hero:kill(hero)
-			sg.message(player:name() .. '寻死无方，选择了原地去世',5)
-		end
-	end
-end)
-
 --出售物品系数
 ac.game:event('单位-出售物品',function(_,_,item,sell)
 	local rate = 0.5 --贩卖系数

@@ -62,8 +62,9 @@ local function onDefence(damage)
 	        --每点负护甲相当于受到的伤害加深1%
 	        damage:div_damage(now_damage * (1 - 0.01 * def))
 	    elseif def > 0 then
-	        --每点护甲相当于生命值增加1%
-	        damage:div_damage(now_damage / (1 + 0.01 * def))
+	        --每点护甲相当于生命值增加1%，上限减免90%
+	        local rate = math.min(10,1 + 0.01 * def)
+	        damage:div_damage(now_damage / rate)
 	    end
 	elseif damage.damage_type == '魔法' then
 	    local penetrate = damage['魔法穿透']

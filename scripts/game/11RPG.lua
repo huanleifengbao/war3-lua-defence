@@ -98,18 +98,18 @@ for player in ac.eachPlayer() do
 		if not score[name] then
 			score[name] = {}
 		end
-		if not score[name][self.id] then
-			score[name][self.id] = read_score(get_key(self), name)
+		if not score[name][self:id()] then
+			score[name][self:id()] = read_score(get_key(self), name)
 		end
-		log.debug(('获取RPG积分:[%s][%s] --> [%s]'):format(self:name(), name, score[name][self.id]))
-		return tostring(score[name][self.id])
+		log.debug(('获取RPG积分:[%s][%s] --> [%s]'):format(self:name(), name, score[name][self:id()]))
+		return tostring(score[name][self:id()])
 	end
 
 	function player.__index:set_score(name, value)
 		if not score[name] then
 			score[name] = {}
 		end
-		score[name][self.id] = value
+		score[name][self:id()] = value
 		log.debug(('设置RPG积分:[%s][%s] = [%s]'):format(self:name(), name, value))
 		if has_record then
 			write_score(get_key(self) .. "=", name, value)
@@ -120,7 +120,7 @@ for player in ac.eachPlayer() do
 
 	function player.__index:add_score(name, value)
 		local r = self:get_score(name) + value
-		score[name][self.id] = r
+		score[name][self:id()] = r
 
 		local type = '增加'
 		if value < 0 then

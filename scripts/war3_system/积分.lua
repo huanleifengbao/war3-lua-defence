@@ -1,5 +1,5 @@
 --积分战力加成
-ac.game:event('地图-选择英雄', function(trg,hero,player)
+ac.game:event('地图-选择英雄', function(_, hero, player)
     local score = math.floor(tonumber(player:get_score('战力值')))
     local damage = math.floor(score/10)
     if damage > 0 then
@@ -28,9 +28,10 @@ ac.game:event('地图-进攻开始', function(_,wave)
 		if score > 0 then
 			for i = 1,sg.max_player do
 				local player = ac.player(i)			
-				player:add_score('无尽',score)
-				player:message('所有在线玩家获得了|cffffdd00无尽+' .. score .. '|r的积分奖励',5)
-				--ac.game:addScore(player,'无尽',score)
+				if not player._isRemove then
+					player:add_score('无尽',score)
+					player:message('所有在线玩家获得了|cffffdd00无尽+' .. score .. '|r的积分奖励',5)
+				end
 			end
 		end
 	end

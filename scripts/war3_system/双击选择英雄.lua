@@ -77,7 +77,7 @@ end
 
 sg.family = {}
 ac.game:event('地图-选择难度', function ()
-    for i = 1,sg.max_player do    
+    for i = 1,sg.max_player do
         ac.player(i):add('金币', 50000)
         ac.player(i):event('玩家-选中单位', function (trg, player, unit)
             if unit:getOwner():id() == 16 and not player:getHero() then
