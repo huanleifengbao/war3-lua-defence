@@ -5,3 +5,4 @@ require 'game.enemy'
 
 require 'game.副本'
 require 'game.11RPG'
+require 'game.羁绊组合'
