@@ -27,6 +27,7 @@ function mt:onCastShot()
 			    damage = damage,
 			    damage_type = skill.damage_type,
 			    skill = skill,
+			    attack = true,
 			}
 			u:addBuff '麻痹'
 			{

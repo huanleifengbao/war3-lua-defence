@@ -14,6 +14,7 @@ function mt:do_damage(damage,target)
 		    damage = damage,
 		    damage_type = self.damage_type,
 		    skill = self,
+		    attack = true,
 		}
 	end
 end

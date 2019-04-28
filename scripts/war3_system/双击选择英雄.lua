@@ -101,14 +101,13 @@ ac.game:event('地图-选择难度', function ()
                     else
 	                    random = false
                     end
-                    for i = 1,#hero_mark do
-	                    if unit == hero_mark[i] then
-							table.remove(hero_mark,i)
-							break
-	                    end
-                    end
-                    unit:remove()                    
-                    --unit:setOwner(player, true)                  
+       --             for i = 1,#hero_mark do
+	      --              if unit == hero_mark[i] then
+							--table.remove(hero_mark,i)
+							--break
+	      --              end
+       --             end
+       --             unit:remove()              
                     for _ = 1, 1 do
                         sg.player_count = sg.player_count + 1
                         local start_p = ac.point(7044, -8792)

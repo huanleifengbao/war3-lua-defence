@@ -39,6 +39,7 @@ function mt:shot(count,direct)
 			    damage = damage,
 			    damage_type = skill.damage_type,
 			    skill = skill,
+			    attack = true,
 			}
 		end
 	end

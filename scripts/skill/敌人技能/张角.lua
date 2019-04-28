@@ -187,19 +187,19 @@ function mt:onCastChannel()
 			    damage_type = self.damage_type,
 			    skill = self,
 			}
-			local p = u:getPoint()
-			local target = sg.on_block(p,p - {point/p,self.knock})
-			u:addRestriction '硬直'
-			local mover = hero:moverLine
-			{
-				mover = u,
-				start = p,
-				target = target,
-				speed = self.knock/self.stun,
-			}
-			function mover:onRemove()
-				u:removeRestriction '硬直'
-			end
+			--local p = u:getPoint()
+			--local target = sg.on_block(p,p - {point/p,self.knock})
+			--u:addRestriction '硬直'
+			--local mover = hero:moverLine
+			--{
+			--	mover = u,
+			--	start = p,
+			--	target = target,
+			--	speed = self.knock/self.stun,
+			--}
+			--function mover:onRemove()
+			--	u:removeRestriction '硬直'
+			--end
 		end
 		angle = angle - turn
 	end)
