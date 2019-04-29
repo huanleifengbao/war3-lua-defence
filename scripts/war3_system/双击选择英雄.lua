@@ -131,6 +131,11 @@ end
 
 sg.family = {}
 ac.game:event('地图-选择难度', function ()
+	local point = ac.point(1300, -9100)
+	local textTag_msg = '|cffff9900双击|cffffff00选择英雄|r'
+		ac.textTag()
+		: text(textTag_msg, 0.05)
+		: at(point, 10)
     for i = 1,sg.max_player do
         ac.player(i):add('金币', 50000)
         ac.player(i):event('玩家-选中单位', function (trg, player, unit)
@@ -140,7 +145,7 @@ ac.game:event('地图-选择难度', function ()
 	               	--当你点击平凡的积分英雄时
 	               	local ressult,key,num = score(player,name)
 	               	if ressult == false then
-						player:message('|cffffff00您的|cffff00ff'..key..'|r|cffffff00不足|r|cffffaa00'..num..'|r，|cffffff00不能选择|r', 5)
+						player:message('|cffffff00您的|cffff00ff'..key..'|r|cffffff00积分不足|r|cffffaa00'..num..'|r，|cffffff00不能选择|r', 5)
 						return
 		            end
 		            --当你点击高贵的付费英雄时
@@ -168,8 +173,7 @@ ac.game:event('地图-选择难度', function ()
 		                    end
 	                    end
 	                    random = true
-                        unit = hero_mark[math.random(#hero_mark)]                        
-                        name = unit:getName()
+                        name = hero_mark[math.random(#hero_mark)]
                     else
 	                    random = false
                     end
@@ -223,9 +227,3 @@ ac.game:event('地图-选择难度', function ()
         end)
     end
 end)
-
-local point = ac.point(1300, -9100)
-local textTag_msg = '|cffff9900双击|cffffff00选择英雄|r'
-ac.textTag()
-: text(textTag_msg, 0.05)
-: at(point, 10)

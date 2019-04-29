@@ -36,6 +36,25 @@ local def_tbl = {
 	4000,4500,5000,5500,6000,6500,7000,7500,8000,8500,
 	10000,11000,12000,13000,14000,15000,16000,17000,18000,19000,
 }
+--进攻怪物技能
+local enemy_skill = {
+	[11] = '耐久光环',
+	[13] = '诱捕',
+	[15] = '致命一击',
+	[17] = '狂热',
+	[19] = '狂战士',
+	[21] = '坚韧光环',
+	[23] = '减速',
+	[25] = '神圣护甲',
+	[27] = '闪避',
+	[29] = '浸毒武器',
+	[31] = '心灵之火',
+	[33] = '重生',
+	[35] = '残废',
+	[37] = '重击',
+	[39] = '精灵之火',
+	[40] = '魔化',
+}
 --BOSS掉落木材表
 local boss_lumber = {1000,5000,10000,20000}
 
@@ -95,9 +114,7 @@ local data = {
 		return math.max(0,(n - 5) * 2)
 	end,
 	buff = function(n)
-		if n >= 40 then
-			return '魔化'
-		end
+		return enemy_skill[n]
 	end,
 }
 
@@ -297,6 +314,9 @@ local function create_wave()
 	if sg.ex_mode ~= true then		
 		local gold = 5000 * wave
 		sg.message('|cffff6600所有玩家获得了|r|cffffff00' .. gold .. '|r|cffff6600金币的补给|r',10)
+		if enemy_skill[wave] then
+			sg.message('|cffffff00本波进攻怪物带有|r|cffff0000' .. enemy_skill[wave] .. '|r|cffffff00技能，请小心。|r',10)
+		end
 		for i = 1,sg.max_player do
 			ac.player(i):add('金币', gold)
 		end

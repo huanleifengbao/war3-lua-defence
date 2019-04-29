@@ -316,7 +316,7 @@ function mt:onAdd()
                 local id = player:id()
                 if event1_mark == true and u:isHero() and (id >= 1 and id <= sg.max_player) then
                     event1_mark = false
-                    u:addBuff '诱捕'
+                    u:addBuff '诱捕-效果'
                     {
                         time = 5,
                     }
