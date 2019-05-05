@@ -28,19 +28,24 @@ ac.game:event('玩家-聊天', function (_, player, str)
 				local money = string.sub(str,6,string.len(str))
 				money = tonumber(money)
 				if money then
-					local target = ac.player(id)
-					if target:gameState() == '在线' then
-						if player:get(flag) >= money then
-							local money = math.min(player:get(flag),money)											
-							player:message('|cff00ff00您慷慨地给予了|r|cffff0000' .. target:name() .. ' |r|cffff6800' .. money .. '|r|cffffff00' .. flag .. '|r。',10)
-							player:add(flag,-money)
-							target:message('|cff00ff00您收到|r|cffff6800' .. money .. '|r|cffffff00' .. flag .. '|r|cff00ff00，从|r|cffff0000' .. player:name() .. '|r|cff00ff00那里。|r')
-							target:add(flag,money)
+					if money > 0 then
+						local target = ac.player(id)
+						if target:gameState() == '在线' then
+							if player:get(flag) >= money then
+								local money = math.min(player:get(flag),money)											
+								player:message('|cff00ff00您慷慨地给予了|r|cffff0000' .. target:name() .. ' |r|cffff6800' .. money .. '|r|cffffff00' .. flag .. '|r。',10)
+								player:add(flag,-money)
+								target:message('|cff00ff00您收到|r|cffff6800' .. money .. '|r|cffffff00' .. flag .. '|r|cff00ff00，从|r|cffff0000' .. player:name() .. '|r|cff00ff00那里。|r')
+								target:add(flag,money)
+							else
+								player:message('|cffff0000您的的|r|cffffff00' .. flag .. '|r|cffff0000不够，给予失败！|r',5)
+							end
 						else
-							player:message('|cffff0000您的的|r|cffffff00' .. flag .. '|r|cffff0000不够，给予失败！|r',5)
+							player:message('|cffff0000该玩家|r|cffffff00不在线|r|cffff0000，给予失败！|r',5)
 						end
 					else
-						player:message('|cffff0000该玩家|r|cffffff00不在线|r|cffff0000，给予失败！|r',5)
+						player:message('|cffff0000给予的数量必须大于0|r',5)
+						return
 					end
 				end
 			end

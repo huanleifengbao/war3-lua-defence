@@ -280,6 +280,8 @@ ac.wait(0, function()
             game_mod_str = '|cffff0000困难|r'
         elseif num == 4 then
             game_mod_str = '|cffff00ff噩梦|r'
+        elseif num == 5 then
+	        game_mod_str = '|cff3366ff地狱|r'
         end
         sg.message(sg.player_colour[id]..i_player:name()..'|r难度选择为:'..game_mod_str, 10)
         sg.message('|cffffcc00双击|r一名英雄来扮演Ta')

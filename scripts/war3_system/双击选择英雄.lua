@@ -11,7 +11,7 @@ local hero_data = {
 	['星彩'] = {point = ac.point(1204,-8514),Aghanim = '煌天'},	-- -256 -256
 	['孙尚香'] = {point = ac.point(948,-8770),Aghanim = '日月乾坤剑'},	-- -512 +0
 	--积分英雄
-	['马超'] = {point = ac.point(1460,-9282),score = {['杀敌'] = 1000},Aghanim = '龙雷骑尖'},
+	['马超'] = {point = ac.point(1460,-9282),score = {['杀敌'] = 200},Aghanim = '龙雷骑尖'},
 	--付费英雄
 	['刘备'] = {point = ac.point(692,-8130),shop = '传奇三国-刘备',Aghanim = '真黄龙剑'},
 	['貂蝉'] = {point = ac.point(1076,-8130),shop = '传奇三国-貂蝉',Aghanim = '金丽玉霞'},
@@ -168,8 +168,8 @@ ac.game:event('地图-选择难度', function ()
 	                    --创建一个随机池
 	                    local hero_mark = {}
 	                    for name,_ in pairs(hero_data) do
-		                    if score(player,name) == true and shop(player,name) == true then
-			                    table.insert(hero_mark,name)
+		                    if name ~= '随机英雄' and score(player,name) == true and shop(player,name) == true then
+								table.insert(hero_mark,name)
 		                    end
 	                    end
 	                    random = true

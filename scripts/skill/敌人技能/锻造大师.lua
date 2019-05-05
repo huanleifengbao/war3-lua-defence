@@ -101,6 +101,10 @@ function mt:onCastFinish()
 	local distance = self.back
 	if block then
 		distance = point * block:getPoint()
+		if distance > 1000 then
+			distance = 1000
+			self.blink_point = point - {angle,1000}
+		end
 	end
 	local target = sg.on_block(point,point - {angle,distance})
 	local skill = self
