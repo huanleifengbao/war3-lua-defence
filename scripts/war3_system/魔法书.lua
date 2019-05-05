@@ -53,6 +53,7 @@ end
 local mt = ac.skill['战魂魔法书-关闭']
 
 function mt:onCastShot()
+	print('喵喵喵？')
     local hero = self:getOwner()
     closebox(hero)
 end

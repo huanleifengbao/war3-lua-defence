@@ -12,6 +12,7 @@ local hero_data = {
 	['孙尚香'] = {point = ac.point(948,-8770),Aghanim = '日月乾坤剑'},	-- -512 +0
 	--积分英雄
 	['马超'] = {point = ac.point(1460,-9282),score = {['杀敌'] = 200},Aghanim = '龙雷骑尖'},
+	['周瑜'] = {point = ac.point(948,-9282),Aghanim = '龙雷骑尖'},
 	--付费英雄
 	['刘备'] = {point = ac.point(692,-8130),shop = '传奇三国-刘备',Aghanim = '真黄龙剑'},
 	['貂蝉'] = {point = ac.point(1076,-8130),shop = '传奇三国-貂蝉',Aghanim = '金丽玉霞'},
