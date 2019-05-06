@@ -51,7 +51,7 @@ ac.game:event('玩家-聊天', function (_, player, str)
 			end
 		end
 	end
-	if string.find('-清理',str) then
+	if str == '-清理' then
 		local clear_time = 10
 		if clear_timer then
 			sg.message('|cffff9900清理物品的指令已被|r|cff99cc00取消|r',5)
