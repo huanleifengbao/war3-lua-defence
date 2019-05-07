@@ -11,7 +11,6 @@ local tbl = {
 local function boss_trg1()
     for i = 1, #tbl do
         local boss = sg.creeps_player:createUnit(tbl[i][1], tbl[i][2], 270)
-        boss:addBuff '重生' {}
         boss:event('单位-死亡', function (_, _, killer)
             if killer:userData('专属挑战等级') < tbl[i][5] then
                 if sg.get_random(tbl[i][4]) then

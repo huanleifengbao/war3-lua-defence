@@ -202,6 +202,7 @@ local function init_unit(u)
 	table.insert(sg.all_enemy,u)
 	u:set('生命',u:get'生命上限')
 	u:addRestriction '幽灵'
+	u:addRestriction '疾风步'
 	u:event('单位-死亡', function(_, _, killer)
 		local player = killer:getOwner()
 		if not sg.player_kill_count[player] then

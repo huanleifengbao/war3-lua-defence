@@ -213,7 +213,7 @@ function mt:onAdd()
                         if boss_count == 0 then
 	                        ac.wait(0,function()
 		                        if stage_start == true then
-			                        local item = sg.base.shop:getItem(msg)
+			                        local item = sg.fb_shop:getItem(msg)
 		                        	if item then
 			                        	item:remove()
 		                        	end
@@ -346,7 +346,7 @@ function mt:onAdd()
     --次数限制
     limit = limit - 1
     if limit <= 0 then
-	    local item = sg.base.shop:getItem(msg)
+	    local item = sg.fb_shop:getItem(msg)
 		if item then
 			item:remove()
 		end

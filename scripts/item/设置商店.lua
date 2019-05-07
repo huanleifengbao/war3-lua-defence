@@ -196,6 +196,7 @@ shop:setBuyRange(1000000)
 shop:setItem('副本-虎牢关大战', 1)
 shop:setItem('副本-大战黄巾贼', 2)
 shop:setItem('副本-过五关斩六将', 3)
+sg.fb_shop = shop
 
 --积分兑换
 local shop = shop_list['积分兑换']
