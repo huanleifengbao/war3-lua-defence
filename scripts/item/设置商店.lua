@@ -10,12 +10,6 @@ shop:setItem('你知道吗-1', 12)
 shop:setItem('基地无敌', 5, 'A')
 shop:setItem('暂停刷怪', 6, 'S')
 shop:setItem('基地升级', 7, 'D')
-shop:setItem('副本-虎牢关大战', 1)
-shop:setItem('副本-大战黄巾贼', 2)
-shop:setItem('副本-过五关斩六将', 3)
-if sg.test then
-    shop:setItem('作弊副本', 4, 'V')
-end
 
 --这3个副本需要开局禁用
 --local tbl = {'副本-虎牢关大战','副本-大战黄巾贼','副本-过五关斩六将'}
@@ -41,14 +35,18 @@ end
 --end
 
 local shop_list = {
-	['商城道具'] = {p = ac.point(4944, -10529),n = [[shop\shangchengdaoju.mdx]]},
+	--上层
+	
 	['黑市商人'] = {p = ac.point(5644, -10529),n = [[shop\heishishangren.mdx]]},
     ['药水商店'] = {p = ac.point(6344, -10529),n = [[shop\yaoshuishangdian.mdx]]},
-    --中心
-	['新手装备'] = {p = ac.point(7044, -10529),n = [[shop\xinshouzhuangbei.mdx]]},
-	['野外挑战'] = {p = ac.point(7744, -10529),n = [[shop\yewaitiaozhan.mdx]]},
-	['进阶挑战'] = {p = ac.point(8444, -10529),n = [[shop\jinjietiaozhan.mdx]]},
-	['装备进阶'] = {p = ac.point(9144, -10529),n = [[shop\zhuangbeijinjie.mdx]]},	
+    ['新手装备'] = {p = ac.point(7044, -10529),n = [[shop\xinshouzhuangbei.mdx]]},
+    ['野外挑战'] = {p = ac.point(7744, -10529),n = [[shop\yewaitiaozhan.mdx]]},
+    ['进阶挑战'] = {p = ac.point(8444, -10529),n = [[shop\jinjietiaozhan.mdx]]},
+    --下层
+	['商城道具'] = {p = ac.point(5994, -10879),n = [[shop\shangchengdaoju.mdx]]},
+	['副本挑战'] = {p = ac.point(6694, -10879),n = [[shop\fubentiaozhan.mdx]]},	
+	['积分兑换'] = {p = ac.point(7394, -10879),n = [[shop\jifenduihuan.mdx]]},		
+	['装备进阶'] = {p = ac.point(8094, -10879),n = [[shop\zhuangbeijinjie.mdx]]},
 }
 
 for name,data in pairs(shop_list) do
@@ -69,12 +67,6 @@ shop:setBuyRange(1000000)
 shop:setItem('治疗药水-小', 9, 'Q')
 shop:setItem('治疗药水-大', 10, 'W')
 shop:setItem('孙子兵法', 11, 'E')
-shop:setItem('道具-横扫千军', 5, 'A')
-shop:setItem('道具-铜墙铁壁', 6, 'S')
-shop:setItem('道具-妙手回春', 7, 'D')
-shop:setItem('飞雷', 1, 'Z')
-shop:setItem('的卢', 2, 'X')
-shop:setItem('赤兔', 3, 'C')
 
 --新手装备
 local shop = shop_list['新手装备']
@@ -111,7 +103,7 @@ shop:setItem('挑战锻造石boss-11', 3, 'C')
 
 if sg.test then
     --作弊:出售锻造石
-    local shop = ac.player(16):createShop('商店', ac.point(7444, -10829), 270)
+    local shop = ac.player(16):createShop('商店', ac.point(9000, -10600), 270)
     shop:setBuyRange(1000000)
     shop:setItem('一级锻造石', 9, 'Q')
     shop:setItem('二级锻造石', 10, 'W')
@@ -127,7 +119,7 @@ if sg.test then
     shop:setItem('锻造保护券', 4, 'V')
 
     --作弊:方便测试随便写
-    local shop = ac.player(16):createShop('商店', ac.point(7444, -11129), 270)
+    local shop = ac.player(16):createShop('商店', ac.point(9000, -10800), 270)
     shop:setBuyRange(1000000)
     shop:setItem('进阶武器-10', 9, 'Q')
     shop:setItem('进阶衣服-10', 10, 'W')
@@ -142,13 +134,14 @@ if sg.test then
     shop:setItem('作弊锻造失败券', 4, 'V')
 
     --作弊：加个牛背
-    local shop = ac.player(16):createShop('商店', ac.point(7444, -11429), 270)
+    local shop = ac.player(16):createShop('商店', ac.point(9000, -11000), 270)
     shop:setItem('作弊等级', 6, 'S')
     shop:setItem('作弊属性', 7, 'D')
     shop:setItem('经验之书', 8, 'F')
     shop:setItem('作弊自杀', 1, 'Z')
     shop:setItem('作弊清怪', 2, 'X')
     shop:setItem('作弊WTF', 3, 'C')
+    shop:setItem('商城作弊怪', 4, 'V')
 end
 
 --装备进阶
@@ -186,7 +179,6 @@ shop:setItem('兑换玄铁-1', 5, 'A')
 shop:setItem('兑换玄铁-2', 6, 'S')
 shop:setItem('兑换玄铁-3', 7, 'D')
 shop:setItem('兑换玄铁-4', 8, 'F')
-
 --商城道具
 local shop = shop_list['商城道具']
 shop:setBuyRange(1000000)
@@ -197,9 +189,27 @@ shop:setItem('头号玩家', 12, 'R')
 shop:setItem('天神下凡', 5, 'A')
 shop:setItem('大师祝福', 6, 'S')
 --shop:setItem('时为朦胧的雪花之翼', 3, 'C')
-if sg.test then
-    shop:setItem('商城作弊怪', 4, 'V')
-end
+
+--副本挑战
+local shop = shop_list['副本挑战']
+shop:setBuyRange(1000000)
+shop:setItem('副本-虎牢关大战', 1)
+shop:setItem('副本-大战黄巾贼', 2)
+shop:setItem('副本-过五关斩六将', 3)
+
+--积分兑换
+local shop = shop_list['积分兑换']
+shop:setBuyRange(1000000)
+shop:setItem('神行', 9, 'Q')
+shop:setItem('不屈', 10, 'W')
+shop:setItem('屯田', 11, 'E')
+shop:setItem('天命', 12, 'R')
+shop:setItem('道具-横扫千军', 5, 'A')
+shop:setItem('道具-铜墙铁壁', 6, 'S')
+shop:setItem('道具-妙手回春', 7, 'D')
+shop:setItem('飞雷', 1, 'Z')
+shop:setItem('的卢', 2, 'X')
+shop:setItem('赤兔', 3, 'C')
 
 --练功
 local point = {

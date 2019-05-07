@@ -22,11 +22,11 @@ end
 --羁绊组合
 local gay_group = {
 	['夫妻同心'] = {group = {'刘备','孙尚香'},damage = 30},
-	['乱世奇才'] = {group = {'诸葛亮','司马懿'},damage = 40},
 	['桃园结义'] = {group = {'刘备','关羽','张飞'},damage = 50},
 	['父女情深'] = {group = {'张飞','星彩'},damage = 20},
 	['辕门射戟'] = {group = {'吕布','貂蝉'},damage = 60},
 	['五虎上将'] = {group = {'关羽','张飞','赵云','黄忠','马超'},damage = 100},
+	['乱世奇才'] = {group = {'诸葛亮','司马懿','周瑜'},damage = 50},
 }
 
 ac.game:event('地图-选择英雄', function(_,hero, player)

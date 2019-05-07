@@ -16,7 +16,7 @@ for _,skill_name in ipairs(tbl) do
 		end
 	    local count = 0
 	    self.trg = hero:event('单位-攻击出手', function (_, _, target, damage, mover)
-	    	if sg.get_random(self.odds) then
+	    	if sg.get_random(self.odds + hero:get('被动触发率')) then
 		    	local p = target:getPoint()
 		    	local area = self.area
 		    	ac.effect {
@@ -49,7 +49,7 @@ for _,skill_name in ipairs(tbl) do
 					sg.add_allatr(hero,atr)
 				end
 			end
-			if self.odds3 and sg.get_random(self.odds) then
+			if self.odds3 and sg.get_random(self.odds + hero:get('被动触发率')) then
 				sg.add_allatr(hero,self.atr3 * hero:get('威望'))
 			end
 			count = count + 1

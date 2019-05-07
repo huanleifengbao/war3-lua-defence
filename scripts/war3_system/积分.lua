@@ -37,6 +37,18 @@ ac.game:event('地图-进攻开始', function(_,wave)
 	end
 end)
 
+--斩将积分
+ac.game:event('地图-BOSS死亡', function(_,wave)
+	local score = math.floor(wave * sg.difficult)
+	for i = 1,sg.max_player do
+		local player = ac.player(i)
+		if not player._isRemove then
+			player:message('BOSS被击杀，所有在线玩家获得了|cffffdd00斩将+' .. score .. '|r的积分奖励',5)
+			player:add_score('斩将',score)
+		end
+	end
+end)
+
 --每分钟提交杀敌数量的积分
 function sg.kill_score()
 	for i = 1,sg.max_player do

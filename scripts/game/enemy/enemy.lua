@@ -247,6 +247,9 @@ local function create_enemy(wave)
 		sg.boss_timer = ac.wait(boss_time,function()
 			local num = wave/boss_wave
 			local u = player:createUnit(boss_data.id(num),start_point[2],270)
+			u:event('单位-死亡',function()
+				ac.game:eventNotify('地图-BOSS死亡',num)
+			end)
 			for key,val in pairs(boss_data.attribute) do
 				u:set(key,val(num))
 			end

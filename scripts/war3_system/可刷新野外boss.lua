@@ -4,13 +4,14 @@
 local tbl = {
     {'甘宁', ac.point(10500, 4100), 10, 80, 3},
     {'太史慈', ac.point(10500, 1800), 10, 70, 4},
-    {'周瑜', ac.point(10500, -500), 10, 60, 5},
+    {'周公瑾', ac.point(10500, -500), 10, 60, 5},
     {'孙坚', ac.point(10500, -3100), 10, 50, 6},
 }
 
 local function boss_trg1()
     for i = 1, #tbl do
         local boss = sg.creeps_player:createUnit(tbl[i][1], tbl[i][2], 270)
+        boss:addBuff '重生' {}
         boss:event('单位-死亡', function (_, _, killer)
             if killer:userData('专属挑战等级') < tbl[i][5] then
                 if sg.get_random(tbl[i][4]) then

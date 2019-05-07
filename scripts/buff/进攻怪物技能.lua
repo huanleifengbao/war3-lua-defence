@@ -238,9 +238,22 @@ mt.description = '该单位被击杀时可以重生一次。'
 function mt:onAdd()
 	local u = self:getOwner()
 	self.trg = u:event('单位-即将死亡', function(_)
-		u:set('生命',u:get '生命上限')
-		u:particle([[Abilities\Spells\Orc\Reincarnation\ReincarnationTarget.mdl]],'origin')()
 		self:remove()
+		u:animation('death',true)
+		u:set('生命',u:get '生命上限')
+		u:addRestriction '蝗虫'
+		u:addRestriction '硬直'
+		u:addRestriction '无敌'
+		local eff = u:particle([[Abilities\Spells\Orc\Reincarnation\ReincarnationTarget.mdl]],'origin')
+		ac.wait(3,function()
+			u:addRestriction '隐藏'
+			u:removeRestriction '隐藏'
+			u:removeRestriction '蝗虫'
+			u:removeRestriction '硬直'
+			u:removeRestriction '无敌'
+			eff()
+			u:animation('stand',true)
+		end)
 		return false		
 	end)
 end

@@ -9,7 +9,7 @@ function sg.reborn(player,reborn_time,reborn_p)
 		reborn_timer[player]:remove()
 	end
 	if not reborn_time then
-		reborn_time = 5 + sg.get_wave() * 0.5
+		reborn_time = 5 + sg.get_wave() * 0.5 - unit:get('复活减免')
 	end
 	local function reborn()
 		if not reborn_p then

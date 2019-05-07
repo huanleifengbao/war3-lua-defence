@@ -7,12 +7,13 @@ local hero_data = {
 	['关羽'] = {point = ac.point(1716,-9026),Aghanim = '青龙偃月刀'},	-- +256 +256
 	['张飞'] = {point = ac.point(1716,-8514),Aghanim = '破军蛇矛'},	-- +256 -256
 	['黄忠'] = {point = ac.point(1972,-8770),Aghanim = '破邪旋风斩'},	-- +512 +0
-	['诸葛亮'] = {point = ac.point(1204,-9026),Aghanim = '朱雀羽扇'},	-- -256 +256
+	['周瑜'] = {point = ac.point(1204,-9026),Aghanim = '古锭刀真打'},	-- -256 +256
 	['星彩'] = {point = ac.point(1204,-8514),Aghanim = '煌天'},	-- -256 -256
 	['孙尚香'] = {point = ac.point(948,-8770),Aghanim = '日月乾坤剑'},	-- -512 +0
 	--积分英雄
 	['马超'] = {point = ac.point(1460,-9282),score = {['杀敌'] = 200},Aghanim = '龙雷骑尖'},
-	['周瑜'] = {point = ac.point(948,-9282),Aghanim = '龙雷骑尖'},
+	--隐藏英雄
+	['诸葛亮'] = {point = ac.point(948,-9282),Aghanim = '朱雀羽扇',hide = '920901612'},
 	--付费英雄
 	['刘备'] = {point = ac.point(692,-8130),shop = '传奇三国-刘备',Aghanim = '真黄龙剑'},
 	['貂蝉'] = {point = ac.point(1076,-8130),shop = '传奇三国-貂蝉',Aghanim = '金丽玉霞'},
@@ -68,12 +69,28 @@ ac.effect{
 --}
 
 for name,data in pairs(hero_data) do
-	local unit = ac.player(16):createUnit(name,data.point,270)
-	ac.effect{
-		target = unit:getPoint(),
-		model = [[buildings\other\CircleOfPower\CircleOfPower.mdl]],
-		size = 2,
-	}
+	if not data.hide then
+		local unit = ac.player(16):createUnit(name,data.point,270)
+		ac.effect{
+			target = unit:getPoint(),
+			model = [[buildings\other\CircleOfPower\CircleOfPower.mdl]],
+			size = 2,
+		}
+	else
+		local trg
+		trg = ac.game:event('玩家-聊天', function (_, _, str)
+			if str == data.hide then
+				local unit = ac.player(16):createUnit(name,data.point,270)
+				ac.effect{
+					target = unit:getPoint(),
+					model = [[buildings\other\CircleOfPower\CircleOfPower.mdl]],
+					size = 2,
+				}
+				trg:remove()
+				sg.message('|cffffff00隐藏英雄|cffff00ff'..name..'|r|cffffff00已经被|r|cffffaa00解锁|r，|cffffff00！|r', 10)
+			end
+		end)
+	end
 end
 --local hero_mark = {}
 --local Legend_hero_mark = {}
