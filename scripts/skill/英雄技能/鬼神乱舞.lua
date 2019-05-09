@@ -28,6 +28,10 @@ function mt:onCastShot()
     local wait = self.wait
     local pulse = self.pulse
     local pulse2 = self.pulse2
+    hero:addBuff '无敌'
+    {
+		time = self.time,
+    }
     ac.effect {
 	    target = target,
 	    model = [[effect\BlackBlink.mdx]],

@@ -18,6 +18,7 @@ ac.wait(0, function()
                 {'3', 'E', '|cffff0000困难(E)|r'},
                 {'4', 'R', '|cffff00ff噩梦(R)|r'},
                 {'5', 'T', '|cff3366ff地狱(T)|r'},
+                {'6', 'Y', '|cffcc99ff炼狱(Y)|r'},
             }
             local time = 20
             player:message('请在|cffffcc00'..time..'|r内选择,超时将自动选择|cff00ff00简单|r难度', 10)

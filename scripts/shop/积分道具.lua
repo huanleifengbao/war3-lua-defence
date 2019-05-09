@@ -136,15 +136,25 @@ mt.coverGlobal = 1
 mt.keep = 1
 mt.pulse = 1
 
+function mt:onAdd()
+	local hero = self:getOwner()
+	hero:add('击杀木材',self.lumber)
+end
+
 function mt:onCover()
 	return false
 end
 
-function mt:onPulse()
+function mt:onRemove()
 	local hero = self:getOwner()
-	local player = hero:getOwner()
-	player:add('木材',self.lumber)
+	hero:add('击杀木材',-self.lumber)
 end
+
+--function mt:onPulse()
+--	local hero = self:getOwner()
+--	local player = hero:getOwner()
+--	player:add('木材',self.lumber)
+--end
 
 local mt = ac.buff['天命']
 

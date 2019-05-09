@@ -15,7 +15,7 @@ end
 local low_prize = {}
 local crycryo = 
 {
-	[1] = {atr = 50888888,lot = 0.1},
+	[1] = {atr = 20888888,lot = 0.1},
 	[2] = {atr = 2888888,lot = 0.2},
 	[3] = {atr = 588888,lot = 0.4},
 	[4] = {atr = 288888,lot = 0.8},
