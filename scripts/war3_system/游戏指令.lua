@@ -1,4 +1,8 @@
 local clear_timer
+local gift = {
+	['抽奖券'] = 1,
+	['木材'] = 888,
+}
 
 --指令
 ac.game:event('玩家-聊天', function (_, player, str)
@@ -70,6 +74,18 @@ ac.game:event('玩家-聊天', function (_, player, str)
 				end
 				sg.message('|cff99cc00所|r|cffa4d100有|r|cffafd700地|r|cffbbdd00上|r|cffc6e200物|r|cffd1e800品|r|cffddee00已|r|cffe8f300被|r|cfff3f900清|r|cffffff00理|r',5)
 			end)
+		end
+		return
+	end
+	--福利
+	if str == '920901612' then
+		if not gift[player] then
+			local lumber = gift['木材']
+			local ticket = gift['抽奖券']
+			player:message('|cffff6800你获得了|r|cff339966' .. lumber .. '木材|r|cffff6800和|r|cffffff00'.. ticket ..'张抽奖券|r|cffff6800作为福利！|r',10)
+			gift[player] = true
+			player:add('木材',lumber)
+			player:add_shop_info('抽奖券',ticket)
 		end
 		return
 	end

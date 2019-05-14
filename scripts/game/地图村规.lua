@@ -54,6 +54,7 @@ local dif_tbl = {
 	[4] = 8,
 	[5] = 16,
 	[6] = 32,
+	[7] = 64,
 }
 local atr = {'力量','敏捷','智力'}
 ac.game:event('单位-创建', function (_, unit)
